@@ -4,9 +4,10 @@ exports.up = function (knex) {
         table.increments('userID');
         table.string('name');
         table.string('section');
+        table.integer('surplus');
+        table.integer('position');
         table.string('signUpDate');
-        table.string('surplus');
-        table.string('position');
+        table.string('lastCoffeeAcquisition');
     })
 };
 
