@@ -39,9 +39,9 @@ app.post('/coffeeBought', async function (req, res) {
             dateStyle: 'short'
         })
 
-        // if (date !== String(backDate)) {
-        //     throw new Error(`A data da requisição e do backend diferem!`)
-        // }
+        if (date !== String(backDate)) {
+            throw new Error(`A data da requisição e do backend diferem!`)
+        }
 
         await CoffeeRegisterController.create(name, date)
         await UserController.update.position(name)
