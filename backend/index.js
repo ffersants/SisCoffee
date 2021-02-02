@@ -11,9 +11,9 @@ app.get('/', async function (req, res) {
         .orderBy('position', 'asc');
 
     const three = {
-        theNext: allUsers[allUsers.length - 1],
-        theLast: allUsers[1],
-        theOne: allUsers[0]
+        theNext: allUsers[1],
+        theOne: allUsers[0],
+        theLast: allUsers[allUsers.length - 1]
     }
     res.json(three);
 })
@@ -39,9 +39,9 @@ app.post('/coffeeBought', async function (req, res) {
             dateStyle: 'short'
         })
 
-        if (date !== String(backDate)) {
-            throw new Error(`A data da requisição e do backend diferem!`)
-        }
+        // if (date !== String(backDate)) {
+        //     throw new Error(`A data da requisição e do backend diferem!`)
+        // }
 
         await CoffeeRegisterController.create(name, date)
         await UserController.update.position(name)

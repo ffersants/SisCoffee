@@ -13,9 +13,9 @@ module.exports = {
                 dateStyle: 'short'
             })
 
-            if (signUpDate !== String(backDate)) {
-                throw new Error(`A data da requisição e do backend diferem!`)
-            }
+            // if (signUpDate !== String(backDate)) {
+            //     throw new Error(`A data da requisição e do backend diferem!`)
+            // }
 
             const allUsers = await connection('users')
                 .select('name');
