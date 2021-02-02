@@ -23,7 +23,38 @@ app.get('/users', UserController.list)
 app.delete('/remove/:userID', UserController.delete)
 
 //COFFEE
-app.post('/coffeeBought', CoffeeRegisterController.create)
+app.post('/coffeeBought', async function (req, res) {
+    const { name, date } = req.body;
+
+    try {
+        if (!name || !date) throw new Error('Informações como usuário e/ou data não preenchida(s) para cadastro de compra.')
+
+        nameExists = await connection('users')
+            .where('name', name)
+            .first();
+
+        if (!nameExists) throw new Error('Usuário(a) não encontrado.')
+
+        backDate = new Date().toLocaleDateString("pt-br", {
+            dateStyle: 'short'
+        })
+
+        if (date !== String(backDate)) {
+            throw new Error(`A data da requisição e do backend diferem!`)
+        }
+
+        await CoffeeRegisterController.create(name, date)
+        await UserController.update.position(name)
+        await UserController.update.lastCoffeeAcquisition(name, date)
+        return res.status(200).send("Compra registrada e tabela atualizada!")
+
+    } catch (err) {
+        return res.status(500).json({
+            //nothing changed
+            message: 'Ops! Um erro aqui na hora de registrar a compra e ordenar a tabela.' + err
+        })
+    }
+})
 
 app.listen(3300, function () {
     console.table('Servidor rodando')
