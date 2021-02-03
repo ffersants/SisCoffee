@@ -10,13 +10,13 @@ app.get('/', async function (req, res) {
     const allUsers = await connection('users')
         .orderBy('position', 'asc');
     let showThem = {};
-
-    if (allUsers.length === 1) {
+   
+    if (allUsers.length === 2) {
         showThem = {
             theNext: allUsers[1],
             theOne: allUsers[0],
         }
-    } else if (allUsers.length === 0) {
+    } else if (allUsers.length === 1) {
         showThem = {
             theOne: allUsers[0]
         }
@@ -43,12 +43,6 @@ app.post('/coffeeBought', async function (req, res) {
     try {
         if (!name || !date || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus) throw new Error('Informações como usuário, saldo e/ou data não preenchida(s) para cadastro de compra.')
 
-        // if (String(useSurplus) != "true") {
-        //     throw new Error('Valor inválido para useSurplus')
-        // } else if (String(useSurplus) != "false") {
-        //     throw new Error('Valor inválido para useSurplus')
-
-        // }
         nameExists = await connection('users')
             .where('name', name)
             .first();
@@ -105,7 +99,7 @@ app.post('/coffeeBought', async function (req, res) {
                 }
             }
         }
-        await UserController.update.saldo(name, surplus)
+        await UserController.update.saldo(name)
         await UserController.update.position(name)
         await UserController.update.lastCoffeeAcquisition(name, date)
 
