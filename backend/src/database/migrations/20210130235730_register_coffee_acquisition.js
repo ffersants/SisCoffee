@@ -4,6 +4,7 @@ exports.up = function (knex) {
         table.increments('paymentID');
         table.string('userName');
         table.string('paymentRegisterDate');//dia do registro da compra do café
+        table.string('usingSurplus');
     })
 };
 

@@ -13,9 +13,9 @@ module.exports = {
                 dateStyle: 'short'
             })
 
-            if (signUpDate !== String(backDate)) {
-                throw new Error(`A data da requisição e do backend diferem!`)
-            }
+            // if (signUpDate !== String(backDate)) {
+            //     throw new Error(`A data da requisição e do backend diferem!`)
+            // }
 
             const allUsers = await connection('users')
                 .select('name');
@@ -60,42 +60,30 @@ module.exports = {
         position: async function (user) {
             //informações do usuário que está pagando
             try {
-                await mainSort(user)
-            } catch (err) {
-                console.error('Isso é um erro: ' + err)
-            }
 
-            ///////////////////METHODS
-            async function mainSort(userName) {
-                //pega o número total de usuários cadastrados
-                const totalPositions = (await connection('users').select('name')).length;
+                const totalUsers = await connection('users').select('name');
+
                 const userPosition = (await connection('users')
-                    .where('name', userName)
+                    .where('name', user)
                     .select('position')
                     .first()).position
 
-                await organizeTable(userPosition, totalPositions)
+                await organizeTable(userPosition, totalUsers.length)
 
-                //pega o primeiro e coloca-o em último
-
-                const newPosition = await connection('users')
-                    .where('name', userName)
+                //teremos dois registros na mesma posição após a organização da tabela,
+                //então, o usuário que pagou será colocado em última posição com o código abaixo
+                await connection('users')
+                    .where('name', user)
                     .select('position')
-                    .update({ position: totalPositions })
-                    .then(async () => {
-                        let currentPosition = await connection('users')
-                            .where('name', userName)
-                            .select('position')
-                            .first()
-                        return currentPosition
-                    })
+                    .update({ position: totalUsers.length })
 
-                return newPosition.position
+            } catch (err) {
+                console.error('Isso é um erro: ' + err)
             }
-
+            ///////////////////METHODS
             async function organizeTable(userPosition, totalPositions) {
                 //i = position dá uma noção de a partir de qual posição devemos reorganizar
-                for (i = userPosition; i != totalPositions; i++) {
+                for (i = userPosition; i !== totalPositions; i++) {
                     await connection('users')
                         .where('position', i + 1)
                         .update({ position: i })
@@ -111,21 +99,21 @@ module.exports = {
                 throw new Error('Falha ao atualizar a coluna lastCoffeeAcquisition.' + err)
             }
         },
-        saldo: async function (name, saldo, surplusDate) {
+        saldo: async function (name, saldo) {
+
             try {
-                const surplusInTable = Object.values(await connection('users')
-                    .where('name', name)
-                    .select('surplus')
-                    .first())[0];
-                console.log(saldo)
-                console.log(surplusInTable)
+
+                const surplusInTable = Object.values(await connection('surplus_tb')
+                    .where('userName', name)
+                    .where('used', 'false')).length;
+
                 await connection('users')
                     .where('name', name)
                     .select('surplus')
                     .update({ surplus: surplusInTable + saldo })
 
             } catch (err) {
-
+                throw new Error('Falha na hora de registrar o saldo no banco.' + err)
             }
 
 
