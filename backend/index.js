@@ -24,10 +24,10 @@ app.delete('/remove/:userID', UserController.delete)
 
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
-    const { name, date } = req.body;
+    const { name, date, surplus } = req.body;
 
     try {
-        if (!name || !date) throw new Error('Informações como usuário e/ou data não preenchida(s) para cadastro de compra.')
+        if (!name || !date || surplus === undefined || surplus === "" || surplus === NaN) throw new Error('Informações como usuário, saldo e/ou data não preenchida(s) para cadastro de compra.')
 
         nameExists = await connection('users')
             .where('name', name)
@@ -46,6 +46,7 @@ app.post('/coffeeBought', async function (req, res) {
         await CoffeeRegisterController.create(name, date)
         await UserController.update.position(name)
         await UserController.update.lastCoffeeAcquisition(name, date)
+        await UserController.update.saldo(name, surplus, date)
         return res.status(200).send("Compra registrada e tabela atualizada!")
 
     } catch (err) {

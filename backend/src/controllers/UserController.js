@@ -110,6 +110,25 @@ module.exports = {
             } catch (err) {
                 throw new Error('Falha ao atualizar a coluna lastCoffeeAcquisition.' + err)
             }
+        },
+        saldo: async function (name, saldo, surplusDate) {
+            try {
+                const surplusInTable = Object.values(await connection('users')
+                    .where('name', name)
+                    .select('surplus')
+                    .first())[0];
+                console.log(saldo)
+                console.log(surplusInTable)
+                await connection('users')
+                    .where('name', name)
+                    .select('surplus')
+                    .update({ surplus: surplusInTable + saldo })
+
+            } catch (err) {
+
+            }
+
+
         }
     }
 }
