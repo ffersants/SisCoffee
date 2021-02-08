@@ -1,14 +1,41 @@
 const express = require('express');
+<<<<<<< HEAD
 
+=======
+const cors = require('cors');
+>>>>>>> 119a52abb01c42224b7ff982375b7dee08593ed2
 const UserController = require('./src/controllers/UserController');
 const CoffeeRegisterController = require('./src/controllers/CoffeeRegisterController');
 
 const connection = require('./src/database/connection');
 const app = express();
+
+app.use((req, res, next) => {
+    /*
+    https://stackoverflow.com/questions/18310394/no-access-control-allow-origin-node-apache-port-issue#comment28704031_18311469
+    */
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8002');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    next()
+})
+
 app.use(express.json())
 
+<<<<<<< HEAD
 const routes = express.Router()
 
+=======
+async function verificaCredenciais(user, psw){
+ return await connection('adm_tb')
+                .where({userName: user, password: psw})
+                .first()
+}
+>>>>>>> 119a52abb01c42224b7ff982375b7dee08593ed2
 
 app.get('/', async function (req, res) {
     const allUsers = await connection('users')
@@ -36,14 +63,68 @@ app.get('/', async function (req, res) {
 });
 
 //USER
-app.post('/create/user', UserController.create)
+app.post('/create/user', async(req, res) => {
+    const {name, section, signUpDate, surplus, admUser, admPassword} = req.body
+
+    const autenticado = await verificaCredenciais(admUser, admPassword);
+  
+    if(!autenticado){
+        console.log("Usuário e/ou senha da conta administradoras são inválidas.")
+        return res.status(401).json({
+            status: 401,
+            message: "Credenciais inválidas!"
+        });
+    }
+
+    const created = await UserController.create(req, res)
+        if(created.statusCode !== 201) return
+    await CoffeeRegisterController.create(name, signUpDate)
+
+    if(surplus > 0) {
+        //alimentar tabela aqui
+        for (i = 0; i != surplus; i++) {
+             await connection('surplus_tb')
+                .insert({
+                    userName: name,
+                    surplusRegisterDate: signUpDate,
+                })
+        }
+    }
+    return res.status(201).json({
+        status: 201,
+        message: 'Usuário cadastrado com sucesso!'
+    }).send()
+})
 app.get('/users', UserController.list)
-app.delete('/remove/:userID', UserController.delete)
+app.delete('/remove/:userID', async(req, res) => {
+    
+    const {admUser, admPassword} = req.body
+
+    const autenticado = await verificaCredenciais(admUser, admPassword)
+    console.log("Usuário e/ou senha da conta administradoras são inválidas.")
+        if(!autenticado){
+            return res.status(401).json({
+                status: 401,
+                message: "Credenciais inválidas!"
+            });
+        }
+    UserController.delete
+
+})
 
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
-    const { name, date, surplus, useSurplus } = req.body;
-
+    const { name, date, surplus, useSurplus, admUser, admPassword } = req.body;
+    
+    const autenticado = await verificaCredenciais(admUser, admPassword)
+    console.log("Usuário e/ou senha da conta administradoras são inválidas.")
+        if(!autenticado){
+            return res.status(401).json({
+                status: 401,
+                message: "Credenciais inválidas!"
+            });
+        }
+  
     try {
         if (!name || !date || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus) throw new Error('Informações como usuário, saldo e/ou data não preenchida(s) para cadastro de compra.')
 
@@ -68,7 +149,10 @@ app.post('/coffeeBought', async function (req, res) {
             .where('used', 'false'));
 
         if (hasSurplus.length === 0 && useSurplus === 'true') {
-            throw new Error('Não há saldo disponível para uso!')
+            return res.status(401).json({
+                status:401,
+                message:'Não há saldo disponível para uso!'
+            })
         }
         else if (hasSurplus.length > 0 && useSurplus === 'true') {
             //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
@@ -118,5 +202,5 @@ app.post('/coffeeBought', async function (req, res) {
 })
 
 app.listen(3300, function () {
-    console.table('Servidor rodando')
+    console.table('Servidor rodando na porta 3300')
 })

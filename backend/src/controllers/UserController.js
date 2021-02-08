@@ -1,32 +1,43 @@
 const connection = require('../database/connection')
 
-
 module.exports = {
     create: async function (req, res) {
-        try {
-            const { name, section, signUpDate } = req.body
-            if (!name || !section || !signUpDate) {
-                throw new Error('Informações como usuário, seção e/ou data de inscrição não preenchida(s) para cadastro de compra.')
+            const { name, section, signUpDate, surplus, admUser, admPassword} = req.body;
+            //verifica se ação está autenticada corretamente
+
+            if (!name || !section || !signUpDate || !surplus) {
+               return res.status(400).json({
+                   status: 400,
+                   message: 'Informações como usuário, seção e/ou data de inscrição não preenchida(s) para cadastro do usuário.'
+               }).send()
             }
 
             backDate = new Date().toLocaleDateString("pt-br", {
                 dateStyle: 'short'
             })
 
-            // if (signUpDate !== String(backDate)) {
-            //     throw new Error(`A data da requisição e do backend diferem!`)
-            // }
+            if (signUpDate !== String(backDate)) {
+                return res.status(400).json({
+                    status: 400,
+                    message:`A data da requisição e do backend diferem!`
+                }).send()
+            }
 
             const allUsers = await connection('users')
                 .select('name');
 
             allUsers.forEach(user => {
                 if (user.name === name) {
-                    throw new Error('Nome já em uso!')
+                    return res.status(409).json({
+                        status: 409,
+                        message: "Nome já em uso."
+                    }).send()
                 }
+                console.log('ainda passow 1')
             })
+                            console.log('ainda passow 2')
+
             const position = allUsers.length + 1
-            const surplus = 0;
             const lastCoffeeAcquisition = signUpDate;
             await connection('users').insert({
                 name,
@@ -36,21 +47,28 @@ module.exports = {
                 signUpDate,
                 lastCoffeeAcquisition
             })
-            return res.status(201).send('Usuário cadastrado')
-        } catch (err) {
-            return res.status(500).json({
-                //nothing changed
-                message: 'Ops! Um erro aqui na hora de criar o(a) usuário(a).' + err
-            })
-        }
+                            console.log('ainda passow 3')
 
+            return res.status(201)
     },
     list: async function (req, res) {
         const users = await connection('users').select('*').orderBy('position', 'asc')
         return res.json(users)
     },
     delete: async function (req, res) {
-        const { userID } = req.params;
+        const { userID} = req.params;
+        const { admUser, admPassword} = req.body;
+
+        // const result = await connection('adm_tb')
+        //         .where({userName: admUser, password: admPassword})
+        //         .first()
+        //     if(!result){
+        //         return res.status(401).json({
+        //             status: 401,
+        //             message: "Credenciais inválidas!"
+        //         });
+        //     }
+
         await connection('users')
             .where('userID', userID)
             .delete();
@@ -60,7 +78,6 @@ module.exports = {
         position: async function (user) {
             //informações do usuário que está pagando
             try {
-
                 const totalUsers = await connection('users').select('name');
 
                 const userPosition = (await connection('users')
