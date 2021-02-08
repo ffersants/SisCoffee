@@ -103,7 +103,7 @@ module.exports = {
                 throw new Error('Falha ao atualizar a coluna lastCoffeeAcquisition.' + err)
             }
         },
-        saldo: async function (name, saldo) {
+        saldo: async function (name) {
 
             try {
 
@@ -114,7 +114,7 @@ module.exports = {
                 await connection('users')
                     .where('name', name)
                     .select('surplus')
-                    .update({ surplus: surplusInTable + saldo })
+                    .update({ surplus: surplusInTable})
 
             } catch (err) {
                 throw new Error('Falha na hora de registrar o saldo no banco.' + err)

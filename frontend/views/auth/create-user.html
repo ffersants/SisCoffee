@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/md5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <form id="app">
+        <label for="name">Nome</label>
+        <input type="text" id="name">
+        
+        <label for="section">Seção</label>
+        <input type="text" id="section">
+
+        <label for="date">Data de inscrição</label>
+        <input id="signUpDate" type="text">
+
+        <br>   <br>   <br>   <br>
+        
+        <button @click.prevent="doTheFetch">Enviar</button>
+    </form>
+    <script>
+        new Vue({
+            el: "#app",
+            data:{
+
+            },
+            methods:{
+                doTheFetch(){
+                    const bodie = {}
+                    let inputs = document.getElementsByTagName("input") 
+                    for (input of inputs) {
+                        bodie[input.id] = input.value
+                    }
+                
+                    fetch('http://localhost:3300/create/user', {
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bodie)
+                    })  
+                        .then(r => console.log(r))
+                       
+                        .catch( e => console.log('HOUVE EERRO ' + e))
+                }
+            }
+        })
+    </script>
+</body>
+</html>
