@@ -1,10 +1,28 @@
 const express = require('express');
+const cors = require('cors');
 const UserController = require('./src/controllers/UserController');
 const CoffeeRegisterController = require('./src/controllers/CoffeeRegisterController');
 
 const connection = require('./src/database/connection');
 const app = express();
+
+app.use((req, res, next) => {
+    /*
+    https://stackoverflow.com/questions/18310394/no-access-control-allow-origin-node-apache-port-issue#comment28704031_18311469
+    */
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8002');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    next()
+})
+
 app.use(express.json())
+
+
 
 app.get('/', async function (req, res) {
     const allUsers = await connection('users')
@@ -120,5 +138,5 @@ app.post('/coffeeBought', async function (req, res) {
 })
 
 app.listen(3300, function () {
-    console.table('Servidor rodando')
+    console.table('Servidor rodando na porta 3300')
 })

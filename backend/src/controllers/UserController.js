@@ -4,9 +4,10 @@ const connection = require('../database/connection')
 module.exports = {
     create: async function (req, res) {
         try {
-            const { name, section, signUpDate } = req.body
+            const { name, section, signUpDate } = req.body;
+            console.log(req.body)
             if (!name || !section || !signUpDate) {
-                throw new Error('Informações como usuário, seção e/ou data de inscrição não preenchida(s) para cadastro de compra.')
+                throw new Error('Informações como usuário, seção e/ou data de inscrição não preenchida(s) para cadastro do usuário.')
             }
 
             backDate = new Date().toLocaleDateString("pt-br", {
@@ -36,7 +37,10 @@ module.exports = {
                 signUpDate,
                 lastCoffeeAcquisition
             })
-            return res.status(201).send('Usuário cadastrado')
+            return res.json({
+                status: 201,
+                message: 'Usuário cadastrado com sucesso!'
+            })
         } catch (err) {
             return res.status(500).json({
                 //nothing changed
