@@ -1,10 +1,14 @@
 const express = require('express');
+
 const UserController = require('./src/controllers/UserController');
 const CoffeeRegisterController = require('./src/controllers/CoffeeRegisterController');
 
 const connection = require('./src/database/connection');
 const app = express();
 app.use(express.json())
+
+const routes = express.Router()
+
 
 app.get('/', async function (req, res) {
     const allUsers = await connection('users')
@@ -28,7 +32,7 @@ app.get('/', async function (req, res) {
         }
     }
 
-    res.json(showThem);
+    res.send(showThem);
 });
 
 //USER
