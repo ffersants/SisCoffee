@@ -2,7 +2,7 @@
 exports.up = function(knex) {
     return knex.schema.createTable('adm_tb', function (table) {
         table.string('userName').defaultTo('coffeeadm');
-        table.string('password').defaultTo('81713ae400988a28e188f0fe3f1dd2f0');
+        table.string('password').defaultTo('2b510786f874878f94d2f03dd932e5bc');
     })
 };
 
