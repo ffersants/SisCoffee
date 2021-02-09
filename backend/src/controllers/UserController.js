@@ -4,19 +4,13 @@ module.exports = {
     create: async function (req, res) {
             const { name, section, signUpDate, surplus, admUser, admPassword} = req.body;
             //verifica se ação está autenticada corretamente
-
-            if (!name || !section || !signUpDate || !surplus) {
-               return res.status(400).json({
-                   status: 400,
-                   message: 'Informações como usuário, seção e/ou data de inscrição não preenchida(s) para cadastro do usuário.'
-               }).send()
-            }
-
+            
             backDate = new Date().toLocaleDateString("pt-br", {
                 dateStyle: 'short'
             })
 
             if (signUpDate !== String(backDate)) {
+                console.log("A data da requisição e do backend diferem!")
                 return res.status(400).json({
                     status: 400,
                     message:`A data da requisição e do backend diferem!`
@@ -50,7 +44,6 @@ module.exports = {
                 signUpDate,
                 lastCoffeeAcquisition
             })
-                            console.log('ainda passow 3')
 
             return res.status(201)
     },
@@ -60,22 +53,43 @@ module.exports = {
     },
     delete: async function (req, res) {
         const { userID} = req.params;
-        const { admUser, admPassword} = req.body;
+       
+        const userName = await connection('users')
+            .where('userID', userID)
+            .select('name')
+            .first()
 
-        // const result = await connection('adm_tb')
-        //         .where({userName: admUser, password: admPassword})
-        //         .first()
-        //     if(!result){
-        //         return res.status(401).json({
-        //             status: 401,
-        //             message: "Credenciais inválidas!"
-        //         });
-        //     }
+        if(!userName){
+            console.log(`Nenhum usuário com o ID ${userID} foi encontrado.`)
+            return res.status(404).json({
+                status: 404,
+                message: "O usuário que você está tentando deletar não existe!"
+            })
+        }
+        
+        
+        const hasSurplus = (await connection('surplus_tb')
+                .where({
+                    userName: userName.name,
+                    used: 'false'
+                })
+            ).length
+
+        if(hasSurplus !== 0){
+            return res.status(401).json({
+                status: 401,
+                message: "Não é possível excluir um usuário que ainda possui saldo a ser utilizado."
+            })
+        }
 
         await connection('users')
             .where('userID', userID)
             .delete();
-        return res.status(200).send('Usuário removido com sucesso!')
+
+        return res.status(200).json({
+            status: 200,
+            message:'Usuário removido com sucesso!'
+        })
     },
     update: {
         position: async function (user) {

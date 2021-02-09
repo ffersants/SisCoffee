@@ -56,6 +56,13 @@ app.get('/', async function (req, res) {
 //USER
 app.post('/create/user', async(req, res) => {
     const {name, section, signUpDate, surplus, admUser, admPassword} = req.body
+    if(!name || !section || !signUpDate || !surplus || !admUser || !admPassword){
+        console.log("Formulário enviado com campos a serem preenchidos.")
+        return res.status(400).json({
+            status: 400,
+            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        })
+    }
 
     const autenticado = await verificaCredenciais(admUser, admPassword);
   
@@ -68,7 +75,9 @@ app.post('/create/user', async(req, res) => {
     }
 
     const created = await UserController.create(req, res)
-        if(created.statusCode !== 201) return
+
+    if(created.statusCode !== 201) return
+
     await CoffeeRegisterController.create(name, signUpDate)
 
     if(surplus > 0) {
@@ -89,18 +98,24 @@ app.post('/create/user', async(req, res) => {
 app.get('/users', UserController.list)
 app.delete('/remove/:userID', async(req, res) => {
     
-    const {admUser, admPassword} = req.body
-
+    const {admUser, admPassword} = req.body;
+    console.log(admUser, admPassword)
+    if(!admUser || !admPassword){
+        console.log("Formulário enviado com campos a serem preenchidos.")
+        return res.status(400).json({
+            status: 400,
+            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        })
+    }
     const autenticado = await verificaCredenciais(admUser, admPassword)
-    console.log("Usuário e/ou senha da conta administradoras são inválidas.")
-        if(!autenticado){
+    if(!autenticado){
+            console.log("Usuário e/ou senha da conta administradoras são inválidas.")
             return res.status(401).json({
                 status: 401,
                 message: "Credenciais inválidas!"
             });
         }
-    UserController.delete
-
+     await UserController.delete(req, res);
 })
 
 //COFFEE
@@ -108,8 +123,8 @@ app.post('/coffeeBought', async function (req, res) {
     const { name, date, surplus, useSurplus, admUser, admPassword } = req.body;
     
     const autenticado = await verificaCredenciais(admUser, admPassword)
-    console.log("Usuário e/ou senha da conta administradoras são inválidas.")
-        if(!autenticado){
+    if(!autenticado){
+            console.log("Usuário e/ou senha da conta administradoras são inválidas.")
             return res.status(401).json({
                 status: 401,
                 message: "Credenciais inválidas!"
