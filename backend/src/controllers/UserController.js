@@ -25,17 +25,20 @@ module.exports = {
 
             const allUsers = await connection('users')
                 .select('name');
-
+            let userAlreadyExists;
+            
             allUsers.forEach(user => {
                 if (user.name === name) {
-                    return res.status(409).json({
-                        status: 409,
-                        message: "Nome já em uso."
-                    }).send()
+                    userAlreadyExists = true                    
                 }
-                console.log('ainda passow 1')
             })
-                            console.log('ainda passow 2')
+   
+            if(userAlreadyExists){
+                return res.status(409).json({
+                    status: 409,
+                    message: "Nome já em uso."
+                }).send()
+            }
 
             const position = allUsers.length + 1
             const lastCoffeeAcquisition = signUpDate;
