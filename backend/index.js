@@ -1,9 +1,5 @@
 const express = require('express');
-<<<<<<< HEAD
-
-=======
 const cors = require('cors');
->>>>>>> 119a52abb01c42224b7ff982375b7dee08593ed2
 const UserController = require('./src/controllers/UserController');
 const CoffeeRegisterController = require('./src/controllers/CoffeeRegisterController');
 
@@ -11,6 +7,8 @@ const connection = require('./src/database/connection');
 const app = express();
 
 app.use((req, res, next) => {
+    // clientIP = req.connection.remoteAddress)
+
     /*
     https://stackoverflow.com/questions/18310394/no-access-control-allow-origin-node-apache-port-issue#comment28704031_18311469
     */
@@ -26,16 +24,11 @@ app.use((req, res, next) => {
 
 app.use(express.json())
 
-<<<<<<< HEAD
-const routes = express.Router()
-
-=======
 async function verificaCredenciais(user, psw){
  return await connection('adm_tb')
                 .where({userName: user, password: psw})
                 .first()
 }
->>>>>>> 119a52abb01c42224b7ff982375b7dee08593ed2
 
 app.get('/', async function (req, res) {
     const allUsers = await connection('users')
