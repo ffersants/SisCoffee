@@ -58,6 +58,14 @@ app.get('/', async function (req, res) {
 //USER
 app.post('/create/user', async(req, res) => {
     const {name, section, signUpDate, surplus, admUser, admPassword} = req.body
+    
+    if(!name || !section || !signUpDate || !surplus || !admUser || !admPassword){
+        console.log("Formulário enviado com campos a serem preenchidos.")
+        return res.status(400).json({
+            status: 400,
+            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        })
+    }
 
     const autenticado = await verificaCredenciais(admUser, admPassword);
   
@@ -70,10 +78,14 @@ app.post('/create/user', async(req, res) => {
     }
 
     const created = await UserController.create(req, res)
-        if(created.statusCode !== 201) return
+
+    if(created.statusCode !== 201) return
+    console.log("Cadastro realizado, prosseguindo com as demais etapadas de criação do usuário...")
+
     await CoffeeRegisterController.create(name, signUpDate)
 
     if(surplus > 0) {
+        console.log(`Cadastrando o bônus do usuário ${name}`)
         //alimentar tabela aqui
         for (i = 0; i != surplus; i++) {
              await connection('surplus_tb')
@@ -83,49 +95,72 @@ app.post('/create/user', async(req, res) => {
                 })
         }
     }
+    console.log(`Cadastro de ${name} realizado!`)
     return res.status(201).json({
         status: 201,
         message: 'Usuário cadastrado com sucesso!'
     }).send()
 })
+
 app.get('/users', UserController.list)
+
 app.delete('/remove/:userID', async(req, res) => {
     
-    const {admUser, admPassword} = req.body
+    const {admUser, admPassword} = req.body;
+  
+    if(!admUser || !admPassword){
+        console.log("Formulário enviado com campos a serem preenchidos.")
+        return res.status(400).json({
+            status: 400,
+            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        })
+    }
 
     const autenticado = await verificaCredenciais(admUser, admPassword)
-    console.log("Usuário e/ou senha da conta administradoras são inválidas.")
-        if(!autenticado){
+    
+    if(!autenticado){
+            console.log("Usuário e/ou senha da conta administradoras são inválidas.")
             return res.status(401).json({
                 status: 401,
                 message: "Credenciais inválidas!"
             });
         }
-    UserController.delete
-
+     await UserController.delete(req, res);
 })
 
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
     const { name, date, surplus, useSurplus, admUser, admPassword } = req.body;
     
-    const autenticado = await verificaCredenciais(admUser, admPassword)
-    console.log("Usuário e/ou senha da conta administradoras são inválidas.")
-        if(!autenticado){
-            return res.status(401).json({
-                status: 401,
-                message: "Credenciais inválidas!"
-            });
-        }
-  
-    try {
-        if (!name || !date || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus) throw new Error('Informações como usuário, saldo e/ou data não preenchida(s) para cadastro de compra.')
+    if (!name || !date || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus || !admUser || !admPassword) {
+        console.log("Formulário enviado com campos a serem preenchidos.\n\n")
+        return res.status(400).json({
+            status: 400,
+            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        })
+    }
 
+    const autenticado = await verificaCredenciais(admUser, admPassword)
+
+    if(!autenticado){
+        console.log("Usuário e/ou senha da conta administradoras são inválidas.\n\n")
+        return res.status(401).json({
+            status: 401,
+            message: "Credenciais inválidas!"
+        });
+    }
+  
         nameExists = await connection('users')
             .where('name', name)
             .first();
 
-        if (!nameExists) throw new Error('Usuário(a) não encontrado.')
+        if(!nameExists){
+            console.log("Usuário não encontrado.\n\n")
+            return res.status(404).json({
+                status: 404,
+                message: "Não foi possível identificar o usuário informado."
+            });
+        }
 
         backDate = new Date().toLocaleDateString("pt-br", {
             dateStyle: 'short'
@@ -142,14 +177,15 @@ app.post('/coffeeBought', async function (req, res) {
             .where('used', 'false'));
 
         if (hasSurplus.length === 0 && useSurplus === 'true') {
+            console.log("Usuário não possui saldo para ser utilizado!\n\n")
             return res.status(401).json({
                 status:401,
                 message:'Não há saldo disponível para uso!'
             })
         }
         else if (hasSurplus.length > 0 && useSurplus === 'true') {
+            console.log("Registrando compra utilizando saldo disponível...\n\n")
             //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
-            console.log(hasSurplus[0].surplusID)
             const surplusID = Object.values(
                 await connection('surplus_tb')
                     .where('surplusID', hasSurplus[0].surplusID)
@@ -157,6 +193,7 @@ app.post('/coffeeBought', async function (req, res) {
             )[0]
             //recebe o ID do registro realizado na tabela coffee_register usando saldo
             coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID);
+            console.log("Registro realizado com sucesso na tabela coffee_registers.\n\n")
             //atualiza a surplus_tb para remover saldo e indicar o ID do registro em que o saldo foi utilizado
             await connection('surplus_tb')
                 .where('surplusID', surplusID)
@@ -168,6 +205,7 @@ app.post('/coffeeBought', async function (req, res) {
             await CoffeeRegisterController.create(name, date)
         }
         if (surplus > 0) {
+            console.log("Adicionando saldo passado ao registrar a compra...\n\n")
             for (i = 0; i !== surplus; i++) {
                 try {
                     await connection('surplus_tb')
@@ -180,18 +218,18 @@ app.post('/coffeeBought', async function (req, res) {
                 }
             }
         }
-        await UserController.update.saldo(name)
-        await UserController.update.position(name)
+        console.log("Atualizando o saldo na tabela surplus_tb.\n\n")
+        await UserController.update.saldo(name);
+        console.log("Atualizando posição do usuário na tabela users.\n\n")
+        await UserController.update.position(name);
+        console.log("Atualizando data da última aquisição do usuário na tabela users.\n\n")
         await UserController.update.lastCoffeeAcquisition(name, date)
-
-        return res.status(200).send("Compra registrada e tabela atualizada!")
-
-    } catch (err) {
-        return res.status(500).json({
-            //nothing changed
-            message: 'Ops! Um erro aqui na hora de registrar a compra e ordenar a tabela.' + err
-        })
-    }
+        
+        console.log("Registro de compra de café concluído com sucesso!\n\n")
+        return res.status(200).json({
+            status: 200,
+            message: "Compra registrada e tabela atualizada!"
+        });
 })
 
 app.listen(3300, function () {
