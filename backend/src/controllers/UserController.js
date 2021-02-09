@@ -2,7 +2,7 @@ const connection = require('../database/connection')
 
 module.exports = {
     create: async function (req, res) {
-            const { name, section, signUpDate, surplus, admUser, admPassword} = req.body;
+            const { name, section, signUpDate, surplus} = req.body;
             //verifica se ação está autenticada corretamente
             
             backDate = new Date().toLocaleDateString("pt-br", {
@@ -28,6 +28,7 @@ module.exports = {
             })
    
             if(userAlreadyExists){
+                console.log(`Não foi possível cadastrar o usuário ${name}. Nome já registrado!`)
                 return res.status(409).json({
                     status: 409,
                     message: "Nome já em uso."
