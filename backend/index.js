@@ -7,6 +7,8 @@ const connection = require('./src/database/connection');
 const app = express();
 
 app.use((req, res, next) => {
+    // clientIP = req.connection.remoteAddress)
+
     /*
     https://stackoverflow.com/questions/18310394/no-access-control-allow-origin-node-apache-port-issue#comment28704031_18311469
     */
@@ -50,7 +52,7 @@ app.get('/', async function (req, res) {
         }
     }
 
-    res.json(showThem);
+    res.send(showThem);
 });
 
 //USER
