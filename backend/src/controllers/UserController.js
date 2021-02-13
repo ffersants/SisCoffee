@@ -68,7 +68,6 @@ module.exports = {
             })
         }
         
-        
         const hasSurplus = (await connection('surplus_tb')
                 .where({
                     userName: userName.name,
