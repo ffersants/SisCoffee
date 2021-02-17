@@ -21,6 +21,10 @@
         <label for="date">Data de inscrição</label>
         <input id="signUpDate" type="text">
 
+        <label for="surplus">Saldo</label>
+        <input type="number" name="" id="surplus">
+
+        
         <br>   <br>   <br>   <br>
         <label for="admUser">Usuário</label>
         <input type="text" name="" id="admUser">
@@ -47,6 +51,8 @@
                             bodie[input.id] = input.value
                         }
                     }    
+
+                    console.log(bodie)
                                 
                     fetch('http://localhost:3300/create/user', {
                         method: 'POST',
@@ -56,7 +62,8 @@
                         },
                         body: JSON.stringify(bodie)
                     })  
-                        .then(r => console.log(r))
+                        .then(r => r.json())
+                        .then((e) => console.log(e))
                        
 
                 }

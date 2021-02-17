@@ -6,35 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        all-users{
+            font-size: 20em;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <all-users :users-arr="users"></all-users>
+        <all-users :users-arr="fake"></all-users>
     </div>
     <script> 
         const AllUsers = {
             name: 'AllUsers',
-            props: ["usersArr"],
+            props: {
+                usersArr: {
+                    type: Array,
+                    default: "Nenhum usuário encontrado",
+                    required: true
+                }
+            },
             template: 
                 `
-                    <ul>
-                        <li>{{usersArr}}</li>
-                    </ul>
+                    <table>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Usuário</th>
+                            <th>Seção</th>
+                            <th>Última compra<br>de café</th>
+                        </tr>
+                        <tr 
+                            v-for="user in usersArr" 
+                            :key="user.position"
+                        >
+                            <td>{{user.position}}</td>
+                            <td>{{user.name}}</td>
+                            <td v-if="user.surplus"> Yes </td>
+                            <td>{{user.section}}</td>
+                            <td>{{user.lastCoffeeAcquisition}}</td>
+                        </tr>
+                    </table>
                 `
         }
 
         new Vue({
             el: "#app",
             data: {
-                users: ""
+                users: [],
+                fake: "Aue"
             },
             components: {
                 AllUsers
             },
             beforeCreate(){
                 fetch("http://localhost:3300/users/")
-                .then(r => r.json())
-                .then(r => this.users = r)
+                    .then(r => r.json())
+                    .then(r => this.users = r)
+                    .then(r => console.log(r))
             }
         })
     </script>

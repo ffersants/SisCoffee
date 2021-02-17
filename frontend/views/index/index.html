@@ -16,22 +16,8 @@
         </div>
         
     </div>
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                resultado: ""
-            },
-            methods: {
-                doTheFetch(){
-                    console.log("Tá funfando")
-                    fetch("http://localhost:3300/users")
-                        .then(r => r.json())
-                        .then(r => console.log(r))
-                        .then(r => console.log("done"))
-                }
-            }
-        });
+    <script type="module">
+        
     </script>
 </body>
 </html>
