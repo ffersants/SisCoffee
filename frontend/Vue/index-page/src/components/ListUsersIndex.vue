@@ -2,8 +2,8 @@
   <div id="app" class="text-center">
     <h1>CAFÉ DO MÊS</h1>
     <b-container style="border: 2px red solid">
-      <b-row >
-        <b-col style="display:flex;justify-content:center" class="text-center lil-card">
+      <b-row>
+        <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card">
             <!-- <p>{{theNext}}</p> -->
             <p>Anderson</p>  
@@ -40,7 +40,7 @@
           </div>
         </b-col>
 
-        <b-col style="display:flex;justify-content:center" class="text-center">
+        <b-col style="display:flex;justify-content:center;" class="text-center">
           <div class="card" id="the-one">
             <!-- <p>{{theOne}}</p> -->
             <p>Daniel</p>
@@ -78,7 +78,7 @@
           </div>
         </b-col>
 
-        <b-col style="display:flex;justify-content:center" class="text-center lil-card">
+        <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card">
             <!-- <p>{{theLast}}</p> -->
             <p>Fernando</p>
@@ -116,7 +116,6 @@
         </b-col>
       </b-row>
     </b-container>
-  
   </div>
 </template>
 
@@ -181,7 +180,7 @@ export default {
     font-size: 1.3em;
     box-sizing: border-box;
     padding-top: 0.8em;
-    width: 70%;
+    width: 60%;
   }
 
   div#the-one{
@@ -189,7 +188,6 @@ export default {
     background-color: #F1E5D1;
     font-size: 2em!important;
     padding-top: 0.3em;
-
     width: 80%;
   }
 
@@ -200,12 +198,12 @@ export default {
   }
 
   .lil-card:nth-child(1){
-    transform: translateX(55%);
+    transform: translateX(60%);
     z-index: 5;
   }
 
   .lil-card:nth-child(3){
-    transform: translateX(-30%);
+    transform: translateX(-22%);
     z-index: 5;
   }
 
@@ -220,7 +218,7 @@ export default {
     font-size: 0.8em;
     color: #F1E5D1;
     height: 30%;
-    width: 70%;
+    width: 60%;
     border-radius:1em;
     margin-left: auto;
     margin-right: auto;
@@ -229,33 +227,31 @@ export default {
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) { 
+  div#the-one{
+    font-size: 1.5em!important;
+    width: 6em!important;
+  }
   button#pay-btn{
-    width: 70%;
-    font-size: 0.8em;
+    width:70%;
+    font-size: .5em;
   }
 
   div.card{
-    width: 120%;
-    
-  }
-
-  div#the-one{
-    font-size: 1.5em!important;
-    width: 8em!important;
+    width: 130%!important;
   }
   .lil-card:nth-child(1){
-    transform: translateX(10%);
+    transform: translateX(5%);
     z-index: 5;
-    border-radius: 0;
   }
 
   .lil-card:nth-child(3){
-    transform: translateX(-25%);
+    transform: translateX(-35%);
     z-index: 5;
   }
-
+  p{
+    font-size: .7em;
+  }
 }
-
 /* // Small devices (landscape phones, 576px and up) */
 
 @media (min-width: 576px) and (max-width: 767.98px) { 
@@ -308,13 +304,14 @@ export default {
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199.98px) { 
   button#pay-btn{
-    
     font-size: 0.8em;
   }
 
   div#the-one{
     font-size: 1.5em!important;
     width: 9em!important;
+    margin-left: auto;
+    margin-right: auto;
   }
   .lil-card:nth-child(1){
     transform: translateX(55%);
