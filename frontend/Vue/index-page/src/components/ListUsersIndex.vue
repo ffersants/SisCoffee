@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="text-center">
     <h1>CAFÉ DO MÊS</h1>
-    <b-container style="border: 2px red solid">
+    <b-container id="container">
       <b-row>
         <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
-          <div class="card">
+          <div class="card card-the-next">
             <!-- <p>{{theNext}}</p> -->
             <p>Anderson</p>  
             <div id="coffee-cup">
@@ -79,7 +79,7 @@
         </b-col>
 
         <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
-          <div class="card">
+          <div class="card card-the-last">
             <!-- <p>{{theLast}}</p> -->
             <p>Fernando</p>
             <div id="coffee-cup">
@@ -166,6 +166,10 @@ export default {
 
   #app{
     padding-bottom: .4em;
+    display:flex;
+    flex-direction: column;
+    height: 90vh;
+    justify-content:center;
   }
 
   h1{
@@ -181,6 +185,14 @@ export default {
     box-sizing: border-box;
     padding-top: 0.8em;
     width: 60%;
+  }
+
+  div.card-the-next{
+    border-radius: 1em 0em 0em 1em;
+  }
+
+  div.card-the-last{
+    border-radius: 0em 1em 1em 0em;
   }
 
   div#the-one{
@@ -238,9 +250,10 @@ export default {
 
   div.card{
     width: 130%!important;
+   
   }
   .lil-card:nth-child(1){
-    transform: translateX(5%);
+    transform: translateX(10%);
     z-index: 5;
   }
 
@@ -288,12 +301,12 @@ export default {
     width: 9em!important;
   }
   .lil-card:nth-child(1){
-    transform: translateX(20%);
+    transform: translateX(30%);
     z-index: 5;
   }
 
   .lil-card:nth-child(3){
-    transform: translateX(-20%);
+    transform: translateX(-30%);
     z-index: 5;
   }
   div.card{
@@ -303,6 +316,9 @@ export default {
 
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199.98px) { 
+  #app{
+    justify-content:center;
+  }
   button#pay-btn{
     font-size: 0.8em;
   }
