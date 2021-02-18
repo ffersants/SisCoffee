@@ -79,7 +79,7 @@
         </b-col>
 
         <b-col style="display:flex;justify-content:center" class="text-center lil-card">
-          <div class="card">
+          <div class="card" id="eu">
             <!-- <p>{{theLast}}</p> -->
             <p>Fernando</p>
             <div id="coffee-cup">
@@ -189,8 +189,7 @@ export default {
     background-color: #F1E5D1;
     font-size: 2em!important;
     padding-top: 0.3em;
-    margin-left: auto;
-    margin-right: auto;
+
     width: 80%;
   }
 
@@ -258,6 +257,7 @@ export default {
 }
 
 /* // Small devices (landscape phones, 576px and up) */
+
 @media (min-width: 576px) and (max-width: 767.98px) { 
   button#pay-btn{
    
