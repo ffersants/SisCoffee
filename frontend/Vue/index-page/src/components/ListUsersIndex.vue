@@ -43,7 +43,7 @@
         <b-col style="display:flex;justify-content:center" class="text-center">
           <div class="card" id="the-one">
             <!-- <p>{{theOne}}</p> -->
-            <p>Giovana</p>
+            <p>Daniel</p>
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
@@ -79,7 +79,7 @@
         </b-col>
 
         <b-col style="display:flex;justify-content:center" class="text-center lil-card">
-          <div class="card" id="eu">
+          <div class="card">
             <!-- <p>{{theLast}}</p> -->
             <p>Fernando</p>
             <div id="coffee-cup">
@@ -116,7 +116,7 @@
         </b-col>
       </b-row>
     </b-container>
-    SISCOFFEE
+  
   </div>
 </template>
 
@@ -260,7 +260,6 @@ export default {
 
 @media (min-width: 576px) and (max-width: 767.98px) { 
   button#pay-btn{
-   
     font-size: 0.8em;
   }
   div#the-one{
