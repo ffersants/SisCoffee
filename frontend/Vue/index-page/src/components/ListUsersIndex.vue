@@ -3,10 +3,15 @@
     <h1>CAFÉ DO MÊS</h1>
     <b-container id="container">
       <b-row>
-        <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
+        <b-col cols="4" style=" display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card card-the-next">
-            <!-- <p></p> -->
-            <p v-bind:title="theNext">{{theNext}}</p> 
+            <!-- <div class="bigName" id="big-name-the-next" v-if="theNext.length > 12">
+              <p>Beltrano Ferreira</p>
+            </div> -->
+             <div class="bigName" id="big-name-the-next">
+              <p>Beltrano Ferreira</p>
+            </div>
+            <!-- <p v-else v-bind:title="theNext">{{theNext}}</p>  -->
              
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
@@ -41,11 +46,17 @@
           </div>
         </b-col>
 
-        <b-col style="display:flex;justify-content:center;" class="text-center">
+        <b-col cols="4" style=" display:flex;justify-content:center;" class="text-center">
           <div class="card" id="the-one">
             <!-- <p></p> -->
-            <p v-bind:title="theOne">{{theOne}}</p>
-            <div id="coffee-cup">
+            <!-- <div class="bigName" id="big-name-the-one" v-if="theOne.length > 16">
+              <p>Ricardo Oliveira</p>
+            </div>
+            <p v-else v-bind:title="theOne">{{theOne}}</p> -->
+            <div class="bigName" id="big-name-the-next">
+              <p>Beltrano Ferreira</p>
+            </div>
+            <div class="pt-4" id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
                 <path id="Path_13" data-name="Path 13" d="M365.018,226.276q-.517,0-1.021.025a24.675,24.675,0,1,0,1.021-.025Zm0,37.986a13.057,13.057,0,0,1-2.16-.176A13.218,13.218,0,0,1,364,237.867q.5-.038,1.021-.038a13.216,13.216,0,0,1,0,26.433Z" transform="translate(-210.387 -148.614)" fill="#fee6cc"/>
@@ -79,12 +90,16 @@
           </div>
         </b-col>
 
-        <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
+        <b-col cols="4" style=" display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card card-the-last">
             <!-- <p></p> -->
-            <!-- <p v-bind:title="theLast">{{theLast}}</p> -->
-            <p id="bigName" v-if="theLast.length >= 12" v-bind:title="theLast">{{theLast}}</p>
-
+            <!-- <div class="bigName" id="big-name-the-last" v-if="theLast.length > 12" v-bind:title="theLast">
+              <p>Gardenia da Silva</p>
+            </div>
+            <p v-else v-bind:title="theLast">{{theLast}}</p> -->
+            <div class="bigName" id="big-name-the-next">
+              <p>Beltrano Ferreira</p>
+            </div>
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
@@ -131,7 +146,6 @@ export default {
       theNext: "",
       theOne: "",
       theLast: "",
-      bigNames: []
     }
   },
   beforeCreate(){
@@ -144,33 +158,9 @@ export default {
         }
       })
       .then(r => {
-        const {theNext, theOne, theLast} = r;
-        const threeUsers = Object.values(r)
-        threeUsers.filter((user, index) => {
-
-          if(user.name.length > 12){
-              let positionInPodium;
-              switch (index) {
-                case 0 :
-                  positionInPodium = 'theNext'
-                break;
-                case 1 :
-                  positionInPodium = 'theOne'
-                break;
-                case 2 :
-                  positionInPodium = 'theLast'
-                break;
-              }
-
-              this.bigNames.push({"posição": index, "podium": positionInPodium})
-          }
-
-        })
-      
+        const {theNext, theOne, theLast} = r;      
         this.theNext = theNext.name;
-      
         this.theOne = theOne.name;
-      
         this.theLast = theLast.name;
       
       })
@@ -208,6 +198,41 @@ export default {
   p{
     font-family: Century, "Century"!important;
   }
+
+
+  div.bigName{
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-right: 10%;
+    margin-left: 10%;
+  }
+
+  div.bigName > p {
+    white-space: nowrap;
+        /* Starting position */
+    -moz-transform:translateX(100%);
+    -webkit-transform:translateX(100%);  
+    transform:translateX(100%);
+    /* Apply animation to this element */ 
+    transition: all .3s; 
+    -moz-animation: example1 5s linear infinite;
+    -webkit-animation: example1 5s linear infinite;
+    animation: leftRoll 5s linear infinite;
+  }
+  @keyframes leftRoll {
+    0%   { 
+      -moz-transform: translateX(80%); /* Firefox bug fix */
+      -webkit-transform: translateX(80%); /* Firefox bug fix */
+      transform: translateX(80%);     
+    }
+    100% { 
+      -moz-transform: translateX(-120%); /* Firefox bug fix */
+      -webkit-transform: translateX(-120%); /* Firefox bug fix */
+      transform: translateX(-120%); 
+    }
+  }
+
   div.card{
     background-color: rgba(241, 229, 209, 0.596);
     border-radius: 1em;
@@ -281,26 +306,27 @@ export default {
   }
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) { 
-  div#the-one{
-    font-size: 1.5em!important;
-    width: 6em!important;
-  }
   button#pay-btn{
     width:70%;
     font-size: .5em;
   }
 
   div.card{
-    width: 130%!important;
-   
+    width: 110%!important;
   }
+
+  div#the-one{
+    font-size: 1.5em!important;
+    
+  }
+
   .lil-card:nth-child(1){
-    transform: translateX(10%);
+    transform: translateX(15%);
     z-index: 5;
   }
 
   .lil-card:nth-child(3){
-    transform: translateX(-35%);
+    transform: translateX(-25%);
     z-index: 5;
   }
   p{
@@ -314,27 +340,27 @@ export default {
     font-size: 0.8em;
   }
   div#the-one{
-    font-size: 1.5em!important;
-    width: 9em!important;
+    font-size: 1.2em!important;
+    width: 8em!important;
   }
   .lil-card:nth-child(1){
-    transform: translateX(-5%);
+    transform: translateX(5%);
     z-index: 5;
   }
 
   .lil-card:nth-child(3){
-    transform: translateX(-35%);
+    transform: translateX(-33%);
     z-index: 5;
   }
   div.card{
-    width: 150%!important;
+    width: 130%!important;
+    font-size: 1em;
   }
 }
 
 /* // Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) { 
   button#pay-btn{
-
     font-size: 0.8em;
   }
 
