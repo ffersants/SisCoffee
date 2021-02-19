@@ -1,8 +1,7 @@
 <template>
-    <div id="smoked-mask">
-        <div id="modal">
+    <modal-default>
             <div class="text-right display-4">
-                <button @click="closeModal" id="close">X</button>
+                <span @click="closeModal" id="close">X</span>
             </div>
             <section>
                 <h1>ESCOLHA UMA <br>OPÇÃO</h1>
@@ -13,13 +12,16 @@
                     Remover usuário
                 </button>
             </section>
-        </div>
-    </div>
+    </modal-default>
 </template>
 
 <script>
+import ModalDefault from './ModalDefault.vue';
 export default {
     name: "ModalUserConfig",
+    components:{
+        ModalDefault
+    },
     methods:{
         closeModal: function(){
             this.$emit("closeModal")
@@ -31,28 +33,6 @@ export default {
 </script>
 
 <style scoped>
-#smoked-mask{
-    box-sizing: border-box;
-    position: absolute;
-    width: 100vw;
-    height: 110vh!important;
-    background: rgba(112, 112, 112, 0.5);
-    z-index: 50;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-}
-
-
-#smoked-mask > div#modal{
-    background-color: #35373E;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    padding: 1em;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    border-radius: 1em;
-}
 
 div#modal > div {
     color: #F2F2F2;
@@ -85,8 +65,17 @@ section > button{
     margin-bottom: 2em;
 }
 
-button:hover{
+span:hover{
     cursor: pointer;
+}
+
+button:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+button:active{
+    transform: translateY(3px);
 }
 
 @media (min-width: 767.98px){

@@ -286,13 +286,10 @@ export default {
 
   button#pay-btn:hover{
     background-color: #b87446;
-    transform: translateY(-1px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
 
   button#pay-btn:active{
     background-color: #A35D2F;
-    transform: translateY(3px);
   }
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) { 

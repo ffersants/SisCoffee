@@ -3,6 +3,7 @@ import App from './App.vue'
 
 //css
 import './assets/reset.css'
+import './assets/global.css'
 //components
 import HeaderDefault from './components/HeaderDefault.vue'
 
