@@ -5,8 +5,9 @@
       <b-row>
         <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card card-the-next">
-            <!-- <p>{{theNext}}</p> -->
-            <p>Anderson</p>  
+            <!-- <p></p> -->
+            <p v-bind:title="theNext">{{theNext}}</p> 
+             
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
@@ -42,8 +43,8 @@
 
         <b-col style="display:flex;justify-content:center;" class="text-center">
           <div class="card" id="the-one">
-            <!-- <p>{{theOne}}</p> -->
-            <p>Daniel</p>
+            <!-- <p></p> -->
+            <p v-bind:title="theOne">{{theOne}}</p>
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
@@ -80,8 +81,10 @@
 
         <b-col style="display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card card-the-last">
-            <!-- <p>{{theLast}}</p> -->
-            <p>Fernando</p>
+            <!-- <p></p> -->
+            <!-- <p v-bind:title="theLast">{{theLast}}</p> -->
+            <p id="bigName" v-if="theLast.length >= 12" v-bind:title="theLast">{{theLast}}</p>
+
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
@@ -127,7 +130,8 @@ export default {
     return{
       theNext: "",
       theOne: "",
-      theLast: ""
+      theLast: "",
+      bigNames: []
     }
   },
   beforeCreate(){
@@ -141,14 +145,40 @@ export default {
       })
       .then(r => {
         const {theNext, theOne, theLast} = r;
+        const threeUsers = Object.values(r)
+        threeUsers.filter((user, index) => {
+
+          if(user.name.length > 12){
+              let positionInPodium;
+              switch (index) {
+                case 0 :
+                  positionInPodium = 'theNext'
+                break;
+                case 1 :
+                  positionInPodium = 'theOne'
+                break;
+                case 2 :
+                  positionInPodium = 'theLast'
+                break;
+              }
+
+              this.bigNames.push({"posição": index, "podium": positionInPodium})
+          }
+
+        })
+      
         this.theNext = theNext.name;
+      
         this.theOne = theOne.name;
+      
         this.theLast = theLast.name;
+      
       })
       .catch(e => {
         console.log(e)
       })
-  }
+  }, 
+ 
 }
 </script>
 
@@ -218,7 +248,7 @@ export default {
     transform: translateX(-22%);
     z-index: 5;
   }
-
+  
   div#coffee-cup svg{
     width: 4em;
     height: auto;
@@ -235,8 +265,20 @@ export default {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1em;
+    transition: background .4s;
+
   }
 
+  button#pay-btn:hover{
+    background-color: #b87446;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  button#pay-btn:active{
+    background-color: #A35D2F;
+    transform: translateY(3px);
+  }
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) { 
   div#the-one{
