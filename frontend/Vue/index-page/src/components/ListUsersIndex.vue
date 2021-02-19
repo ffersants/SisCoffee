@@ -173,17 +173,7 @@ export default {
 </script>
 
 <style>
-  @font-face {
-      font-family: "Century";
-      src: local("fonts"),
-      url(../fonts/Century-Schoolbook.ttf) format("truetype");
-  }
-  @font-face {
-      font-family: "Candara";
-      src: local("fonts"),
-      url(../fonts/Candara.ttf) format("truetype");
-  }
-
+ 
   #app{
     padding-bottom: .4em;
     display:flex;

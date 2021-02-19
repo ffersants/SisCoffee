@@ -5,6 +5,18 @@
     src: local("fonts"),
      url(../fonts/oracle.TTF) format("truetype");
 }
+
+@font-face {
+  font-family: "Century";
+  src: local("fonts"),
+  url(../fonts/Century-Schoolbook.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Candara";
+  src: local("fonts"),
+  url(../fonts/Candara.ttf) format("truetype");
+}
 *,
 *::before,
 *::after {
