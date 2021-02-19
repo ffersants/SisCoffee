@@ -1,9 +1,14 @@
 <template>
-  <b-container class="mt-4">
+  <b-container  class="mt-4">
     <b-row>
       <b-col class="text-left">
         <slot id="slot"></slot>
       </b-col>
+  
+      <b-col class="text-center" style="font-size: 20px">
+        <span>SIS</span><span style="color:#b87446;">CØFFEE</span>
+      </b-col>
+
       <b-col class="text-right">
         <span>{{time}}</span>
       </b-col>
@@ -59,4 +64,11 @@
   i:hover{
     cursor: pointer;
   }
+
+  @media (max-width: 575.98px) { 
+    i{
+      font-size: 1.7em!important;
+    }
+  }
+  
 </style>
