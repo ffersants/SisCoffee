@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+
 //css
 import './assets/reset.css'
 import './assets/global.css'
@@ -15,6 +16,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+
 
 Vue.component("HeaderDefault", HeaderDefault)
 

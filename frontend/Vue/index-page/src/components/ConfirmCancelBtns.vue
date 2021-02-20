@@ -2,7 +2,7 @@
     <b-container>
         <b-row>
             <b-col cols="6">
-                <button @click="cancel" id="cancel">Cancelar</button>
+                <button @click="cancel()" id="cancel">Cancelar</button>
             </b-col>
             <b-col cols="6">
                 <button id="confirm">Confirmar</button>
@@ -12,11 +12,12 @@
 </template>
 
 <script>
+import {EventBus} from '../event-bus.js'
 export default {
     name: "ConfirmCancelBtns",
     methods: {
-        cancel: function(){
-            this.$emit("cancel")
+        cancel(){
+            EventBus.$emit("closeModal")
         }
     }
 }

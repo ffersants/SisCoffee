@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import {EventBus} from '../event-bus.js'
 import ModalDefault from './ModalDefault.vue';
 export default {
     name: "ModalUserConfig",
@@ -24,8 +25,7 @@ export default {
     },
     methods:{
         closeModal: function(){
-            this.$emit("closeModal")
-            this.$destroy()
+            EventBus.$emit('closeUserConfig')
         }
     },
     

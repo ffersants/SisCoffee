@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <confirm-cancel-btns @cancel="closeModal"></confirm-cancel-btns>
+            <confirm-cancel-btns></confirm-cancel-btns>
         </b-container>
     </modal-default>
 </template>
@@ -88,10 +88,7 @@ export default{
           }
           this.surplus += 1
       },
-      closeModal: function(){
-          this.$emit("fecharModal")
-          this.$destroy();
-      }
+      
   },
  
 }
