@@ -5,6 +5,12 @@
 }
 
 @font-face {
+  font-family: "Apercu";
+  src: local("fonts"),
+   url(../fonts/Apercu-Mono.ttf) format("truetype");
+}
+
+@font-face {
   font-family: "Century";
   src: local("fonts"),
   url(../fonts/Century-Schoolbook.ttf) format("truetype");
@@ -27,4 +33,9 @@ button:active{
 button:hover{
     transform: translateY(-1px);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+hr{
+  background-color: #a89f8f;
+  height: 3px;
 }

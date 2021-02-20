@@ -86,7 +86,7 @@
               </svg>
             </div>
             <p>é a sua vez</p>
-            <button id="pay-btn">TÁ PAGO!</button>
+            <button @click="pay" id="pay-btn">TÁ PAGO!</button>
           </div>
         </b-col>
 
@@ -146,6 +146,11 @@ export default {
       theNext: "",
       theOne: "",
       theLast: "",
+    }
+  },
+  methods: {
+    pay: function(){
+      this.$emit("pay")
     }
   },
   beforeCreate(){

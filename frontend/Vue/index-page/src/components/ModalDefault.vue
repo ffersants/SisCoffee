@@ -1,7 +1,7 @@
 <template>
     <transition>
         <div id="smoked-mask">
-                <div id="modal">
+                <div :style="{width: widthRef + 'em'}" id="modal">
                     <slot></slot>
                 </div>
             
@@ -12,7 +12,11 @@
 <script>
 export default {
     name: "ModalDefault",
-    
+    props: {
+        widthRef:{
+            type: [String, Number]
+        }
+    }
 }
 </script>
 
