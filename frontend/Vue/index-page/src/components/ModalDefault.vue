@@ -22,6 +22,7 @@ export default {
 
 <style scoped>
 
+
 #smoked-mask{
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -41,11 +42,13 @@ export default {
 #smoked-mask > div#modal{
     /* position:absolute; */
     max-width: 100%;
+    
     background-color: #35373E;
     padding: 1em;
     border-radius: 1em;
     box-sizing: border-box;
 }
+
 
 .v-enter-active,
 .v-leave-active{
@@ -67,8 +70,6 @@ export default {
             filter: blur(0);
     opacity: 1;
 }
-
-
 
 
 </style>

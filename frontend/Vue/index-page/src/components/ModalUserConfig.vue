@@ -78,6 +78,15 @@ button:active{
     transform: translateY(3px);
 }
 
+@media (max-width: 900px) {
+    section > button{
+        margin-top: 1em!important;
+        margin-bottom: 1em!important;
+        padding: 0.4em 1em;
+    }
+  
+}
+
 @media (min-width: 767.98px){
     section > button{
         font-size: 1.3em;
