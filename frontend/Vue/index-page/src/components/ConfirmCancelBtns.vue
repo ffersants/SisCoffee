@@ -27,9 +27,12 @@ export default {
         font-family: "Candara";
         background-color: #414141;
         font-size: 1.8em;
-        padding: .3em 3em;
+        font-size: 180%;
         border-radius: 1em;
-        
+        box-sizing: border-box;
+        padding: 3%;
+        width: 100%;
+        max-width: 100%;
     }
 
     #cancel{

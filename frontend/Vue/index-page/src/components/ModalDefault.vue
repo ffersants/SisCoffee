@@ -27,7 +27,7 @@ export default {
             box-sizing: border-box;
     position: absolute;
     width: 100vw;
-    height: 110vh!important;
+    height: 100vh!important;
     background: rgba(112, 112, 112, 0.5);
     z-index: 50;
     backdrop-filter: blur(2px);
@@ -36,19 +36,19 @@ export default {
 }
 
 #smoked-mask > div#modal{
-    margin:1em;
-    border: 2px solid red;
+    position:absolute;
+    max-width: 100%;
+   
     background-color: #35373E;
-    position: fixed;
     top: 50%;
     left: 50%;
-    padding: 1em;
     /* bring your own prefixes */
     -webkit-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     padding: 1em;
     border-radius: 1em;
+    box-sizing: border-box;
 }
 
 .v-enter-active,

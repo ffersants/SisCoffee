@@ -92,7 +92,8 @@ export default{
           this.$emit("fecharModal")
           this.$destroy();
       }
-  }
+  },
+ 
 }
 </script>
 
@@ -101,6 +102,8 @@ export default{
         font-family: "Andale"!important;
         color: #FFFFFF;
     }
+
+   
     #title{
         width: 100%;
         font-size: 1.8em;
@@ -117,7 +120,6 @@ export default{
 
     #second-row div{
         margin-top: 1em;
-
     }
 
     label{
