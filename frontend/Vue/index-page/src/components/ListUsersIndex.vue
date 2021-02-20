@@ -197,10 +197,10 @@ export default {
 
   div.bigName{
     position: relative;
-    overflow: hidden;
     box-sizing: border-box;
     margin-right: 10%;
     margin-left: 10%;
+    overflow: hidden;
   }
 
   div.bigName > p {

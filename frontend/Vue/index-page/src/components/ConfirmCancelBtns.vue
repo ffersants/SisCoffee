@@ -51,4 +51,15 @@ export default {
     #cancel:active{
         background-color: rgba(255, 0, 0, .3)
     }
+
+     @media screen and (max-height: 600px)
+    {
+        *{
+            font-size: 10px;
+        }
+        button{
+            padding: 1%;
+            width: 60%;
+        }
+    }
 </style>

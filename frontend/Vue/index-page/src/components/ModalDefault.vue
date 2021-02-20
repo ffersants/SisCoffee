@@ -1,9 +1,9 @@
 <template>
     <transition>
         <div id="smoked-mask">
-                <div :style="{width: widthRef + 'em'}" id="modal">
-                    <slot></slot>
-                </div>
+            <div :style="{width: widthRef + 'em'}" id="modal">
+                <slot></slot>
+            </div>
             
         </div>
     </transition>
@@ -32,20 +32,16 @@ export default {
     z-index: 50;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
-    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 #smoked-mask > div#modal{
-    position:absolute;
+    /* position:absolute; */
     max-width: 100%;
-   
     background-color: #35373E;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
     padding: 1em;
     border-radius: 1em;
     box-sizing: border-box;

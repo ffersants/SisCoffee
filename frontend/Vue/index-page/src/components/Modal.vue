@@ -1,10 +1,10 @@
 <template>
-    <modal-default :widthRef="modalWidth" class="text-center">
+    <modal-default class="text-center"  :widthRef="modalWidth">
         <div id="title">
             FAVOR CONFIRMAR AÇÃO COM <br> A CONTA ADMINISTRADORA
         </div>
         <hr>
-        <slot></slot>
+        <slot id="icon"></slot>
         <b-container class="pt-3">
             <b-row id="first-row" class="text-center">
                 <b-col cols="5">
@@ -49,7 +49,7 @@
                     </defs>
                     <rect id="coffee-bean" width="53" height="42" fill="url(#pattern)"/>
                     <path id="saldo-background" d="M12.458,0c6.881,0,12.458,6.359,12.458,14.2s-5.578,14.2-12.458,14.2S0,22.046,0,14.2,5.578,0,12.458,0Z" transform="translate(44 7)" fill="#f0a82e"/>
-                    <text id="saldo" :transform="translateValue" fill="#414141" font-size="16" font-family="ArialMT, Arial"><tspan x="-4.449" y="0">{{surplus}}</tspan></text>
+                    <text  :transform="translateValue" fill="#414141" font-size="16" font-family="ArialMT, Arial"><tspan x="-4.449" y="0" id="saldo">{{surplus}}</tspan></text>
                     </svg>
                 </div>
             </div>
@@ -102,7 +102,6 @@ export default{
         font-family: "Andale"!important;
         color: #FFFFFF;
     }
-
    
     #title{
         width: 100%;
@@ -114,6 +113,7 @@ export default{
         padding: 0;
         margin: 0;
     }
+
     #first-row p:nth-child(2){
         font-size: 1.3em;
     }
@@ -176,5 +176,77 @@ export default{
 
     #coffee-icon:hover{
         cursor: pointer;
+    }
+
+    /* @media (max-width: 575.98px) { 
+    
+    } */
+    /* // Small devices (landscape phones, 576px and up) */
+
+    @media (max-height: 600px){ 
+        #title{
+            padding-top: 2em;
+            font-size: 1.3em;
+        }
+        hr{
+            display:none;
+        }
+
+        #second-row div{
+            margin-top: 1em;
+        }
+        label{
+            font-size: 1.3em;
+            transform: translateY(-1.5em);
+            padding-left: .8em;
+            transform-origin: 0 0;
+            transition: all .3s;
+            margin-bottom: -1em;
+        } 
+        #second-row input{
+            box-sizing: border-box;
+            width: 100%;
+            padding: .2em .7em;
+            font-size: 1em;
+        }
+        #second-row input:focus-within{
+            transform: scale(1.05, 1.05)
+        }
+   
+        #second-row input:focus + label,
+        input:not(:placeholder-shown) + label{
+            transform: translateY(-3em) translateX(-.7em) scale(.9)          
+        }
+
+        #add-surplus{
+            margin: 0.5em;
+        }
+    }
+
+    @media  (max-width: 767.98px) { 
+        *{
+            font-size: 10px;
+        }
+
+        p{
+            font-size: 1.7em!important;
+        }
+        small{
+            font-size: 1.5em;
+        }
+
+        #saldo{
+            font-size: 1.5em;
+        }
+    }
+
+    /* // Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) { 
+       
+    }
+
+    /* // Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) and (max-width: 1199.98px) { 
+    
     }
 </style>
