@@ -23,7 +23,8 @@ export default {
 <style scoped>
 
 #smoked-mask{
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     position: absolute;
     width: 100vw;
     height: 110vh!important;
@@ -31,33 +32,43 @@ export default {
     z-index: 50;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
+    
 }
 
 #smoked-mask > div#modal{
+    margin:1em;
+    border: 2px solid red;
     background-color: #35373E;
     position: fixed;
     top: 50%;
     left: 50%;
     padding: 1em;
     /* bring your own prefixes */
-    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    padding: 1em;
     border-radius: 1em;
 }
 
 .v-enter-active,
 .v-leave-active{
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
     transition: all .3s;
 }
 
 .v-enter,
 .v-leave-to{
     opacity: 0;
-    filter: blur(0.7em);
+    -webkit-filter: blur(0.7em);
+            filter: blur(0.7em);
 }
 
 .v-leavbe,
 .v-enter-to{
-    filter: blur(0);
+    -webkit-filter: blur(0);
+            filter: blur(0);
     opacity: 1;
 }
 
