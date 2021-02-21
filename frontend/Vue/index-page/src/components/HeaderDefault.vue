@@ -53,20 +53,23 @@
   span{
     color: #F1E5D1;
   }
+  
+  
 
-  i{
+  i,a{
     font-size: 2em;
-    color: #F1E5D1;
+    color: #f1ece2;
   }
-  i:nth-child(2){
+  i:nth-child(2), a{
     margin-left: 0.8em;
   }
-  i:hover{
+  i:hover, a:hover{
+    color: #f1e5d1cb;
     cursor: pointer;
   }
 
   @media (max-width: 575.98px) { 
-    i{
+    i, a{
       font-size: 1.7em!important;
     }
   }
