@@ -86,7 +86,7 @@
               </svg>
             </div>
             <p>é a sua vez</p>
-            <button @click="pay" id="pay-btn">TÁ PAGO!</button>
+            <button @click="openModal" id="pay-btn">TÁ PAGO!</button>
           </div>
         </b-col>
 
@@ -139,6 +139,8 @@
 
 <script>
 
+import {EventBus} from '../event-bus.js'
+
 export default {
   name: 'ListUsersIndex',
   data(){
@@ -149,8 +151,8 @@ export default {
     }
   },
   methods: {
-    pay: function(){
-      this.$emit("pay")
+    openModal(){
+      EventBus.$emit("openModal")
     }
   },
   beforeCreate(){

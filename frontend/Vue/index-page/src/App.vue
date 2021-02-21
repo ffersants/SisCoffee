@@ -1,10 +1,11 @@
 <template>
   <div id="app">
     <HeaderDefault>
-      <i @click="showUserConfig = !showUserConfig" id="user-config" class="fas fa-users-cog"></i>
+      <i @click="openUserConfig" id="user-config" class="fas fa-users-cog"></i>
       <i id="list-users" class="fas fa-list"></i>
     </HeaderDefault>
-    <list-users-index @pay="showModal = true"></list-users-index>
+    
+    <list-users-index ></list-users-index>
 
     <transition>
       <modal-user-config v-if="showUserConfig"></modal-user-config>
@@ -24,14 +25,12 @@
 </template>
 
 <script>
-
-
+import {EventBus} from './event-bus.js'
 
 import ListUsersIndex from './components/ListUsersIndex.vue'
 import HeaderDefault from './components/HeaderDefault.vue'
 import ModalUserConfig from './components/ModalUserConfig.vue'
 import Modal from './components/Modal.vue'
-import {EventBus} from './event-bus.js'
 
 export default {
   name: 'App',
@@ -48,12 +47,23 @@ export default {
     Modal
   },
   methods: {
-    
+    openUserConfig(){
+      EventBus.$emit("openUserConfig")
+    }
   },
   created(){
     EventBus.$on('closeModal', () => {
       this.showModal = false;
     })
+
+    EventBus.$on('openModal', () => {
+      this.showModal = true;
+    })
+
+    EventBus.$on('openUserConfig', () => {
+      this.showUserConfig = true;
+    })
+
     EventBus.$on('closeUserConfig', () => {
       this.showUserConfig = false;
     })

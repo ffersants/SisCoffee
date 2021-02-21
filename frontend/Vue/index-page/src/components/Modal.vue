@@ -88,9 +88,7 @@ export default{
           }
           this.surplus += 1
       },
-      
-  },
- 
+  }, 
 }
 </script>
 
