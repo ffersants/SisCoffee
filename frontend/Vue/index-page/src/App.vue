@@ -18,7 +18,6 @@
           </svg>
         </div>
       </modal>
-
     </transition> 
 
   </div>
