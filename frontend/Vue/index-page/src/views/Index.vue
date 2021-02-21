@@ -2,7 +2,7 @@
     <div id="app">
         <HeaderDefault>
         <i @click="openUserConfig" id="user-config" class="fas fa-users-cog"></i>
-        <router-link to="user-config">
+        <router-link to="/list-users">
             <i id="list-users" class="fas fa-list"></i>
         </router-link>
         </HeaderDefault>

@@ -78,4 +78,10 @@ body {
     line-height: 1.31579;
   }
 }
+
+a:active,
+a:focus{
+  border: none;
+  outline: none;
+}
 /*END RESETS*/

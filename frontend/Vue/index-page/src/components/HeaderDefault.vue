@@ -54,8 +54,6 @@
     color: #F1E5D1;
   }
   
-  
-
   i,a{
     font-size: 2em;
     color: #f1ece2;
