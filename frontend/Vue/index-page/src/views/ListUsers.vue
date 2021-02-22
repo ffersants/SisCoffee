@@ -1,13 +1,15 @@
 <template>
-    <div id="app" >
-        <header>
-            <HeaderDefault>
-                <router-link to="/">
-                    <i class="fas fa-arrow-left"></i>
-                </router-link>
-            </HeaderDefault>
-            <h1 class="pt-1">PAINEL DE VISUALIZAÇÃO</h1>
-        </header>
+    <div id="list-users" >
+        <HeaderDefault>
+            <router-link to="/">
+                <i class="fas fa-arrow-left"></i>
+            </router-link>
+        </HeaderDefault>
+            
+        <h1 class="mt-4 mb-4">PAINEL DE VISUALIZAÇÃO</h1>
+        
+        <table-with-users>
+        </table-with-users>
     </div>
 </template>
 
@@ -15,10 +17,12 @@
 // import {EventBus} from '../event-bus.js'
 
 import HeaderDefault from '../components/HeaderDefault.vue'
+import TableWithUsers from '../components/TableWithUsers.vue'
 
 export default {
     components: {
         HeaderDefault,
+        TableWithUsers,
     }
 }
 </script>
@@ -28,17 +32,12 @@ export default {
         margin: 0;
         padding: 0;
     }
-    #app{
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    header{
+    #list-users{
+        width: 100%;
         text-align:center;
         position: absolute;
         top: 0;
-        width: 100%;
     }
+   
 
 </style>

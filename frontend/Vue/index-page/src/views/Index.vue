@@ -7,7 +7,7 @@
         </router-link>
         </HeaderDefault>
         
-        <list-users-index ></list-users-index>
+        <list-users-index></list-users-index>
 
         <transition>
         <modal-user-config v-if="showUserConfig"></modal-user-config>
@@ -33,11 +33,14 @@ import ModalUserConfig from '../components/ModalUserConfig.vue'
 import Modal from '../components/Modal.vue'
 
 export default {
-    name: 'Index',
+  name: 'Index',
   data(){
     return{
       showUserConfig: false,
-      showModal: false
+      showModal: false, 
+      theNext: "", 
+      theOne: "", 
+      theLast: ""
     }
   },
   components: {
@@ -55,19 +58,37 @@ export default {
     EventBus.$on('closeModal', () => {
       this.showModal = false;
     })
-
     EventBus.$on('openModal', () => {
       this.showModal = true;
     })
-
     EventBus.$on('openUserConfig', () => {
       this.showUserConfig = true;
     })
-
     EventBus.$on('closeUserConfig', () => {
       this.showUserConfig = false;
     })
   }
+  ,
+  beforeCreate(){
+    fetch("http://localhost:3300/")
+      .then(r => {
+        if(!r.ok){
+          throw new Error(r.statusText)
+        } else{
+          return r.json()
+        }
+      })
+      .then(r => {
+        console.log(r)
+        const {theNext, theOne, theLast} = r;      
+        this.theNext = theNext.name;
+        this.theOne = theOne.name;
+        this.theLast = theLast.name;
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }, 
 }
 </script>
 

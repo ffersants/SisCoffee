@@ -1,0 +1,31 @@
+table{
+    text-align:center;
+}
+
+tr{
+    border-bottom: 1px #707070 solid;
+}
+
+thead > tr{
+    border-bottom: none;
+    font-size: 1.5em;
+    color: #F2F2F2;
+}   
+
+
+
+tr td{
+    color: #F0A82E;
+    font-size: 1.3em;
+    text-transform: uppercase;
+}
+
+tr td:nth-child(1){
+    color: #F2F2F2;
+}
+
+.btn-pay{
+    background-color:#fcab1f;
+    padding: .1em 1em;
+    border-radius: 1em;
+}

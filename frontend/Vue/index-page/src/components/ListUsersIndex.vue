@@ -154,28 +154,7 @@ export default {
     openModal(){
       EventBus.$emit("openModal")
     }
-  },
-  beforeCreate(){
-    fetch("http://localhost:3300/")
-      .then(r => {
-        if(!r.ok){
-          throw new Error(r.statusText)
-        } else{
-          return r.json()
-        }
-      })
-      .then(r => {
-        const {theNext, theOne, theLast} = r;      
-        this.theNext = theNext.name;
-        this.theOne = theOne.name;
-        this.theLast = theLast.name;
-      
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }, 
- 
+  }
 }
 </script>
 
