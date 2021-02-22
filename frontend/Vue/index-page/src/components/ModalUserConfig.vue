@@ -5,12 +5,13 @@
             </div>
             <section>
                 <h1>ESCOLHA UMA <br>OPÇÃO</h1>
-                <button>
+                <router-link to="sign-up">
                     Adicionar usuário
-                </button>
-                <button>
+                </router-link>
+               
+                <router-link to="remove-user">
                     Remover usuário
-                </button>
+                </router-link>
             </section>
     </modal-default>
 </template>
@@ -49,7 +50,7 @@ h1{
     font-size: 1.8em;
 }
 
-section > button{
+a{
     display: block;
     background-color:#414141;
     border: 1px solid #707070;
@@ -58,23 +59,25 @@ section > button{
     margin-right: auto;
     width: 100%;
     padding: 0.8em 1.5em;
-    color: #F1E5D1;
-    font-size: 1em;
+    color: rgb(241, 229, 209);
+    font-size: 1.3em;
     font-family: Candara;
     margin-top: 2em;
     margin-bottom: 2em;
+    transition: all .3s;
 }
 
 span:hover{
     cursor: pointer;
 }
 
-button:hover{
-    transform: translateY(-1px);
+a:hover{
+    transform: translateY(-2px)!important;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    color: #F1E5D1;
 }
 
-button:active{
+a:active{
     transform: translateY(3px);
 }
 

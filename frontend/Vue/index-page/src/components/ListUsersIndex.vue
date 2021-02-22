@@ -158,8 +158,8 @@ export default {
 }
 </script>
 
-<style>
- 
+<style >
+
   #app{
     padding-bottom: .4em;
     display:flex;

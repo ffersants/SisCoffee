@@ -22,16 +22,20 @@
   url(../fonts/Candara.ttf) format("truetype");
 }
 
+button{
+  transition: all .3s;
+}
+
 button:focus{
     box-shadow: none;
 }
 
-button:active{
+button:active, a{
     transform: translateY(3px)!important;
 }
 
 button:hover{
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -40,3 +44,35 @@ hr{
   height: 3px;
 }
 
+#alert-error i{
+  color: red;
+  font-size: 400%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+#alert-error > h1{
+  color: #F0A82E;
+}
+
+#alert-error p{
+  color: #F2F2F2;
+  font-size: 1.5em;
+}
+
+#alert-error button{
+    display: block;
+    box-sizing: border-box;
+    background-color:#414141;
+    border: 1px solid #707070;
+    border-radius: 1.5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    padding: 0.8em 1.5em;
+    color: rgb(241, 229, 209);
+    font-size: 1.3em;
+    font-family: Candara;
+    margin-top: 1em;
+    transition: all .3s;
+}

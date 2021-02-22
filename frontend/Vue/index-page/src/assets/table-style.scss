@@ -29,3 +29,24 @@ tr td:nth-child(1){
     padding: .1em 1em;
     border-radius: 1em;
 }
+
+.btn-remove-disabled:hover, .btn-remove-disabled:active{
+    cursor: not-allowed;
+    transform: none!important;
+}
+
+.holds-pagination{
+    display: flex;
+    justify-content: center;
+}
+
+li.active{
+    background-color: rgb(43, 47, 49);
+}
+
+li.active button, li.active > button:focus{
+    background-color: #fcab1f!important;
+    border-color: #fcab1f!important;
+    box-shadow: none;
+}
+

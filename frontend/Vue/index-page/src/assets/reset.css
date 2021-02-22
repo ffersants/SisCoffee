@@ -84,4 +84,15 @@ a:focus{
   border: none;
   outline: none;
 }
+
+a:hover{
+  text-decoration: none!important;
+}
+
+a{
+  color: none;
+  font-style: none;
+  width: 0;
+
+}
 /*END RESETS*/

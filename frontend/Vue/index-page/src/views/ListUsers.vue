@@ -8,18 +8,23 @@
             
         <h1 class="mt-4 mb-4">PAINEL DE VISUALIZAÇÃO</h1>
         
-        <table-with-users>
+        <table-with-users :action="action">
         </table-with-users>
     </div>
 </template>
 
 <script>
-// import {EventBus} from '../event-bus.js'
+import {EventBus} from '../event-bus.js'
 
 import HeaderDefault from '../components/HeaderDefault.vue'
 import TableWithUsers from '../components/TableWithUsers.vue'
 
 export default {
+    data(){
+        return{
+            action: 'pagar'
+        }
+    },
     components: {
         HeaderDefault,
         TableWithUsers,

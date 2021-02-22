@@ -42,7 +42,7 @@ export default {
 #smoked-mask > div#modal{
     /* position:absolute; */
     max-width: 100%;
-    
+
     background-color: #35373E;
     padding: 1em;
     border-radius: 1em;

@@ -1,8 +1,17 @@
 <template>
-    <div id="holds-table">
-        <b-table borderless :fields="fields" :items="items" id="tabela">
+    <div class="holds-table">
+        <b-table 
+            borderless 
+            responsive="sm" 
+            :fields="fields" 
+            :items="items" 
+            id="tabela"
+            :per-page="perPage"
+            :current-page="currentPage"
+        >
+            
             <template v-slot:cell(name)="data">
-                <div  v-if="data.item.surplus > 0" id="show-saldo">
+                <div v-if="data.item.surplus > 0" id="show-saldo">
                     <span>
                         {{data.item.name}}
                     </span>
@@ -23,24 +32,64 @@
                     {{data.item.name}}
                 </div>
             </template>
-            <template v-slot:cell(payButton)="data">
+            <template v-slot:cell(lastButton)="data">
                 <button 
-                class="btn-pay"
-                :id="data.item.position"
-                style="color:black!important;"
+                    v-if="action === 'pagar'"
+                    @click="openModal()"
+                    class="btn-pay"
+                    :id="data.item.position"
+                    style="color:black!important;"
                 >
                     PAGAR
                 </button>
+
+                <button 
+                    v-if="action ==='remove' && data.item.surplus > 0"
+                    
+                    v-bind:title="unableRemoveMsg"
+                    class="btn-remove btn-remove-disabled"
+                    :id="data.item.position"
+                     @click="openAlert"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24.195" height="22.511" viewBox="0 0 24.195 22.511">
+                    <path id="trash-alt-solid" d="M1.728,20.4a2.389,2.389,0,0,0,2.592,2.11H19.874a2.389,2.389,0,0,0,2.592-2.11V5.628H1.728ZM16.418,9.145a.882.882,0,0,1,1.728,0v9.849a.882.882,0,0,1-1.728,0Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7ZM23.331,1.407H16.85L16.342.585A1.352,1.352,0,0,0,15.181,0H9.008A1.335,1.335,0,0,0,7.853.585l-.508.822H.864A.8.8,0,0,0,0,2.11V3.517a.8.8,0,0,0,.864.7H23.331a.8.8,0,0,0,.864-.7V2.11A.8.8,0,0,0,23.331,1.407Z" transform="translate(0 0)" fill="#ef4242"/>
+                    </svg>
+                </button>
+
+                <button 
+                    v-else-if="action ==='remove'"
+                    
+                    class="btn-remove"
+                    :id="data.item.position"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24.195" height="22.511" viewBox="0 0 24.195 22.511">
+                    <path id="trash-alt-solid" d="M1.728,20.4a2.389,2.389,0,0,0,2.592,2.11H19.874a2.389,2.389,0,0,0,2.592-2.11V5.628H1.728ZM16.418,9.145a.882.882,0,0,1,1.728,0v9.849a.882.882,0,0,1-1.728,0Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7ZM23.331,1.407H16.85L16.342.585A1.352,1.352,0,0,0,15.181,0H9.008A1.335,1.335,0,0,0,7.853.585l-.508.822H.864A.8.8,0,0,0,0,2.11V3.517a.8.8,0,0,0,.864.7H23.331a.8.8,0,0,0,.864-.7V2.11A.8.8,0,0,0,23.331,1.407Z" transform="translate(0 0)" fill="#ef4242"/>
+                    </svg>
+                </button>
             </template>
         </b-table>
+
+        <div class="holds-pagination">
+            <b-pagination
+                v-model="currentPage"
+                :per-page="perPage"
+                :total-rows="rows"
+            ></b-pagination>
+        </div>
     </div>
 </template>
 
 <script>
+import {EventBus} from '../event-bus.js'
+
 export default {
     name: "TableWithUsers",
     data(){
         return{
+            currentPage: 1,
+            perPage: 5,
+            showAlert: false,
+            unableRemoveMsg: "Não é possível remover um usuário que possui saldo.",
             items: [
                 {
                     "userID": 3,
@@ -98,10 +147,29 @@ export default {
                     label: "ÚLTIMA COMPRA"
                 },
                 {
-                    key: "payButton",
+                    key: "lastButton",
                     label: ""
                 }
             ]
+        }
+    },
+    props:{
+        action: {
+            type: String,
+            required: true
+        }
+    },
+    methods: {
+        openAlert(){
+            EventBus.$emit("openAlert")
+        },
+        openModal(){
+            EventBus.$emit("openModal")
+        }
+    },
+    computed: {
+        rows(){
+            return this.items.length
         }
     },
     // beforeCreate(){
@@ -126,6 +194,5 @@ export default {
   // General style overrides and custom classes
 
  
-
   // ...
 </style>
