@@ -40,7 +40,7 @@
             <div id="add-surplus">
                 <p>Deseja adicionar saldo?</p>
                 <small>Clique no ícone abaixo</small>
-                <div @click="addSurplus()" id="coffee-icon">
+                <span @click="addSurplus()" id="coffee-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="68.917" height="42" viewBox="0 0 68.917 42">
                     <defs>
                         <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 513 404">
@@ -51,7 +51,7 @@
                     <path id="saldo-background" d="M12.458,0c6.881,0,12.458,6.359,12.458,14.2s-5.578,14.2-12.458,14.2S0,22.046,0,14.2,5.578,0,12.458,0Z" transform="translate(44 7)" fill="#f0a82e"/>
                     <text  :transform="translateValue" fill="#414141" font-size="16" font-family="ArialMT, Arial"><tspan x="-4.449" y="0" id="saldo">{{surplus}}</tspan></text>
                     </svg>
-                </div>
+                </span>
             </div>
 
             <confirm-cancel-btns></confirm-cancel-btns>

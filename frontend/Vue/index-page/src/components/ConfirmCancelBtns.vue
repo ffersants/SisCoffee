@@ -1,11 +1,11 @@
 <template>
     <b-container>
-        <b-row>
+        <b-row class="mb-1">
             <b-col cols="6">
                 <button @click="cancel()" id="cancel">Cancelar</button>
             </b-col>
             <b-col cols="6">
-                <button id="confirm">Confirmar</button>
+                <button @click="confirm" id="confirm">Confirmar</button>
             </b-col>
         </b-row>
     </b-container>
@@ -18,6 +18,10 @@ export default {
     methods: {
         cancel(){
             EventBus.$emit("closeModal")
+            this.$destroy()
+        },
+        confirm(){
+            EventBus.$emit("confirmClicked")
         }
     }
 }
@@ -46,11 +50,12 @@ export default {
 
     #confirm:active{
         background-color: rgba(49, 225, 0, .3);
-        transition: background .5s out;
+        transition: background .1s;
     }
 
     #cancel:active{
-        background-color: rgba(255, 0, 0, .3)
+        background-color: rgba(255, 0, 0, .3);
+        transition: background .1s;
     }
 
      @media screen and (max-height: 600px)

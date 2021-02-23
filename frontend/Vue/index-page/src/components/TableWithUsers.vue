@@ -33,6 +33,7 @@
                 </div>
             </template>
             <template v-slot:cell(lastButton)="data">
+            <!-- botão para realizar pagamento, disposto na rota list-users -->
                 <button 
                     v-if="action === 'pagar'"
                     @click="openModal()"
@@ -42,7 +43,7 @@
                 >
                     PAGAR
                 </button>
-
+            <!-- abaixo, botões para a rota remove-user -->
                 <button 
                     v-if="action ==='remove' && data.item.surplus > 0"
                     
@@ -58,7 +59,7 @@
 
                 <button 
                     v-else-if="action ==='remove'"
-                    
+                    @click="openModal"
                     class="btn-remove"
                     :id="data.item.position"
                 >
@@ -88,6 +89,7 @@ export default {
         return{
             currentPage: 1,
             perPage: 5,
+            showModal: false,
             showAlert: false,
             unableRemoveMsg: "Não é possível remover um usuário que possui saldo.",
             items: [
