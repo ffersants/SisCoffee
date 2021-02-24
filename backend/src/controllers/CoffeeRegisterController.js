@@ -2,17 +2,14 @@
 const connection = require('../database/connection')
 
 module.exports = {
-    create: async function (name, date, surplusID, action) {
+    create: async function (name, date, surplusID, isAhead) {
         try {
-            const userPosition = Object.values(await connection('users')
-                .where('name', name)
-                .select('position')
-                .first())[0]
+           
             //registro de compra usando saldo
             if (surplusID) {
                 //caso a razão do registro seja apenas um pagamento, não a criação de usuário,
                 //e a posição desse usuário foi diferente de 1, então ele está adiantando seu pagamento 
-                if(action !== 'creating user' && userPosition !== 1){
+                if(isAhead){
                     await connection('coffee_registers')
                     .insert({
                         'userName': name,
@@ -27,6 +24,7 @@ module.exports = {
                         'userName': name,
                         'paymentRegisterDate': date,
                         'usingSurplus': surplusID,
+                        'isAhead': 'false'
                     })
                 }
 
@@ -37,7 +35,7 @@ module.exports = {
             } else {
                 //registro de pagamento sem saldo ou criação de usuário
 
-                if(action !== 'creating user' && userPosition !== 1){
+                if(isAhead){
                     //ação de registro de pagamento adiantado
                     await connection('coffee_registers')
                     .insert({

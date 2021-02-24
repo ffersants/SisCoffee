@@ -82,7 +82,7 @@ app.post('/create/user', async(req, res) => {
     if(created.statusCode !== 201) return
     console.log("Cadastro realizado, prosseguindo com as demais etapadas de criação do usuário...")
     //registro sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
-    await CoffeeRegisterController.create(name, signUpDate, false, 'creating user')
+    await CoffeeRegisterController.create(name, signUpDate, false)
 
     if(surplus > 0) {
         console.log(`Cadastrando o bônus do usuário ${name}`)
@@ -172,6 +172,7 @@ app.post('/coffeeBought', async function (req, res) {
                message: "A data da requisição e do backend diferem!"
            })
         }
+
         // fim da verificação da requisição
 
         hasSurplus = Object.values(await connection('surplus_tb')
@@ -181,6 +182,31 @@ app.post('/coffeeBought', async function (req, res) {
                 })
         )
 
+                //pega a posição do usuário que está querendo realizar registro de pagamento
+        const userPosition = Object.values(await connection('users')
+            .where('name', name)
+            .select('position')
+            .first())[0]
+
+        const aheadAlready = Object.values(
+            await connection('users')
+            .where("name", name)
+            .select("isAhead")
+            .first()
+        )[0]
+
+        console.log(aheadAlready)
+
+        if(userPosition !== 1 && aheadAlready === "true"){
+            console.log(`Falha ao registrar adiantamento de pagamento de ${name}. Usuário já adiantado.`)
+            return res.status(403).json({
+                status: 403,
+                message: `Este usuário já adiantou um pagamento no ciclo atual. É permitido apenas um adiantamento por ciclo. Aguarde o fim do ciclo atual para adiantar o pagamento do usuário.` 
+            })
+        }
+            
+        let isAhead = userPosition !== 1 ? 'true' : 'false'
+            
         //usuário não possui saldo mas está tentando registrar compra utilizando saldo
         if (hasSurplus.length === 0 && useSurplus === 'true') {
             console.log("Usuário não possui saldo para ser utilizado!\n\n")
@@ -191,13 +217,15 @@ app.post('/coffeeBought', async function (req, res) {
         } else if (hasSurplus.length > 0 && useSurplus === 'true') {
             console.log("Registrando compra utilizando saldo disponível...\n\n")
             //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
+            
             const surplusID = Object.values(
                 await connection('surplus_tb')
                     .where('surplusID', hasSurplus[0].surplusID)
                     .first()
             )[0]
+
             //recebe o ID do registro realizado na tabela coffee_register usando saldo
-            coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID,);
+            coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID, isAhead);
             console.log("Registro realizado com sucesso na tabela coffee_registers.\n\n")
             //atualiza a surplus_tb para remover saldo e indicar o ID do registro em que o saldo foi utilizado
             await connection('surplus_tb')
@@ -207,7 +235,7 @@ app.post('/coffeeBought', async function (req, res) {
                     usedInCoffeeRegister: coffeeRegisterID
                 })
         } else {
-            await CoffeeRegisterController.create(name, date, false)
+            await CoffeeRegisterController.create(name, date, false, isAhead)
         }
 
         if (surplus > 0) {
@@ -227,10 +255,12 @@ app.post('/coffeeBought', async function (req, res) {
         console.log("Atualizando o saldo na tabela surplus_tb.\n\n")
         await UserController.update.saldo(name);
         console.log("Atualizando posição do usuário na tabela users.\n\n")
-        await UserController.update.position(name);
+        await UserController.update.position(name, isAhead);
         console.log("Atualizando data da última aquisição do usuário na tabela users.\n\n")
         await UserController.update.lastCoffeeAcquisition(name, date)
-        
+
+
+
         console.log("Registro de compra de café concluído com sucesso!\n\n")
         return res.status(200).json({
             status: 200,

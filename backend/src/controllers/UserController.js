@@ -92,7 +92,7 @@ module.exports = {
         })
     },
     update: {
-        position: async function (user) {
+        position: async function (user, isAhead) {
             //informações do usuário que está pagando
             try {
                 const totalUsers = await connection('users').select('name');
@@ -109,7 +109,10 @@ module.exports = {
                 await connection('users')
                     .where('name', user)
                     .select('position')
-                    .update({ position: totalUsers.length })
+                    .update({ 
+                        position: totalUsers.length,
+                        isAhead: isAhead 
+                    })
 
             } catch (err) {
                 console.error('Isso é um erro: ' + err)
