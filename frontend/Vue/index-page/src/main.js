@@ -24,7 +24,7 @@ Vue.component("HeaderDefault", HeaderDefault)
 Vue.config.productionTip = false
 
 new Vue({
-  store,
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')

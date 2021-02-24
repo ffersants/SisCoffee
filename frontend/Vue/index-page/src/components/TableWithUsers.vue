@@ -1,6 +1,11 @@
 <template>
     <div class="holds-table">
+        <div v-if="fetching" class="text-center">
+            <b-spinner variant="light" label="Text Centered"></b-spinner>
+            <p class="text-light">Carregando...</p>
+        </div>
         <b-table 
+            v-if="!fetching"
             borderless 
             responsive="sm" 
             :fields="fields" 
@@ -101,6 +106,7 @@ export default {
     name: "TableWithUsers",
     data(){
         return{
+            fetching: true,
             currentPage: 1,
             perPage: 5,
             showModal: false,
@@ -154,10 +160,12 @@ export default {
         },
     },
     beforeCreate(){
-        this.$store.dispatch('getUsers')
-        setInterval(() => {
-            this.items = this.$store.state.allUsers
-        }, 5000)
+        fetch("http://localhost:3300/users/")
+            .then(r => r.json())
+            .then(r => {
+                this.items = r;
+                this.fetching = false
+            })
     }
 
 }

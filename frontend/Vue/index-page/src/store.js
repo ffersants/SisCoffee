@@ -13,19 +13,28 @@ export default new Vuex.Store({
     mutations: {
         GET_ALL_USERS(state, allUsers){
             state.allUsers = allUsers
-            // const [theNext, theOne, theLast] = threeUsers;
-            // state.theNext = theNext
-            // state.theOne = theOne
-            // state.theLast = theLast
-            // console.log(state.theLast, state.theNext, state.theOne)
+        },
+        GET_PODIUM(state, threeUsers){
+            const {theNext, theOne, theLast} = threeUsers;
+            state.theNext = theNext
+            state.theOne = theOne
+            state.theLast = theLast
         }
     },
     actions: {
-        getUsers(context){
+        getAllUsers(context){
             console.log('tamo aqui')
             fetch("http://localhost:3300/users/")
                 .then(r => r.json())
                 .then(r => context.commit('GET_ALL_USERS', r))
+        },
+        getPodium(context){
+            console.log('tamo aqui getPodium')
+            fetch("http://localhost:3300/")
+                .then(r => r.json())
+                .then(r => {
+                    context.commit('GET_PODIUM', r)
+                })
         }
     }
 })

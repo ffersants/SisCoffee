@@ -13,14 +13,14 @@
             <b-row id="first-row" class="text-center">
                 <b-col cols="6">
                     <div>
-                        <input placeholder="Nome" id="userName" type="text">
+                        <input required placeholder="Nome" id="userName" type="text">
                         <label for="userName">Nome</label>
                     </div>
                 </b-col>
 
                 <b-col cols="6">
                     <div>
-                        <input placeholder="Seção" id="userSection" type="password">
+                        <input required placeholder="Seção" id="userSection" type="password">
                         <label for="userSection">Seção</label>
                     </div>
                 </b-col>

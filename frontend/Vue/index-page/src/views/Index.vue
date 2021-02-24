@@ -1,6 +1,7 @@
 <template>
   <transition name="index">
         <div id="app" class="text-center">
+
         <HeaderDefault id="header">
           <i @click="openUserConfig" id="user-config" class="fas fa-users-cog"></i>
           <router-link to="/list-users">
@@ -9,18 +10,23 @@
         </HeaderDefault>
 
         <h1>CAFÉ DO MÊS</h1>
-
+        <div v-if="fetching" class="text-center">
+            <b-spinner variant="light" label="Text Centered"></b-spinner>
+            <p class="text-light">Carregando...</p>
+        </div>
     <b-container id="container">
       <b-row>
         <b-col cols="4" style=" display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card card-the-next">
-            <!-- <div class="bigName" id="big-name-the-next" v-if="theNext.length > 12">
+            <div v-if="!fetching">
+              <div class="bigName" id="big-name-the-next" v-if=" theNext && theNext.name.length > 12">
+                <p>{{theNext.name}}</p>
+              </div>
+              <p v-else v-bind:title="theNext.name">{{theNext.name}}</p> 
+            </div>
+             <!-- <div class="bigName" id="big-name-the-next">
               <p>Beltrano Ferreira</p>
             </div> -->
-             <div class="bigName" id="big-name-the-next">
-              <p>Beltrano Ferreira</p>
-            </div>
-            <!-- <p v-else v-bind:title="theNext">{{theNext}}</p>  -->
              
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
@@ -58,13 +64,16 @@
         <b-col cols="4" style=" display:flex;justify-content:center;" class="text-center">
           <div class="card" id="the-one">
             <!-- <p></p> -->
-            <!-- <div class="bigName" id="big-name-the-one" v-if="theOne.length > 16">
-              <p>Ricardo Oliveira</p>
+            <div v-if="!fetching">
+              <div class="bigName" id="big-name-the-one" v-if=" theOne && theOne.name.length > 16">
+                <p>{{theOne.name}}</p>
+              </div>
+              <p v-else v-bind:title="theOne.name">{{theOne.name}}</p>
             </div>
-            <p v-else v-bind:title="theOne">{{theOne}}</p> -->
-            <div class="bigName" id="big-name-the-next">
+            
+            <!-- <div class="bigName" id="big-name-the-next">
               <p>Beltrano Ferreira</p>
-            </div>
+            </div> -->
             <div class="pt-4" id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
@@ -101,14 +110,15 @@
 
         <b-col cols="4" style=" display:flex;justify-content:center;" class="text-center lil-card">
           <div class="card card-the-last">
-            <!-- <p></p> -->
-            <!-- <div class="bigName" id="big-name-the-last" v-if="theLast.length > 12" v-bind:title="theLast">
-              <p>Gardenia da Silva</p>
-            </div>
-            <p v-else v-bind:title="theLast">{{theLast}}</p> -->
-            <div class="bigName" id="big-name-the-next">
+            <div v-if="!fetching">
+              <div class="bigName" id="big-name-the-last" v-if="theLast && theLast.name.length > 12" v-bind:title="theLast">
+                <p>{{theLast.name}}</p>
+              </div>
+              <p v-else v-bind:title="theLast">{{theLast.name}}</p>
+            </div>          
+            <!-- <div class="bigName" id="big-name-the-next">
               <p>Beltrano Ferreira</p>
-            </div>
+            </div> -->
             <div id="coffee-cup">
               <svg xmlns="http://www.w3.org/2000/svg" width="162.053" height="175.727" viewBox="0 0 162.053 175.727">
               <g id="coffee-cup" transform="translate(-19.92 0)">
@@ -144,10 +154,9 @@
       </b-row>
     </b-container>        
 
+      <div id="modal-area">
         <transition>
-          <div id="modal-area">
-            <modal-user-config v-if="showUserConfig"></modal-user-config>
-          
+          <modal-user-config v-if="showUserConfig"></modal-user-config>
           <modal v-if="showModal">
               <div id="icon-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
@@ -156,16 +165,17 @@
                 </svg>
               </div>
           </modal>
-          </div>
         </transition> 
+      </div>
+
     </div>
   </transition>
 </template>
 
 <script>
 import {EventBus} from '../event-bus.js'
+import {mapState} from 'vuex'
 
-//import ListUsersIndex from '../components/ListUsersIndex.vue'
 import HeaderDefault from '../components/HeaderDefault.vue'
 import ModalUserConfig from '../components/ModalUserConfig.vue'
 import Modal from '../components/Modal.vue'
@@ -175,9 +185,15 @@ export default {
   data(){
     return{
       showUserConfig: false,
-      showModal: false
+      showModal: false,
+      fetching: true,
+      theNext: "...",
+      theOne: "...",
+      theLast: "..."
     }
   },
+  computed: mapState['theNext', 'theOne', 'theLast']
+  ,
   methods: {
     openUserConfig(){
       this.showUserConfig = true
@@ -186,8 +202,23 @@ export default {
       this.showModal = true
     }
   },
-  created(){
-    EventBus.$on('closeModal', () => {
+  beforeCreate(){
+    this.$store.dispatch('getAllUsers')
+
+    fetch("http://localhost:3300/")
+      .then(r => r.json())
+      .then(r => {
+        this.theNext = r.theNext
+        this.theOne = r.theOne
+        this.theLast = r.theLast
+        this.fetching = false
+      })
+  }
+  ,
+  created(){  
+    
+
+     EventBus.$on('closeModal', () => {
       this.showModal = false;
     })
     EventBus.$on('openModal', () => {

@@ -8,7 +8,7 @@
         </HeaderDefault>
             
         <h1 class="mt-4 mb-4">PAINEL DE VISUALIZAÇÃO</h1>
-        
+
         <table-with-users :action="action">
         </table-with-users>
         
@@ -56,7 +56,8 @@ export default {
         return{
             action: 'pagar',
             showModal: false,
-            showAlert: false
+            showAlert: false,
+            fetching: true
         }
     },
     components: {
