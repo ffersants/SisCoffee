@@ -81,8 +81,8 @@ app.post('/create/user', async(req, res) => {
 
     if(created.statusCode !== 201) return
     console.log("Cadastro realizado, prosseguindo com as demais etapadas de criação do usuário...")
-
-    await CoffeeRegisterController.create(name, signUpDate)
+    //registro sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
+    await CoffeeRegisterController.create(name, signUpDate, false, 'creating user')
 
     if(surplus > 0) {
         console.log(`Cadastrando o bônus do usuário ${name}`)
@@ -131,7 +131,7 @@ app.delete('/remove/:userID', async(req, res) => {
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
     const { name, date, surplus, useSurplus, admUser, admPassword } = req.body;
-    
+    //verificação da requisição
     if (!name || !date || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus || !admUser || !admPassword) {
         console.log("Formulário enviado com campos a serem preenchidos.\n\n")
         return res.status(400).json({
@@ -162,28 +162,33 @@ app.post('/coffeeBought', async function (req, res) {
             });
         }
 
-        backDate = new Date().toLocaleDateString("pt-br", {
+        const backDate = new Date().toLocaleDateString("pt-br", {
             dateStyle: 'short'
         })
 
-        // if (date !== String(backDate)) {
-        //     throw new Error(`A data da requisição e do backend diferem!`)
-        // }
+        if (date !== String(backDate)) {
+           return res.status(401).json({
+               status: 401,
+               message: "A data da requisição e do backend diferem!"
+           })
+        }
+        // fim da verificação da requisição
 
-
-        //verifica se há saldo disponível ainda não utilizado pelo usuário
         hasSurplus = Object.values(await connection('surplus_tb')
-            .where('userName', name)
-            .where('used', 'false'));
+                .where({
+                    userName: name, 
+                    used: 'false'
+                })
+        )
 
+        //usuário não possui saldo mas está tentando registrar compra utilizando saldo
         if (hasSurplus.length === 0 && useSurplus === 'true') {
             console.log("Usuário não possui saldo para ser utilizado!\n\n")
             return res.status(401).json({
                 status:401,
                 message:'Não há saldo disponível para uso!'
             })
-        }
-        else if (hasSurplus.length > 0 && useSurplus === 'true') {
+        } else if (hasSurplus.length > 0 && useSurplus === 'true') {
             console.log("Registrando compra utilizando saldo disponível...\n\n")
             //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
             const surplusID = Object.values(
@@ -192,7 +197,7 @@ app.post('/coffeeBought', async function (req, res) {
                     .first()
             )[0]
             //recebe o ID do registro realizado na tabela coffee_register usando saldo
-            coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID);
+            coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID,);
             console.log("Registro realizado com sucesso na tabela coffee_registers.\n\n")
             //atualiza a surplus_tb para remover saldo e indicar o ID do registro em que o saldo foi utilizado
             await connection('surplus_tb')
@@ -202,8 +207,9 @@ app.post('/coffeeBought', async function (req, res) {
                     usedInCoffeeRegister: coffeeRegisterID
                 })
         } else {
-            await CoffeeRegisterController.create(name, date)
+            await CoffeeRegisterController.create(name, date, false)
         }
+
         if (surplus > 0) {
             console.log("Adicionando saldo passado ao registrar a compra...\n\n")
             for (i = 0; i !== surplus; i++) {
