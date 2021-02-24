@@ -1,5 +1,6 @@
 <template>
-    <div id="sign-up">
+    <transition name="sign-up">
+        <div id="sign-up">
         <Header-Default>
             <router-link to="/">
                 <i class="fas  fa-arrow-left"></i>
@@ -47,6 +48,7 @@
             </transition> 
         </div>
     </div>
+    </transition>
 </template>
 
 <script>
@@ -172,5 +174,20 @@
 
     #coffee-icon:hover{
         cursor: pointer;
+    }
+
+    .sign-up-enter-active,
+    .sign-up-leave-active{
+        transition: opacity .4s;
+    }
+
+    .sign-up-enter,
+    .sign-up-leave-to{
+        opacity: 0;
+    }
+
+    .sign-up-leave,
+    .sign-up-enter-to{
+        opacity: 1;
     }
 </style>

@@ -64,7 +64,7 @@ export default {
             filter: blur(0.7em);
 }
 
-.v-leavbe,
+.v-leav,
 .v-enter-to{
     -webkit-filter: blur(0);
             filter: blur(0);

@@ -1,5 +1,6 @@
 <template>
-    <div id="list-users" >
+    <transition name="list-users">
+        <div id="list-users" >
         <HeaderDefault>
             <router-link to="/">
                 <i class="fas fa-arrow-left"></i>
@@ -41,6 +42,7 @@
             </transition>
         </div>
     </div>
+    </transition>
 </template>
 
 <script>
@@ -96,6 +98,21 @@ export default {
         position: absolute;
         top: 0;
         left:0;
+    }
+
+    .list-users-enter-active,
+    .list-users-leave-active{
+        transition: opacity .4s;
+    }
+
+    .list-users-enter,
+    .list-users-leave-to{
+        opacity: 0;
+    }
+
+    .list-users-leave,
+    .list-users-enter-to{
+        opacity: 1;
     }
 
 </style>

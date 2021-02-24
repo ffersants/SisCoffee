@@ -1,5 +1,6 @@
 <template>
-    <div id="list-users" >
+    <transition name="remove-user">
+        <div id="list-users" >
         <HeaderDefault>
             <router-link to="/">
                 <i class="fas fa-arrow-left"></i>
@@ -36,6 +37,7 @@
             </transition>
         </div>
     </div>
+    </transition>
 </template>
 
 <script>
@@ -91,5 +93,20 @@ export default {
         position: absolute;
         top: 0;
         left:0;
+    }
+
+    .remove-user-enter-active,
+    .remove-user-leave-active{
+        transition: opacity .4s;
+    }
+
+    .remove-user-enter,
+    .remove-user-leave-to{
+        opacity: 0;
+    }
+
+    .remove-user-leave,
+    .remove-user-enter-to{
+        opacity: 1;
     }
 </style>

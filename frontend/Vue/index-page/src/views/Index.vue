@@ -1,5 +1,6 @@
 <template>
-    <div id="app">
+  <transition name="index">
+        <div id="app">
         <HeaderDefault>
           <i @click="openUserConfig" id="user-config" class="fas fa-users-cog"></i>
           <router-link to="/list-users">
@@ -22,6 +23,7 @@
           </modal>
         </transition> 
     </div>
+  </transition>
 </template>
 
 <script>
@@ -93,5 +95,19 @@ export default {
 </script>
 
 <style scoped>
- 
+    .index-enter-active,
+    .index-leave-active{
+        transition: opacity .4s;
+    }
+
+    .index-enter,
+    .index-leave-to{
+        opacity: 0;
+    }
+
+    .index-leave,
+    .index-enter-to{
+        transform: translateX(0);
+        opacity: 1;
+    }
 </style>
