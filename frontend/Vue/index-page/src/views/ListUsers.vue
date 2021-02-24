@@ -20,11 +20,10 @@
                         <i class="fas fa-times-circle"></i>
                         <p>
                             Este usuário já teve sua compra adiantada neste ciclo...
-                            <br><br>
-                            Até que os demais usuários tenham registrado suas compras,
                             <br>
-                            não será possível adiantar o registro da compra deste usuário
+                            
                             <br>
+                            Aguarde chegar a sua vez para registrar uma nova compra 
                         </p>
                         <button @click="showAlert = false">OK</button>
                     </div>

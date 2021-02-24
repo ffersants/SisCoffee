@@ -17,9 +17,9 @@
            
                 <modal-default v-if="showAlert">
                     <div id="alert-error">
-                        <h1 class="m">AÇÃO NEGADA</h1>
+                        <h1>AÇÃO NEGADA</h1>
                         <i class="fas fa-times-circle"></i>
-                        <p>não é possível remover um usuário <br> que possui saldo</p>
+                        <p>Não é possível remover um usuário <br> que possui saldo</p>
                         <button @click="showAlert = false">OK</button>
                     </div>
                 </modal-default>

@@ -4,7 +4,6 @@
             <div :style="{width: widthRef + 'em'}" id="modal">
                 <slot></slot>
             </div>
-            
         </div>
     </transition>
 </template>
@@ -42,7 +41,6 @@ export default {
 #smoked-mask > div#modal{
     /* position:absolute; */
     max-width: 100%;
-
     background-color: #35373E;
     padding: 1em;
     border-radius: 1em;
@@ -71,5 +69,9 @@ export default {
     opacity: 1;
 }
 
-
+@media (max-height: 768px){
+    #modal{
+        font-size: 14px;
+    }
+}
 </style>

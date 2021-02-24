@@ -175,7 +175,6 @@ export default {
     font-family: Century, "Century"!important;
   }
 
-
   div.bigName{
     position: relative;
     box-sizing: border-box;
