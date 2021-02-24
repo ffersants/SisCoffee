@@ -34,9 +34,23 @@
             </template>
             <template v-slot:cell(lastButton)="data">
             <!-- botão para realizar pagamento, disposto na rota list-users -->
+                <!-- usuário não está na primeira posição, já efetuou o adiantamento de um pagamento 
+                e está querendo fazer isso de novo antes dos outros usuários concluírem o ciclo atual 
+                com seus registros de pagamentos -->
                 <button 
-                    v-if="action === 'pagar'"
-                    @click="openModal()"
+                    v-if="action === 'pagar' && data.item.position !== 1 && data.item.isAhead === 'true'"
+                    @click="openAlert()"
+                    v-bind:title="unablePayMsg"
+                    class="btn-pay btn-pay-disabled"
+                    :id="data.item.position"
+                    style="color:black!important;"
+                >
+                    PAGAR
+                </button>
+
+                <button 
+                    v-else-if="action === 'pagar'"
+                    @click="openModal(data.item)"
                     class="btn-pay"
                     :id="data.item.position"
                     style="color:black!important;"
@@ -53,7 +67,7 @@
                      @click="openAlert"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24.195" height="22.511" viewBox="0 0 24.195 22.511">
-                    <path id="trash-alt-solid" d="M1.728,20.4a2.389,2.389,0,0,0,2.592,2.11H19.874a2.389,2.389,0,0,0,2.592-2.11V5.628H1.728ZM16.418,9.145a.882.882,0,0,1,1.728,0v9.849a.882.882,0,0,1-1.728,0Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7ZM23.331,1.407H16.85L16.342.585A1.352,1.352,0,0,0,15.181,0H9.008A1.335,1.335,0,0,0,7.853.585l-.508.822H.864A.8.8,0,0,0,0,2.11V3.517a.8.8,0,0,0,.864.7H23.331a.8.8,0,0,0,.864-.7V2.11A.8.8,0,0,0,23.331,1.407Z" transform="translate(0 0)" fill="#ef4242"/>
+                    <path id="trash-alt-solid" d="M1.728,20.4a2.389,2.389,0,0,0,2.592,2.11H19.874a2.389,2.389,0,0,0,2.592-2.11V5.628H1.728ZM16.418,9.145a.882.882,0,0,1,1.728,0v9.849a.882.882,0,0,1-1.728,0Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7Zm-5.185,0a.8.8,0,0,1,.864-.7.8.8,0,0,1,.864.7v9.849a.8.8,0,0,1-.864.7.8.8,0,0,1-.864-.7ZM23.331,1.407H16.85L16.342.585A1.352,1.352,0,0,0,15.181,0H9.008A1.335,1.335,0,0,0,7.853.585l-.508.822H.864A.8.8,0,0,0,0,2.11V3.517a.8.8,0,0,0,.864.7H23.331a.8.8,0,0,0,.864-.7V2.11A.8.8,0,0,0,23.331,1.407Z" transform="translate(0 0)" fill="#ef42426c"/>
                     </svg>
                 </button>
 
@@ -92,44 +106,9 @@ export default {
             showModal: false,
             showAlert: false,
             unableRemoveMsg: "Não é possível remover um usuário que possui saldo.",
-            items: [
-                {
-                    "userID": 3,
-                    "name": "Beltrano",
-                    "section": "SAA",
-                    "surplus": 3,
-                    "position": 1,
-                    "signUpDate": "04/02/2020",
-                    "lastCoffeeAcquisition": "04/02/2020"
-                },
-                {
-                    "userID": 4,
-                    "name": "Ciclano",
-                    "section": "SAA",
-                    "surplus": 0,
-                    "position": 2,
-                    "signUpDate": "08/02/2020",
-                    "lastCoffeeAcquisition": "08/02/2020"
-                },
-                {
-                    "userID": 1,
-                    "name": "Pedro",
-                    "section": "SAA",
-                    "surplus": 0,
-                    "position": 3,
-                    "signUpDate": "03/02/2020",
-                    "lastCoffeeAcquisition": "20/02/2021"
-                },
-                {
-                    "userID": 2,
-                    "name": "Fulano",
-                    "section": "SAA",
-                    "surplus": 0,
-                    "position": 4,
-                    "signUpDate": "03/02/2020",
-                    "lastCoffeeAcquisition": "20/02/2021"
-                }
-            ],
+            unablePayMsg: `Este usuário já teve sua compra adiantada neste ciclo... Até que os demais usuários tenham registrado suas compras, não será possível adiantar o registro da compra deste usuário.`,
+            items: []
+            ,
             fields: [
                 {
                     key: "position",
@@ -165,7 +144,8 @@ export default {
         openAlert(){
             EventBus.$emit("openAlert")
         },
-        openModal(){
+        openModal(e){
+            console.log(e)
             EventBus.$emit("openModal")
         }
     },
@@ -174,11 +154,11 @@ export default {
             return this.items.length
         }
     },
-    // beforeCreate(){
-    //     fetch("http://localhost:3300/users/")
-    //         .then(r => r.json())
-    //         .then(r => this.items = r)
-    // }
+    beforeCreate(){
+        fetch("http://localhost:3300/users/")
+            .then(r => r.json())
+            .then(r => this.items = r)
+    }
 }
 </script>
 

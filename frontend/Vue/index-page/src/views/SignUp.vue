@@ -1,10 +1,10 @@
 <template>
     <div id="sign-up">
-        <header-default>
+        <Header-Default>
             <router-link to="/">
-                <i class="fas fa-arrow-left"></i>
+                <i class="fas  fa-arrow-left"></i>
             </router-link>
-        </header-default>
+        </Header-Default>
         
         <h1 class="mt-4 mb-4">FICHA DE CADASTRO</h1>
 
@@ -103,11 +103,10 @@
 </script>
 
 <style scoped>
-  *{
-        font-family: "Andale"!important;
-        color: #FFFFFF;
+
+    p, h1, h2, label, span{
+        color: #FFFFFF!important;
     }
-   
     #sign-up, 
     #modal-area{
         width: 100%;

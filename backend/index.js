@@ -240,7 +240,8 @@ app.post('/coffeeBought', async function (req, res) {
 
         if (surplus > 0) {
             console.log("Adicionando saldo passado ao registrar a compra...\n\n")
-            for (i = 0; i !== surplus; i++) {
+            console.log("SURPLUS = ", surplus)
+            for (i = 0; i != surplus; i++) {
                 try {
                     await connection('surplus_tb')
                         .insert({
@@ -250,6 +251,7 @@ app.post('/coffeeBought', async function (req, res) {
                 } catch (err) {
                     throw new Error('Não foi possível inserir o saldo.' + err.message)
                 }
+                console.log("passamos no loop ", i)
             }
         }
         console.log("Atualizando o saldo na tabela surplus_tb.\n\n")

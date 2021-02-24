@@ -14,7 +14,7 @@ export default {
     name: "ModalDefault",
     props: {
         widthRef:{
-            type: [String, Number]
+            type: Number
         }
     }
 }

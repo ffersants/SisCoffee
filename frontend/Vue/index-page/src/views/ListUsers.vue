@@ -13,6 +13,23 @@
         
         <div id="modal-area">
             <transition>
+                <modal-default v-if="showAlert">
+                    <div id="alert-error">
+                        <h1 class="m">AÇÃO NEGADA</h1>
+                        <i class="fas fa-times-circle"></i>
+                        <p>
+                            Este usuário já teve sua compra adiantada neste ciclo...
+                            <br><br>
+                            Até que os demais usuários tenham registrado suas compras,
+                            <br>
+                            não será possível adiantar o registro da compra deste usuário
+                            <br>
+                        </p>
+                        <button @click="showAlert = false">OK</button>
+                    </div>
+                </modal-default>
+
+
                 <modal v-if="showModal">
                     <div id="icon-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
@@ -31,17 +48,20 @@ import {EventBus} from '../event-bus.js'
 
 import HeaderDefault from '../components/HeaderDefault.vue'
 import TableWithUsers from '../components/TableWithUsers.vue'
+import ModalDefault from '../components/ModalDefault.vue'
 import Modal from '../components/Modal.vue'
 export default {
     data(){
         return{
             action: 'pagar',
-            showModal: false
+            showModal: false,
+            showAlert: false
         }
     },
     components: {
         HeaderDefault,
         TableWithUsers,
+        ModalDefault,
         Modal
     },
     created(){
@@ -50,6 +70,9 @@ export default {
         }),
         EventBus.$on("closeModal", () => {
             this.showModal = false;
+        }),
+        EventBus.$on("openAlert", () => {
+            this.showAlert = true
         })
     }
 }
