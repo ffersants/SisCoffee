@@ -144,21 +144,22 @@ export default {
         openAlert(){
             EventBus.$emit("openAlert")
         },
-        openModal(e){
-            console.log(e)
+        openModal(){
             EventBus.$emit("openModal")
-        }
+        },
     },
     computed: {
         rows(){
             return this.items.length
-        }
+        },
     },
     beforeCreate(){
-        fetch("http://localhost:3300/users/")
-            .then(r => r.json())
-            .then(r => this.items = r)
+        this.$store.dispatch('getUsers')
+        setInterval(() => {
+            this.items = this.$store.state.allUsers
+        }, 5000)
     }
+
 }
 </script>
 

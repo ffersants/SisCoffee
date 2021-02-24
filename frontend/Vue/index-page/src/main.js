@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router.js'
-import vuex from './store.js'
+import store from './store.js'
 
 //css
 import './assets/reset.css'
@@ -24,7 +24,7 @@ Vue.component("HeaderDefault", HeaderDefault)
 Vue.config.productionTip = false
 
 new Vue({
-  vuex,
+  store,
   router,
   render: h => h(App),
 }).$mount('#app')
