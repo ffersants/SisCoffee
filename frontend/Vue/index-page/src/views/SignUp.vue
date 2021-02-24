@@ -1,6 +1,6 @@
 <template>
     <transition name="sign-up">
-        <div id="sign-up">
+        <div id="sign-up" class="text-center"> 
         <Header-Default>
             <router-link to="/">
                 <i class="fas  fa-arrow-left"></i>
@@ -10,7 +10,7 @@
         <h1 class="mt-4 mb-4">FICHA DE CADASTRO</h1>
 
         <b-container>
-            <b-row id="second-row" class="text-center">
+            <b-row id="first-row" class="text-center">
                 <b-col cols="6">
                     <div>
                         <input placeholder="Nome" id="userName" type="text">
@@ -29,9 +29,11 @@
     
             <h2>Data de cadastro</h2>
                
-            <h1>{{currentDate}}</h1>
+            <h1 id="date">{{currentDate}}</h1>
 
-            <confirm-cancel-btns></confirm-cancel-btns>
+           
+            <confirm-cancel-btns id="confirm-cancel-btns"></confirm-cancel-btns>
+
         
         </b-container>
 
@@ -106,7 +108,7 @@
 
 <style scoped>
 
-    p, h1, h2, label, span{
+    label, div{
         color: #FFFFFF!important;
     }
     #sign-up, 
@@ -117,7 +119,8 @@
         top: 0;
         left:0;
     }
-     #second-row div{
+
+     #first-row div{
         margin-top: 1em;
     }
 
@@ -132,7 +135,11 @@
         transition: all .3s;
     }
 
-    #second-row input{
+    #confirm-cancel-btns{
+        width: 70%;
+    }
+
+    #first-row input{
         box-sizing: border-box;
         width: 100%;
         padding: .2em .7em;
@@ -148,32 +155,26 @@
         color: transparent;
     }
 
-    #second-row input:focus{
+    #first-row input:focus{
         border: 1px solid #8f8f8f;
         outline:none;
     }
 
-    #second-row input:focus-within{
+    #first-row input:focus-within{
         transform: scale(1.05, 1.05)
     }
    
-    #second-row input:focus + label,
+    #first-row input:focus + label,
     input:not(:placeholder-shown) + label{
         transform: translateY(-4em) translateX(-.5em) scale(.9)          
     }
 
-
-    #add-surplus small{
-        display: block;
-        font-size: 1.3em;
-    }
-
-    #add-surplus p{
-        font-size: 1.5em;
-    }
-
-    #coffee-icon:hover{
-        cursor: pointer;
+    @media (max-width: 575.98px){
+        #confirm-cancel-btns{
+            font-size: .7em;
+            margin-top: 4em;
+            width: 100%;
+        }
     }
 
     .sign-up-enter-active,

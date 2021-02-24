@@ -32,7 +32,6 @@ export default {
         font-family: "Candara";
         background-color: #414141;
         font-size: 1.8em;
-        font-size: 180%;
         border-radius: 1em;
         box-sizing: border-box;
         padding: 3%;
