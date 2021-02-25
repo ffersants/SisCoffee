@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: "Andale";
     src: local("fonts"),
@@ -22,8 +23,18 @@
   url(../fonts/Candara.ttf) format("truetype");
 }
 
+:root{
+  --main-font-family: 'Andale';
+  --modal-text-color: #FFFFFF;
+  --backgroup-app: #35373E;
+  --light-coffee-color: #F1E5D1;
+  --card-font-family: "Century";
+}
+
 h1{
   color: #F2F2F2;
+  font-family: var(--main-font-family);
+  text-align: center;
 }
 
 button{

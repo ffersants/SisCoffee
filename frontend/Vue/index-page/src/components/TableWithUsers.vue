@@ -177,7 +177,6 @@ export default {
   // define your variable overrides here instead
   @import '../assets/table-style.scss';
   
-
   // Import Bootstrap and BootstrapVue source SCSS files
   @import '~bootstrap/scss/bootstrap.scss';
   @import '~bootstrap-vue/src/index.scss';

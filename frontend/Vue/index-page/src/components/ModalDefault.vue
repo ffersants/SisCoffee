@@ -22,32 +22,6 @@ export default {
 <style scoped>
 
 
-#smoked-mask{
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    position: absolute;
-    width: 100vw;
-    height: 100vh!important;
-    background: rgba(112, 112, 112, 0.5);
-    z-index: 50;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-#smoked-mask > div#modal{
-    /* position:absolute; */
-    max-width: 100%;
-    background-color: #35373E;
-    padding: 1em;
-    border-radius: 1em;
-    box-sizing: border-box;
-}
-
-
 .v-enter-active,
 .v-leave-active{
     -webkit-transition: all .3s;
@@ -69,9 +43,5 @@ export default {
     opacity: 1;
 }
 
-@media (max-height: 768px){
-    #modal{
-        font-size: 14px;
-    }
-}
+
 </style>

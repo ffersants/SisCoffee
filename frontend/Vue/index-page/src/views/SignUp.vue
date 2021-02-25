@@ -33,10 +33,6 @@
             <h2>Data de cadastro</h2>
                
             <h1 id="date">{{signUpDate}}</h1>
-
-           
-            <confirm-cancel-btns id="confirm-cancel-btns"></confirm-cancel-btns>
-
         
         </b-container>
 
@@ -63,14 +59,12 @@
 <script>
     import {EventBus} from '../event-bus.js'
     import HeaderDefault from '../components/HeaderDefault.vue'
-    import ConfirmCancelBtns from '../components/ConfirmCancelBtns.vue'
     import Modal from '../components/Modal.vue'
 
     export default {
         name: 'SignUp',
         components: {
             HeaderDefault,
-            ConfirmCancelBtns,
             Modal
         },
         data(){

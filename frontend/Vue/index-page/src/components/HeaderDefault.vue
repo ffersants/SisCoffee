@@ -1,5 +1,5 @@
 <template>
-  <b-container  class="mt-4">
+  <b-container id="header-default" class="mt-4">
     <b-row>
       <b-col class="text-left">
         <slot id="slot"></slot>
@@ -13,6 +13,7 @@
         <span>{{time}}</span>
       </b-col>
     </b-row>
+    <h1 class="mt-4 mb-5">{{title}}</h1>
   </b-container>
 </template>
 
@@ -22,6 +23,12 @@
     data() {
       return {
         time: ""
+      }
+    },
+    props:{
+      title: {
+        type: String,
+        required: true
       }
     },
     methods: {
@@ -65,11 +72,12 @@
     color: #f1e5d1cb;
     cursor: pointer;
   }
-
-  @media (max-width: 575.98px) { 
-    i, a{
-      font-size: 1.7em!important;
-    }
-  }
   
+  #header-default {
+    position:static;
+    top:0;
+    width:100%;
+    z-index:10;
+  }
+
 </style>
