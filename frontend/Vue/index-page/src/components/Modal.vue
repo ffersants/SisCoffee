@@ -9,15 +9,15 @@
             <b-row id="first-row" class="text-center">
                 <b-col cols="5">
                     <p>Nome</p>
-                    <p>Fernando Santos</p>
+                    <p>{{name}}</p>
                 </b-col>
                 <b-col cols="2">
                     <p>Seção</p>
-                    <p>SSTM</p>
+                    <p>{{section}}</p>
                 </b-col>
                 <b-col cols="5">
                     <p>Data de ingresso</p>
-                    <p>20/04/2020</p>
+                    <p>{{signUpDate}}</p>
                 </b-col>
             </b-row>
         <hr>
@@ -63,32 +63,43 @@
 import ModalDefault from './ModalDefault.vue';
 import ConfirmCancelBtns from './ConfirmCancelBtns.vue';
 export default{
-  name: "Modal",
-  components: {
+    name: "Modal",
+    components: {
       ModalDefault,
       ConfirmCancelBtns
-  },
-  data(){
+    },
+    data(){
       return{
           modalWidth: 60,
           surplus: 0,
           translateValue: "translate(56 27)"
       }
-  },
-  props:{
+    },
+    props:{
       transform: {
           type: String
+      },
+      name: {
+          type: String,
+          required: true
+      },
+      section: {
+          type: String,
+          required: true
+      },
+      signUpDate: {
+          type: String,
+          required: true
       }
-  }
-  ,
-  methods: {
+    },
+    methods: {
       addSurplus: function(){
           if(this.surplus > 8){
               this.translateValue="translate(50 27)"
           }
           this.surplus += 1
       },
-  }, 
+    }, 
 }
 </script>
 

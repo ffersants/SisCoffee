@@ -35,6 +35,7 @@ export default new Vuex.Store({
                 .then(r => {
                     context.commit('GET_PODIUM', r)
                 })
-        }
+        },
+        
     }
 })

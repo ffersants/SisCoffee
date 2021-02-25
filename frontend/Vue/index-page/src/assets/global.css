@@ -80,3 +80,18 @@ hr{
     margin-top: 1em;
     transition: all .3s;
 }
+
+.invalid-message{
+  color: red;
+  transition: all .8s!important;
+}
+
+.invalid-inactive{
+  display:none;
+  opacity: 0;
+}
+
+.invalid-active{
+  display: block;
+  opacity: 1;
+}

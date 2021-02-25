@@ -64,8 +64,7 @@ export default {
         Modal
     },
     methods: {
-        closeAlert(){
-        }
+        
     }
     ,
     created(){

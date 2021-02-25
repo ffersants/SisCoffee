@@ -13,23 +13,26 @@
             <b-row id="first-row" class="text-center">
                 <b-col cols="6">
                     <div>
-                        <input required placeholder="Nome" id="userName" type="text">
+                        <input autocomplete="off" placeholder="Nome" id="userName" type="text">
                         <label for="userName">Nome</label>
                     </div>
                 </b-col>
 
                 <b-col cols="6">
                     <div>
-                        <input required placeholder="Seção" id="userSection" type="password">
+                        <input autocomplete="off" placeholder="Seção" id="userSection" type="text">
                         <label for="userSection">Seção</label>
                     </div>
                 </b-col>
             </b-row>
 
+            <p id="is-invalid" class="invalid-message invalid-inactive" >
+                Certifique-se de que todos os campos estão preenchidos
+            </p>
     
             <h2>Data de cadastro</h2>
                
-            <h1 id="date">{{currentDate}}</h1>
+            <h1 id="date">{{signUpDate}}</h1>
 
            
             <confirm-cancel-btns id="confirm-cancel-btns"></confirm-cancel-btns>
@@ -39,7 +42,11 @@
 
         <div id="modal-area">
             <transition>
-                <modal v-if="showModal">
+                <modal v-if="showModal"
+                    :name="name" 
+                    :section="section"
+                    :signUpDate="signUpDate"
+                >
                     <div id="icon-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
                             <path id="coffee-solid" d="M17.272,68.091H34.594c4.782,0,8.661-4.409,8.661-9.843h2.887c6.37,0,11.548-5.885,11.548-13.124S52.513,32,46.143,32H10.776A2.322,2.322,0,0,0,8.61,34.461V58.248C8.61,63.682,12.49,68.091,17.272,68.091ZM46.143,38.562c3.185,0,5.774,2.943,5.774,6.562s-2.589,6.562-5.774,6.562H43.256V38.562Zm4.3,39.372H4.307c-4.295,0-5.5-6.562-3.248-6.562H53.686c2.256,0,1.065,6.562-3.239,6.562Z" transform="translate(0.056 -32)" fill="#f0a82e"/>
@@ -60,6 +67,7 @@
     import Modal from '../components/Modal.vue'
 
     export default {
+        name: 'SignUp',
         components: {
             HeaderDefault,
             ConfirmCancelBtns,
@@ -70,7 +78,10 @@
                 surplus: 0,
                 translateValue: "translate(56 27)",
                 showModal: false,
-                showingModal: false  
+                showingModal: false,
+                name: "",
+                section: "",
+                signUpDate: ""
             }
         },
         methods:{
@@ -79,19 +90,37 @@
                 this.translateValue="translate(50 27)"
             }
                 this.surplus += 1
+            },
+            verificaInputs(inputsArr){
+                let isInvalid = document.getElementById("is-invalid");
+                isInvalid.classList.remove("invalid-inactive")
+                isInvalid.classList.add("invalid-active")
+                
+                for (const input of inputsArr) {
+                    if(input.value.trim() == "") return "false"
+                }
             }
         },
-        computed: {
-            currentDate(){
-                return new Date().toLocaleDateString('pt-br', {
+        created(){
+            this.signUpDate = new Date().toLocaleDateString('pt-br', {
                     dateStyle: "short"
                 })
-            },
-        },
-        created(){
+            
             EventBus.$on("confirmClicked", () => {
-                this.showModal = true;
-                this.showingModal = true;
+                
+                const userName = document.getElementById("userName");
+                const userSection = document.getElementById("userSection");
+
+                if(!this.verificaInputs([userName, userSection])){
+                    let isInvalid = document.getElementById("is-invalid");
+                    isInvalid.classList.remove("invalid-active")
+                    isInvalid.classList.add("invalid-inactive")
+
+                    this.name = userName.value.trim();
+                    this.section = userSection.value.trim();
+                    this.showModal = true;
+                    this.showingModal = true;
+                } 
             }),
             EventBus.$on("closeModal", () => {
                 if(this.$route.path === "/sign-up" && this.showingModal === false) {
@@ -108,7 +137,7 @@
 
 <style scoped>
 
-    label, div{
+    label, div, input{
         color: #FFFFFF!important;
     }
     #sign-up, 
