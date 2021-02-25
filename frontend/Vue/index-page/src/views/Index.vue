@@ -218,7 +218,7 @@ export default {
   created(){  
     
 
-     EventBus.$on('closeModal', () => {
+    EventBus.$on('closeModal', () => {
       this.showModal = false;
     })
     EventBus.$on('openModal', () => {

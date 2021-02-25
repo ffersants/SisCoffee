@@ -37,6 +37,10 @@
                 </b-col>
             </b-row>
 
+             <p id="is-invalid-modal" class="invalid-message invalid-inactive" >
+                Certifique-se de que todos os campos estão preenchidos
+            </p>
+
             <div id="add-surplus">
                 <p>Deseja adicionar saldo?</p>
                 <small>Clique no ícone abaixo</small>
@@ -54,19 +58,33 @@
                 </span>
             </div>
 
-            <confirm-cancel-btns></confirm-cancel-btns>
+            <b-row class="mb-1">
+                <b-col cols="6">
+                    <button @click="cancel()" id="cancel">
+                        Cancelar
+                    </button>
+                </b-col>
+                <b-col cols="6">
+                    <button @click="confirm" id="confirm">
+                        Confirmar
+                    </button>
+                </b-col>
+            </b-row>
         </b-container>
     </modal-default>
 </template>
 
 <script>
+import {EventBus} from '../event-bus.js'
+
 import ModalDefault from './ModalDefault.vue';
-import ConfirmCancelBtns from './ConfirmCancelBtns.vue';
+
+//import ConfirmCancelBtns from './ConfirmCancelBtns.vue';
 export default{
     name: "Modal",
     components: {
       ModalDefault,
-      ConfirmCancelBtns
+      //ConfirmCancelBtns
     },
     data(){
       return{
@@ -81,24 +99,45 @@ export default{
       },
       name: {
           type: String,
-          required: true
+          required: false
       },
       section: {
           type: String,
-          required: true
+          required: false
       },
       signUpDate: {
           type: String,
-          required: true
+          required: false
       }
     },
     methods: {
-      addSurplus: function(){
+        addSurplus(){
           if(this.surplus > 8){
               this.translateValue="translate(50 27)"
           }
           this.surplus += 1
-      },
+        },
+        verificaInputs(inputsArr){
+            let isInvalid = document.getElementById("is-invalid-modal");
+            isInvalid.classList.remove("invalid-inactive")
+            isInvalid.classList.add("invalid-active")
+                
+            for (const input of inputsArr) {
+                if(input.value.trim() == "") return "false"
+            }
+        },
+        cancel(){
+            EventBus.$emit("closeModal")
+            this.$destroy()
+        },
+        confirm(){
+            const admUser = document.getElementById("admUser");
+            const admPswd = document.getElementById("admPswd");
+
+            if(!this.verificaInputs([admPswd, admUser])){
+                console.log('passou')
+            }
+        }
     }, 
 }
 </script>
@@ -255,4 +294,48 @@ export default{
     @media (min-width: 992px) and (max-width: 1199.98px) { 
     
     }
+
+
+    /* about buttons */
+    button{
+        font-family: "Candara";
+        background-color: #414141;
+        font-size: 1.8em;
+        border-radius: 1em;
+        box-sizing: border-box;
+        padding: 3%;
+        width: 100%;
+        max-width: 100%;
+        color: #FFFFFF!important;
+    }
+
+    #cancel{
+        border: 2px solid #FF0000;
+    }
+
+     #confirm{
+        border: 2px solid #31FF00;
+    }
+
+    #confirm:active{
+        background-color: rgba(49, 225, 0, .3);
+        transition: background .1s;
+    }
+
+    #cancel:active{
+        background-color: rgba(255, 0, 0, .3);
+        transition: background .1s;
+    }
+
+     @media screen and (max-height: 600px)
+    {
+        *{
+            font-size: 10px;
+        }
+        button{
+            padding: 1%;
+            width: 60%;
+        }
+    }
+
 </style>
