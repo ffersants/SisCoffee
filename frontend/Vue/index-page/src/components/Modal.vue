@@ -19,14 +19,21 @@
                         <p>SADS</p>
                     </b-col>
                     <b-col cols="5">
-                        <p>Data de pagamento</p>
-                        <p>09/02/2021</p>
+                        <div v-if="action == 'payment' || action == 'signup'">
+                            <p>Data do pagamento</p>
+                            <p>{{currentDate}}</p>
+                        </div>
+                        <div v-else>
+                            <p>Data do cadastro</p>
+                            <p>{{signUpDate}}</p>
+                        </div>
+                        <div></div>
                     </b-col>
                 </b-row>
 
             </b-container>
             <hr>
-            <form action="">
+            <form>
             <b-container>
                 <b-row id="second-row">
                     <b-col cols="6">
@@ -64,12 +71,12 @@
 
                 <b-row class="mb-1">
                     <b-col cols="6">
-                        <button @click="cancel()" id="cancel">
+                        <button type="reset" @click="cancel()" id="cancel">
                             Cancelar
                         </button>
                     </b-col>
                     <b-col cols="6">
-                        <button type="submit" @click="confirm" id="confirm">
+                        <button type="submit" @click="confirm()" id="confirm">
                             Confirmar
                         </button>
                     </b-col>
@@ -85,12 +92,10 @@ import {EventBus} from '../event-bus.js'
 
 import ModalBase from './ModalBase.vue';
 
-//import ConfirmCancelBtns from './ConfirmCancelBtns.vue';
 export default{
     name: "Modal",
     components: {
       ModalBase,
-      //ConfirmCancelBtns
     },
     data(){
       return{
@@ -112,6 +117,10 @@ export default{
           required: false
       },
       signUpDate: {
+          type: String,
+          required: false
+      },
+      action: {
           type: String,
           required: false
       }
@@ -145,6 +154,13 @@ export default{
             }
         }
     }, 
+    computed: {
+        currentDate(){
+            return new Date().toLocaleDateString('pt-br', {
+                dateStyle: 'short'
+            })
+        }
+    }
 }
 </script>
 

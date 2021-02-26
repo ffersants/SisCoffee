@@ -8,11 +8,11 @@
      
 
             <section>
-                <button>
+                <button @click="addUser()">
                     Adicionar usuário
                 </button>
                 
-                <button>
+                <button @click="removeUser()">
                     Remover usuário
                 </button>
             </section>          
@@ -29,8 +29,14 @@ export default {
         ModalBase
     },
     methods:{
-        closeModal: function(){
+        closeModal(){
             EventBus.$emit('closeUserConfig')
+        },
+        addUser(){
+            this.$router.push('/sign-up')
+        },
+        removeUser(){
+            this.$router.push('/remove-user')
         }
     },
     

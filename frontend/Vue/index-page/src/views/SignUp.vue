@@ -1,41 +1,51 @@
 <template>
     <transition name="sign-up">
         <div id="sign-up" class="text-center"> 
-        <Header-Default>
+        <Header-Default title="FICHA DE CADASTRO">
             <router-link to="/">
                 <i class="fas  fa-arrow-left"></i>
             </router-link>
         </Header-Default>
+        <form id="form-sign-up" v-on:submit.prevent="confirmSignUp()">
+            <b-container class="text-center">
+                <b-row id="first-row" class="text-center">
+                    <b-col cols="12" md="6">
+                        <div class="holds-input">
+                            <input required autocomplete="off" placeholder="Nome" id="userName" type="text">
+                            <label for="userName">Nome</label>
+                        </div>
+                    </b-col>
+
+                    <b-col cols="12" md="6">
+                        <div class="holds-input">
+                            <input required autocomplete="off" placeholder="Seção" id="userSection" type="text">
+                            <label for="userSection">Seção</label>
+                        </div>
+                    </b-col>
+                </b-row>
+
+                <p id="is-invalid" class="invalid-message invalid-inactive" >
+                    Certifique-se de que todos os campos estão preenchidos
+                </p>
         
-        <h1 class="mt-4 mb-4">FICHA DE CADASTRO</h1>
+                <h2>Data de cadastro</h2>
+                
+                <h1 id="date">{{signUpDate}}</h1>
 
-        <b-container>
-            <b-row id="first-row" class="text-center">
-                <b-col cols="6">
-                    <div>
-                        <input autocomplete="off" placeholder="Nome" id="userName" type="text">
-                        <label for="userName">Nome</label>
-                    </div>
-                </b-col>
-
-                <b-col cols="6">
-                    <div>
-                        <input autocomplete="off" placeholder="Seção" id="userSection" type="text">
-                        <label for="userSection">Seção</label>
-                    </div>
-                </b-col>
-            </b-row>
-
-            <p id="is-invalid" class="invalid-message invalid-inactive" >
-                Certifique-se de que todos os campos estão preenchidos
-            </p>
-    
-            <h2>Data de cadastro</h2>
-               
-            <h1 id="date">{{signUpDate}}</h1>
-        
-        </b-container>
-
+                <b-row>
+                    <b-col cols="6">
+                        <button type="reset" class="btn-in-signup" @click="cancelSignUp()" id="cancel-signup">
+                            Cancelar
+                        </button>
+                    </b-col>
+                    <b-col cols="6">
+                        <button class="btn-in-signup" type="submit" id="confirm-signup">
+                            Confirmar
+                        </button>
+                    </b-col>
+                </b-row>
+            </b-container>
+        </form>
         <div id="modal-area">
             <transition>
                 <modal v-if="showModal"
@@ -63,10 +73,6 @@
 
     export default {
         name: 'SignUp',
-        components: {
-            HeaderDefault,
-            Modal
-        },
         data(){
             return{
                 surplus: 0,
@@ -93,13 +99,19 @@
                 for (const input of inputsArr) {
                     if(input.value.trim() == "") return "false"
                 }
+            },
+            confirmSignUp(){
+                this.showModal = true
+                this.showingModal = true
+            },
+            cancelSignUp(){
+                this.$router.push('/')
             }
         },
         created(){
             this.signUpDate = new Date().toLocaleDateString('pt-br', {
                     dateStyle: "short"
                 })
-            
             EventBus.$on("confirmClicked", () => {
                 
                 const userName = document.getElementById("userName");
@@ -117,15 +129,14 @@
                 } 
             }),
             EventBus.$on("closeModal", () => {
-                if(this.$route.path === "/sign-up" && this.showingModal === false) {
-                    this.$router.push("/")
-                } else{
-                    this.showModal = false;
-                    this.showingModal = false
-                }
-            })
-            
-        }
+                this.showModal = false;
+                this.showingModal = false;
+            })   
+        },
+         components: {
+            HeaderDefault,
+            Modal
+        },
     }
 </script>
 
@@ -152,14 +163,10 @@
         z-index: 20;
         text-align: left;
         font-size: 1.5em;
-        transform: translateY(-1.9em);
+        transform: translateY(-1.7em);
         padding-left: .8em;
         transform-origin: 0 0;
         transition: all .3s;
-    }
-
-    #confirm-cancel-btns{
-        width: 70%;
     }
 
     #first-row input{
@@ -168,7 +175,7 @@
         padding: .2em .7em;
         background-color: #414141;
         border: 1px solid #707070; 
-        font-size: 1.8em;
+        font-size: 1.3em;
         border-radius:.7em;
         position: relative;
         transition: all .5s;
@@ -192,11 +199,39 @@
         transform: translateY(-4em) translateX(-.5em) scale(.9)          
     }
 
-    @media (max-width: 575.98px){
-        #confirm-cancel-btns{
-            font-size: .7em;
-            margin-top: 4em;
-            width: 100%;
+    .btn-in-signup{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1em;
+        width: 100%;
+        border-radius: 2em;
+        padding: .5em 2em;
+    }
+
+    #cancel-signup{
+        border: 1px solid #FF0000;
+      
+    }
+
+    #confirm-signup{
+        border: 1px solid #31FF00;
+     
+    }
+
+    #date{
+        margin-bottom: 1em;
+    }
+
+    @media (min-width: 992px){
+        .btn-in-signup{
+            max-width: 400px;
+            font-size: 1.5em;
+        }
+
+        .holds-input{
+            max-width: 400px;
+            margin-left: 4em;
         }
     }
 
