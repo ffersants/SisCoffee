@@ -17,7 +17,12 @@
           <div id="cards">
             <div v-if="!fetchFailed && !fetching" id="container">
               <div class="card card-the-next">
-                <p>Fulano de tal</p>
+           
+                  <div class="bigName" id="big-name-the-next" v-if=" theNext && theNext.name.length > 12">
+                    <p>{{theNext.name}}</p>
+                  </div>
+                  <p v-else v-bind:title="theNext.name">{{theNext.name}}</p> 
+            
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
@@ -26,7 +31,12 @@
               </div>
 
               <div class="card card-the-one">
-                <p>Fulano de tal</p>
+                     
+                  <div class="bigName" id="big-name-the-next" v-if=" theOne && theOne.name.length > 12">
+                    <p>{{theOne.name}}</p>
+                  </div>
+                  <p v-else v-bind:title="theOne.name">{{theOne.name}}</p> 
+          
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
@@ -39,7 +49,12 @@
               </div>
               
               <div class="card card-the-last">
-                <p>Fulano de tal</p>
+             
+                  <div class="bigName" id="big-name-the-next" v-if=" theLast && theLast.name.length > 12">
+                    <p>{{theLast.name}}</p>
+                  </div>
+                  <p v-else v-bind:title="theLast.name">{{theLast.name}}</p> 
+        
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
