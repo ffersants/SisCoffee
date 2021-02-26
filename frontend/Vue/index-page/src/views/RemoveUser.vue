@@ -21,9 +21,7 @@
                         <button @click="showAlert = false">OK</button>
                     </div>
                 </modal-base>
-       
-
-            
+               
                 <modal v-if="showModal">
                     <div id="icon-1">
                         <svg  xmlns="http://www.w3.org/2000/svg" width="74.227" height="56.933" viewBox="0 0 74.227 56.933">

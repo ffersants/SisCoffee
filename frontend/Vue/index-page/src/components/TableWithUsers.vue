@@ -128,7 +128,7 @@ export default {
     name: "TableWithUsers",
     data(){
         return{
-            fetching: true,
+            fetching: false,
             fetchFailed: false,
             currentPage: 1,
             perPage: 5,
@@ -136,7 +136,48 @@ export default {
             showAlert: false,
             unableRemoveMsg: "Não é possível remover um usuário que possui saldo.",
             unablePayMsg: `Este usuário já teve sua compra adiantada neste ciclo... Até que os demais usuários tenham registrado suas compras, não será possível adiantar o registro da compra deste usuário.`,
-            items: []
+            items: [
+                 {
+                    "userID": 1,
+                    "name": "Ricardo",
+                    "section": "SSTM",
+                    "surplus": 0,
+                    "position": 1,
+                    "signUpDate": "24/02/2021",
+                    "lastCoffeeAcquisition": "24/02/2021",
+                    "isAhead": "false"
+                },
+                {
+                    "userID": 2,
+                    "name": "João",
+                    "section": "SSTM",
+                    "surplus": 3,
+                    "position": 2,
+                    "signUpDate": "24/02/2021",
+                    "lastCoffeeAcquisition": "24/02/2021",
+                    "isAhead": "false"
+                },
+                {
+                    "userID": 4,
+                    "name": "Fernando",
+                    "section": "SSTM",
+                    "surplus": 0,
+                    "position": 3,
+                    "signUpDate": "24/02/2021",
+                    "lastCoffeeAcquisition": "24/02/2021",
+                    "isAhead": "false"
+                },
+                {
+                    "userID": 3,
+                    "name": "Ana",
+                    "section": "SSTM",
+                    "surplus": 0,
+                    "position": 4,
+                    "signUpDate": "24/02/2021",
+                    "lastCoffeeAcquisition": "24/02/2021",
+                    "isAhead": "true"
+                }
+            ]
             ,
             fields: [
                 {
@@ -183,24 +224,25 @@ export default {
         },
     },
     beforeCreate(){
-        fetch("http://localhost:3300/users/")
-            .then(r => {
-                if(!r.ok){
-                    throw new Error('Falha ao fetchar')
-                }
-                else{
-                   return r.json()
-                }
-            })
-            .then(r => {
-                this.items = r;
-                this.fetching = false
-            })
-            .catch(r => {
-                console.log('ERRO -> ', r)
-                this.fetching = false
-                this.fetchFailed = true
-            })
+        // fetch("http://localhost:3300/users/")
+        //     .then(r => {
+        //         if(!r.ok){
+        //             throw new Error('Falha ao fetchar')
+        //         }
+        //         else{
+        //            return r.json()
+        //         }
+        //     })
+        //     .then(r => {
+        //         // this.items = r;
+        //         console.log(r)
+        //         this.fetching = false
+        //     })
+        //     .catch(r => {
+        //         console.log('ERRO -> ', r)
+        //         this.fetching = false
+        //         this.fetchFailed = true
+        //     })
     }
 
 }

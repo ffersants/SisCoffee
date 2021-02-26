@@ -1,8 +1,10 @@
 <template>
     <transition>
-        <div id="smoked-mask">
+        <div id="makes-fullscreen">
+            <div id="smoked-mask">
             <div id="modal">
                 <slot></slot>
+            </div>
             </div>
         </div>
     </transition>
@@ -17,11 +19,18 @@ export default {
 
 <style scoped>
 
+#makes-fullscreen{
+    z-index:50;
+    position:fixed;
+    width:100%!important; 
+    height:100%!important;
+}
+
 #smoked-mask{
     box-sizing: border-box;
-    position: absolute!important;
-    width: 100vw;
-    height: 100vh;
+    position: relative!important;
+    width: 100%;
+    height: 100%;
     background: rgba(112, 112, 112, 0.5);
     z-index: 50;
     backdrop-filter: blur(2px);

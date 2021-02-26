@@ -19,7 +19,7 @@
                         <h1 class="m">AÇÃO NEGADA</h1>
                         <i class="fas fa-times-circle"></i>
                         <p>
-                            Este usuário já teve sua compra adiantada neste ciclo...
+                            Este usuário já teve sua compra adiantada neste ciclo
                             <br>
                             
                             <br>

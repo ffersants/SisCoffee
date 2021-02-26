@@ -60,6 +60,10 @@ hr{
   height: 3px;
 }
 
+#alert-error{
+  padding: 1em;
+}
+
 #alert-error i{
   color: red;
   font-size: 400%;
@@ -193,6 +197,12 @@ hr{
   }
 }
 
+@media (max-width: 575px){
+  #alert-error{
+    font-size: .7rem;
+  }
+}
+
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px) {
   #fetch-failed-alert{
@@ -206,6 +216,10 @@ hr{
 
   #fetch-failed-icon > img{
     width: 20em;
+  }
+
+  #alert-error{
+    font-size: .7rem;
   }
 }
 
