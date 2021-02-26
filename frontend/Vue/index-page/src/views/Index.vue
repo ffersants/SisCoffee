@@ -4,11 +4,18 @@
           <HeaderDefault title="CAFÉ DO MÊS">
               <i @click="openUserConfig" id="user-config" class="fas fa-users-cog"></i>
           
-              <i @click="goToListUsers" id="list-users" class="fas fa-list"></i>    
+              <router-link to="/list-users">
+              <i id="list-users" class="fas fa-list"></i>   
+              </router-link>    
           </HeaderDefault>
-            
+          
+          <div v-if="fetching" class="text-center">
+            <b-spinner variant="light" label="Text Centered"></b-spinner>
+            <p class="text-light">Carregando...</p>
+          </div>
+          
           <div id="cards">
-            <div id="container">
+            <div v-if="!fetchFailed && !fetching" id="container">
               <div class="card card-the-next">
                 <p>Fulano de tal</p>
                 <div id="coffee-icon">
@@ -39,10 +46,28 @@
                 <p>sua vez <br> já passou</p>
               </div>
             </div>
+
+            <div id="fetch-failed-alert"  v-if="fetchFailed">
+              <div id="fetch-failed-icon">
+                <img src="../assets/fetch-failed.png" alt="">
+              </div>
+
+              <div id="fetch-failed-msg">
+                <h1 >
+                  Ops... 
+                </h1>
+                <br>
+                <p>Não foi possível carregar as informações</p>
+                <small>Contate o admnistrador do sistema</small>
+              </div>
+            </div>
           </div>
           
           <div id="modal-area">
               <transition>
+                <modal-user-config v-if="showUserConfig">
+                </modal-user-config>
+
                   <modal v-if="showModal">
                       <div id="icon-1">
                           <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
@@ -57,24 +82,61 @@
     </transition>
 </template>
 <script>
+import {EventBus} from '../event-bus.js'
+
 import HeaderDefault from '../components/HeaderDefault.vue'
+import ModalUserConfig from '../components/ModalUserConfig.vue'
 import Modal from '../components/Modal.vue'
 
 export default {
-  name: 'Inicial',
+  name: 'Index',
   data(){
     return{
-      showModal: false
+      fetching: true,
+      fetchFailed: false,
+      showModal: false,
+      showUserConfig: false,
+      theNext: "",
+      theOne: "",
+      theLast: ""
     }
   },
   methods: {
-    goToListUsers(){
-      this.$router.push('/list-users')
+    openUserConfig(){
+      this.showUserConfig = true;
     }
+  },
+  beforeCreate(){
+    fetch("http://localhost:3300/")
+      .then(r => {
+        if(!r.ok){
+          throw new Error('Falha ao fetchar')
+        }
+        else{
+           return r.json()
+        }
+      })
+      .then(r => {   
+        this.theNext = r.theNext
+        this.theOne = r.theOne
+        this.theLast = r.theLast
+        this.fetching = false
+      })
+      .catch(r => {
+        console.log('ERRO -> ', r)
+        this.fetching = false
+        this.fetchFailed = true
+      })
+  },
+  created(){
+    EventBus.$on("closeUserConfig", () => {
+      this.showUserConfig = false
+    })
   },
   components: {
     HeaderDefault,
-    Modal
+    ModalUserConfig,
+    Modal,
   }
 }
 </script>
@@ -83,6 +145,10 @@ export default {
     *{
       margin: 0;
       padding: 0;
+    }
+
+    #modal-area{
+      position: absolute;
     }
 
     #index{

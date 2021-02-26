@@ -1,13 +1,11 @@
 <template>
     <transition name="remove-user">
         <div id="list-users" >
-        <HeaderDefault>
+        <HeaderDefault title="REMOVER USUÁRIO">
             <router-link to="/">
                 <i class="fas fa-arrow-left"></i>
             </router-link>
         </HeaderDefault>
-            
-        <h1 class="mt-4 mb-4">REMOVER USUÁRIO</h1>
         
         <table-with-users :action="action">
         </table-with-users>
@@ -15,14 +13,14 @@
         <div id="modal-area">
             <transition>
            
-                <modal-default v-if="showAlert">
+                <modal-base v-if="showAlert">
                     <div id="alert-error">
                         <h1>AÇÃO NEGADA</h1>
                         <i class="fas fa-times-circle"></i>
                         <p>Não é possível remover um usuário <br> que possui saldo</p>
                         <button @click="showAlert = false">OK</button>
                     </div>
-                </modal-default>
+                </modal-base>
        
 
             
@@ -45,7 +43,7 @@ import {EventBus} from '../event-bus.js'
 
 import HeaderDefault from '../components/HeaderDefault.vue'
 import TableWithUsers from '../components/TableWithUsers.vue'
-import ModalDefault from '../components/ModalDefault.vue'
+import ModalBase from '../components/ModalBase.vue'
 import Modal from '../components/Modal.vue'
 
 export default {
@@ -60,7 +58,7 @@ export default {
     components: {
         HeaderDefault,
         TableWithUsers,
-        ModalDefault, 
+        ModalBase, 
         Modal
     },
     methods: {

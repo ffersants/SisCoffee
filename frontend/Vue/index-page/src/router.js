@@ -3,7 +3,7 @@ import Router from 'vue-router';
 
 Vue.use(Router)
 
-import Inicial from './views/Inicial.vue'
+import Index from './views/Index.vue'
 import ListUsers from './views/ListUsers.vue'
 import RemoveUser from './views/RemoveUser.vue'
 import SignUp from './views/SignUp.vue'
@@ -13,7 +13,7 @@ export default new Router({
     routes: [
         {
             path: '/', 
-            component: Inicial
+            component: Index
         },
         {
             path: '/list-users', 

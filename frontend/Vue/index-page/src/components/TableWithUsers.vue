@@ -4,8 +4,29 @@
             <b-spinner variant="light" label="Text Centered"></b-spinner>
             <p class="text-light">Carregando...</p>
         </div>
+
+        <div id="holds-fetch-alert">
+            <div 
+            id="fetch-failed-alert"  
+            v-if="fetchFailed"
+        >
+              <div id="fetch-failed-icon">
+                <img src="../assets/fetch-failed.png" alt="">
+              </div>
+
+              <div id="fetch-failed-msg">
+                <h1 >
+                  Ops... 
+                </h1>
+                <br>
+                <p>Não foi possível carregar as informações</p>
+                <small>Contate o admnistrador do sistema</small>
+              </div>
+        </div>
+        </div>
+
         <b-table 
-            v-if="!fetching"
+            v-if="!fetchFailed && !fetching"
             borderless 
             responsive="sm" 
             :fields="fields" 
@@ -91,6 +112,7 @@
 
         <div class="holds-pagination">
             <b-pagination
+            v-if="!fetchFailed && !fetching"
                 v-model="currentPage"
                 :per-page="perPage"
                 :total-rows="rows"
@@ -107,6 +129,7 @@ export default {
     data(){
         return{
             fetching: true,
+            fetchFailed: false,
             currentPage: 1,
             perPage: 5,
             showModal: false,
@@ -161,10 +184,22 @@ export default {
     },
     beforeCreate(){
         fetch("http://localhost:3300/users/")
-            .then(r => r.json())
+            .then(r => {
+                if(!r.ok){
+                    throw new Error('Falha ao fetchar')
+                }
+                else{
+                   return r.json()
+                }
+            })
             .then(r => {
                 this.items = r;
                 this.fetching = false
+            })
+            .catch(r => {
+                console.log('ERRO -> ', r)
+                this.fetching = false
+                this.fetchFailed = true
             })
     }
 
@@ -173,6 +208,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+    
+
   // Import custom SASS variable overrides, or alternatively
   // define your variable overrides here instead
   @import '../assets/table-style.scss';

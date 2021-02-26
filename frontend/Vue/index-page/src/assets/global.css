@@ -29,6 +29,7 @@
   --backgroup-app: #35373E;
   --light-coffee-color: #F1E5D1;
   --card-font-family: "Century";
+  --modal-text-color: #F2F2F2;
 }
 
 h1{
@@ -45,8 +46,8 @@ button:focus{
     box-shadow: none;
 }
 
-button:active, a{
-    transform: translateY(3px)!important;
+button:active{
+  transform: translateY(3px)!important;
 }
 
 button:hover{
@@ -106,3 +107,131 @@ hr{
   display: block;
   opacity: 1;
 }
+
+#fetch-failed-alert{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+#fetch-failed-alert div{
+  margin: 0;
+  padding: 0;
+}
+
+#fetch-failed-icon > img{
+  width: 25em;
+  position: relative;
+  animation: move-cup-up;
+  animation-duration: 5s;
+  animation-delay: .5s;
+}
+
+#fetch-failed-msg{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#fetch-failed-msg > h1, 
+#fetch-failed-msg > p{
+  text-align: left;
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: "Century"!important;
+  color: #F2F2F2;
+}
+
+#fetch-failed-msg > small{
+  font-family: "Century"!important;
+  color: #F2F2F2;
+  font-size: 1rem;
+  text-align: left;
+}
+
+#fetch-failed-msg > h1{
+  font-size: 2.5em;
+}
+
+@keyframes move-cup-up{
+  10%, 50%{
+    transform: translateY(-15%) 
+  }
+ 
+  20%, 30%, 40%{
+    transform: translateY(-15%) 
+      translateX(-3%)
+  }
+  25%, 35%, 45%{
+    transform:translateY(-15%) 
+    translateX(3%)
+  }
+  100%{
+    transform: translateY(0)
+  }
+
+  
+}
+
+@media (max-width: 575.98px) {
+  #fetch-failed-alert{
+    font-size: .7rem;
+    grid-template-columns: 100%;
+    text-align: center;
+  }
+  
+  #fetch-failed-msg > p, 
+  #fetch-failed-msg > h1,
+  #fetch-failed-msg > small{
+    text-align: center;
+  }
+  
+  #fetch-failed-icon > img{
+    width: 20em;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  #fetch-failed-alert{
+    font-size: .7rem;
+    display: flex;
+  }
+  #fetch-failed-msg > p, 
+  #fetch-failed-msg > h1{
+    text-align: left;
+  }
+
+  #fetch-failed-icon > img{
+    width: 20em;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  #fetch-failed-alert{
+    font-size: .7rem;
+    display: flex;
+  }
+  
+  #fetch-failed-alert div{
+    width: 50%;
+  }
+
+  #fetch-failed-alert small{
+    text-align:left;
+  }
+
+  #fetch-failed-icon > img{
+    width: 25em;
+  }
+
+  #fetch-failed-icon{
+    text-align: right;
+    margin-right: 5%;
+  }
+
+}
+

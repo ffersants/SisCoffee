@@ -1,5 +1,5 @@
 <template>
-    <modal-default class="text-center"  :widthRef="modalWidth">
+    <modal-base class="text-center" >
         <div id="title">
             FAVOR CONFIRMAR AÇÃO COM <br> A CONTA ADMINISTRADORA
         </div>
@@ -71,19 +71,19 @@
                 </b-col>
             </b-row>
         </b-container>
-    </modal-default>
+    </modal-base>
 </template>
 
 <script>
 import {EventBus} from '../event-bus.js'
 
-import ModalDefault from './ModalDefault.vue';
+import ModalBase from './ModalBase.vue';
 
 //import ConfirmCancelBtns from './ConfirmCancelBtns.vue';
 export default{
     name: "Modal",
     components: {
-      ModalDefault,
+      ModalBase,
       //ConfirmCancelBtns
     },
     data(){

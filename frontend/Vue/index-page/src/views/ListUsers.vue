@@ -14,7 +14,7 @@
         
         <div id="modal-area">
             <transition>
-                <modal-default v-if="showAlert">
+                <modal-base v-if="showAlert">
                     <div id="alert-error">
                         <h1 class="m">AÇÃO NEGADA</h1>
                         <i class="fas fa-times-circle"></i>
@@ -27,7 +27,7 @@
                         </p>
                         <button @click="showAlert = false">OK</button>
                     </div>
-                </modal-default>
+                </modal-base>
 
 
                 <modal v-if="showModal">
@@ -49,7 +49,7 @@ import {EventBus} from '../event-bus.js'
 
 import HeaderDefault from '../components/HeaderDefault.vue'
 import TableWithUsers from '../components/TableWithUsers.vue'
-import ModalDefault from '../components/ModalDefault.vue'
+import ModalBase from '../components/ModalBase.vue'
 import Modal from '../components/Modal.vue'
 export default {
     data(){
@@ -57,13 +57,12 @@ export default {
             action: 'pagar',
             showModal: false,
             showAlert: false,
-            fetching: true
         }
     },
     components: {
         HeaderDefault,
         TableWithUsers,
-        ModalDefault,
+        ModalBase,
         Modal
     },
     created(){
