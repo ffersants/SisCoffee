@@ -68,12 +68,14 @@ export default {
     created(){
         EventBus.$on("openModal", () => {
             this.showModal = true;
+            document.getElementById("list-users").style.position = 'fixed';
         }),
         EventBus.$on("closeModal", () => {
             this.showModal = false;
         }),
         EventBus.$on("openAlert", () => {
             this.showAlert = true
+            document.getElementById("list-users").style.position = 'fixed';
         })
     }
 }
@@ -84,12 +86,6 @@ export default {
         margin: 0;
         padding: 0;
     }
-    /* #list-users{
-        width: 100%;
-        text-align:center;
-        position: absolute;
-        top: 0;
-    } */
 
    #list-users, #modal-area{
         width: 100%;

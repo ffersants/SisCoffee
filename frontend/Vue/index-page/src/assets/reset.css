@@ -32,8 +32,11 @@ button {
 }
 
 button:active,
-button:focus{
-  outline: none!important;
+button:focus,
+input:active,
+input:focus{
+  outline: none;
+  border: none;
 }
 
 button::-moz-focus-inner {
@@ -50,7 +53,6 @@ textarea {
 }
 button,
 input {
-
   overflow: visible;
 }
 
