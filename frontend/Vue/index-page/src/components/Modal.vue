@@ -66,7 +66,7 @@
                     
                 </b-row>
 
-                <p id="msg-erro-modal" class="invalid-message invalid-inactive" >Certifique-se de que todos os campos estão preenchidos</p>
+                <p id="msg-erro-modal" class="invalid-message invalid-inactive"></p>
                 
                 <div id="add-surplus">
                     <p>Deseja adicionar saldo?</p>
@@ -111,8 +111,7 @@
                     <div v-if="loading" class="ml-auto mr-auto">
                         <b-spinner variant="light" label="Carregando"></b-spinner>
                         <p class="text-light">Carregando...</p>
-                    </div>
-                                                        
+                    </div>                                    
                 </b-row> 
             </b-container>
             </form>
@@ -137,7 +136,7 @@ export default{
           surplus: 0,
           translateValue: "translate(56 27)",
           fetching: false,
-          loading: false
+          loading: false,
       }
     },
     props:{
@@ -159,11 +158,12 @@ export default{
           }
           this.surplus += 1
         },
-        checkForm(){   
-                          
-            let msgErroModal = document.getElementById("msg-erro-modal");
-                
+        checkForm(){                            
+            var msgErroModal = document.getElementById("msg-erro-modal");
+                msgErroModal.textContent = ""
                 if(!this.admUser.trim() || !this.admPswd.trim()){
+                    msgErroModal.textContent = "Certifique-se de que todos os campos estão preenchidos"
+                
                     msgErroModal.classList.remove("invalid-inactive")
                     msgErroModal.classList.add("invalid-active")
                     //clona o elemento
@@ -173,11 +173,12 @@ export default{
                     
                     return false
             } else{
+                console.log('entramo aqui')
                 this.badInput = false;
-                this.controller()
+                this.controller(msgErroModal)
             }
         },
-        async controller(){                
+        async controller(msgErroModal){                
             const admPassword = MD5(this.admPswd)
 
             this.reqBody['admPassword'] = admPassword
@@ -187,20 +188,23 @@ export default{
             this.formatsDOMToFetch()                
             
             const response = await this.doesTheFetch()
-            
+            console.log(response)
             if(response.status !== 201){
                 setInterval(() => {
                     this.fetching = false;
                     this.loading = false;
-                    this.fetchFailedMsg = response.message;
+                    msgErroModal.classList.remove("invalid-inactive")
+                    msgErroModal.classList.add("invalid-active")
+                    msgErroModal.textContent = response.message;
                 }, 3000)
-            }
+            } 
         },
         formatsDOMToFetch(){
             this.fetching = true;
             document.getElementById("confirm").classList.add( 'collapse-btn-right');
             document.getElementById("cancel").classList.add('collapse-btn-left')
 
+            //tempo para o término da animação dos buttons
             setTimeout(() => {
                 this.loading = true;
             }, 1000)    
