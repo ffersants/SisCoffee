@@ -118,7 +118,8 @@ export default{
           admUser: "",
           admPswd: "",
           surplus: 0,
-          translateValue: "translate(56 27)"
+          translateValue: "translate(56 27)",
+          fetching: true
       }
     },
     props:{
@@ -145,6 +146,10 @@ export default{
             if(!this.admUser.trim() || !this.admPswd.trim()){
                 isInvalid.classList.remove("invalid-inactive")
                 isInvalid.classList.add("invalid-active")
+
+                const isInvalidClone = isInvalid.cloneNode(true);
+                //substitui a si mesmo por seu clone, aplicando novamente a animação
+                isInvalid.parentNode.replaceChild(isInvalidClone, isInvalid);
             } else{
                 isInvalid.classList.remove("invalid-active")
                 isInvalid.classList.add("invalid-inactive")
@@ -154,9 +159,13 @@ export default{
                 this.reqBody['admPassword'] = admPassword
                 this.reqBody['admUser'] = this.admUser
                 this.reqBody['surplus'] = this.surplus
-                console.log(this.reqBody)
+                
+                this.formatsDOMToFetch()                
                 this.doesTheFetch()
             }
+        },
+        formatsDOMToFetch(){
+            
         },
         doesTheFetch(){
             fetch('http://localhost:3300/create/user', {

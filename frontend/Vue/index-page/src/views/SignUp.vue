@@ -111,10 +111,15 @@
             },
             checkForm(){
                 let isInvalid = document.getElementById("is-invalid");
-            
-                if(!this.name.trim() || !this.name.trim()){
+                
+                if(!this.name.trim() || !this.section.trim()){
                     isInvalid.classList.remove("invalid-inactive")
                     isInvalid.classList.add("invalid-active")
+                    //clona o elemento
+                    const isInvalidClone = isInvalid.cloneNode(true);
+                    //substitui a si mesmo por seu clone, aplicando novamente a animação
+                    isInvalid.parentNode.replaceChild(isInvalidClone, isInvalid);
+                    
                     return false
                 } else{
                     isInvalid.classList.remove("invalid-active")
@@ -201,7 +206,7 @@
    
     #first-row input:focus + label,
     input:not(:placeholder-shown) + label{
-        transform: translateY(-4em) translateX(-.5em) scale(.9)          
+        transform: translateY(-3.3em) translateX(-.5em) scale(.9)          
     }
 
     .btn-in-signup{
