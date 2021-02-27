@@ -99,6 +99,7 @@ hr{
 
 .invalid-message{
   color: red;
+  transition: all .6s!important;
 }
 
 .invalid-inactive{

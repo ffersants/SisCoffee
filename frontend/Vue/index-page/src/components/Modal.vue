@@ -39,11 +39,12 @@
                     <b-col cols="6">
                         <div class="form-input-area">
                             <input
+                                :disabled="fetching"
                                 v-model="admUser"
                                 autocomplete="off" 
                                 placeholder="Usuário" 
                                 class="form-input" 
-                                id="admUser" 
+                                id="admUser"
                                 type="text">
                             <label class="form-label" for="admUser">Usuário</label>
                         </div>
@@ -52,6 +53,7 @@
                     <b-col cols="6">
                         <div class="form-input-area">
                             <input 
+                                :disabled="fetching"
                                 v-model="admPswd"
                                 autocomplete="off" 
                                 placeholder="Senha" 
@@ -64,10 +66,8 @@
                     
                 </b-row>
 
-                 <p id="is-invalid-modal" class="invalid-message invalid-inactive" >
-                    Certifique-se de que todos os campos estão preenchidos
-                </p>
-
+                <p id="msg-erro-modal" class="invalid-message invalid-inactive" >Certifique-se de que todos os campos estão preenchidos</p>
+                
                 <div id="add-surplus">
                     <p>Deseja adicionar saldo?</p>
                     <small>Clique no ícone abaixo</small>
@@ -85,18 +85,35 @@
                     </span>
                 </div>
 
-                <b-row class="mb-1">
-                    <b-col cols="6">
-                        <button type="reset" @click="cancel()" id="cancel">
+                <b-row id="row-with-btns" class="mb-1">
+                    <b-col v-if="!loading" cols="6">
+                        <button 
+                            type="reset" 
+                            @click="cancel()" 
+                            id="cancel"
+                        >
                             Cancelar
                         </button>
                     </b-col>
-                    <b-col cols="6">
-                        <button type="submit" id="confirm">
+                    
+                   
+
+                    <b-col v-if="!loading" cols="6">
+                        <button 
+                            type="submit" 
+                            id="confirm"
+                        >
                             Confirmar
                         </button>
-                    </b-col>
-                </b-row>
+                    </b-col>  
+
+                  
+                    <div v-if="loading" class="ml-auto mr-auto">
+                        <b-spinner variant="light" label="Carregando"></b-spinner>
+                        <p class="text-light">Carregando...</p>
+                    </div>
+                                                        
+                </b-row> 
             </b-container>
             </form>
         </div>
@@ -119,7 +136,8 @@ export default{
           admPswd: "",
           surplus: 0,
           translateValue: "translate(56 27)",
-          fetching: true
+          fetching: false,
+          loading: false
       }
     },
     props:{
@@ -135,40 +153,60 @@ export default{
     },
     methods: {
         addSurplus(){
+            if(this.fetching)  return
           if(this.surplus > 8){
               this.translateValue="translate(50 27)"
           }
           this.surplus += 1
         },
-        checkForm(){  
-            let isInvalid = document.getElementById("is-invalid-modal");
+        checkForm(){   
+                          
+            let msgErroModal = document.getElementById("msg-erro-modal");
                 
-            if(!this.admUser.trim() || !this.admPswd.trim()){
-                isInvalid.classList.remove("invalid-inactive")
-                isInvalid.classList.add("invalid-active")
-
-                const isInvalidClone = isInvalid.cloneNode(true);
-                //substitui a si mesmo por seu clone, aplicando novamente a animação
-                isInvalid.parentNode.replaceChild(isInvalidClone, isInvalid);
+                if(!this.admUser.trim() || !this.admPswd.trim()){
+                    msgErroModal.classList.remove("invalid-inactive")
+                    msgErroModal.classList.add("invalid-active")
+                    //clona o elemento
+                    const msgErroModalClone = msgErroModal.cloneNode(true);
+                    //substitui a si mesmo por seu clone, aplicando novamente a animação
+                    msgErroModal.parentNode.replaceChild(msgErroModalClone, msgErroModal);
+                    
+                    return false
             } else{
-                isInvalid.classList.remove("invalid-active")
-                isInvalid.classList.add("invalid-inactive")
+                this.badInput = false;
+                this.controller()
+            }
+        },
+        async controller(){                
+            const admPassword = MD5(this.admPswd)
+
+            this.reqBody['admPassword'] = admPassword
+            this.reqBody['admUser'] = this.admUser
+            this.reqBody['surplus'] = this.surplus
                 
-                const admPassword = MD5(this.admPswd)
-                console.log(admPassword)
-                this.reqBody['admPassword'] = admPassword
-                this.reqBody['admUser'] = this.admUser
-                this.reqBody['surplus'] = this.surplus
-                
-                this.formatsDOMToFetch()                
-                this.doesTheFetch()
+            this.formatsDOMToFetch()                
+            
+            const response = await this.doesTheFetch()
+            
+            if(response.status !== 201){
+                setInterval(() => {
+                    this.fetching = false;
+                    this.loading = false;
+                    this.fetchFailedMsg = response.message;
+                }, 3000)
             }
         },
         formatsDOMToFetch(){
-            
+            this.fetching = true;
+            document.getElementById("confirm").classList.add( 'collapse-btn-right');
+            document.getElementById("cancel").classList.add('collapse-btn-left')
+
+            setTimeout(() => {
+                this.loading = true;
+            }, 1000)    
         },
-        doesTheFetch(){
-            fetch('http://localhost:3300/create/user', {
+        async doesTheFetch(){
+            const r = await fetch('http://localhost:3300/create/user', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -177,8 +215,8 @@ export default{
                 body: JSON.stringify(this.reqBody)
             })
                 .then(r => r.json())
-                .then(r => console.log(r))
                 .catch(r => console.log('deu rim -> ', r))
+            return r
         },
         cancel(){
             EventBus.$emit("closeModal")
@@ -230,6 +268,10 @@ export default{
         color: transparent;
     }
 
+    .form-input:disabled{
+        background-color: #6A6A6A;
+    }
+
     .form-label{
         font-size: 1.3em;
         text-align: left;
@@ -246,12 +288,12 @@ export default{
         margin-left: .5em;
     }
 
-    #is-invalid-modal{
+    #msg-erro-modal{
         position: relative;
         top: -1em;
     }
 
-    #is-invalid-modal{
+    #msg-erro-modal{
         margin-top: -1em;
     }
 
@@ -283,6 +325,47 @@ export default{
 
     #confirm{
         border: 1px solid #31FF00;
+    }
+
+  
+
+    .collapse-btn-right{
+        animation: collapse-btn-right;
+        animation-fill-mode:forwards;
+        animation-duration: 1s;
+    }  
+    
+    .collapse-btn-left{
+        animation: collapse-btn-left;
+        animation-fill-mode:forwards;
+        animation-duration: 1s;
+    } 
+
+    @keyframes collapse-btn-right{
+        from {
+            transform: translateX(0);
+            opacity: .8;
+        }
+
+        to{
+            transform: translateX(-55%);
+            opacity: 0;
+            display:none;
+        }
+    }
+
+    @keyframes collapse-btn-left{
+        from {
+            transform: translateX(0);
+            opacity: .8;
+        }
+
+        to{
+            /* transform: translateX(calc(50%)); */
+            transform: translateX(55%);
+            opacity: 0;
+            display:none;
+        }
     }
 
     @media (max-height: 510px) and (orientation: landscape){

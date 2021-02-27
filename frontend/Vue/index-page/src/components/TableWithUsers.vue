@@ -1,7 +1,7 @@
 <template>
     <div class="holds-table">
         <div v-if="fetching" class="text-center">
-            <b-spinner variant="light" label="Text Centered"></b-spinner>
+            <b-spinner variant="light" label="Carregando"></b-spinner>
             <p class="text-light">Carregando...</p>
         </div>
 

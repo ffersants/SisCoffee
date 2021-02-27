@@ -6,7 +6,7 @@
                 <i class="fas  fa-arrow-left"></i>
             </router-link>
         </Header-Default>
-        <form novalidate="true" id="form-sign-up" v-on:submit.prevent="checkForm()">
+        <form novalidate="true" id="form-sign-up" v-on:submit.prevent="checkFormSignUp()">
             <b-container class="text-center">
                 <b-row id="first-row" class="text-center">
                     <b-col cols="12" md="6">
@@ -109,7 +109,7 @@
             }
                 this.surplus += 1
             },
-            checkForm(){
+            checkFormSignUp(){
                 let isInvalid = document.getElementById("is-invalid");
                 
                 if(!this.name.trim() || !this.section.trim()){
