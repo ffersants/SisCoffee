@@ -79,6 +79,7 @@ hr{
 
 #alert-error > h1,
 #alert-success > h1,
+#use-surplus > h1,
 #alert-success i{
   color: #F0A82E;
 }

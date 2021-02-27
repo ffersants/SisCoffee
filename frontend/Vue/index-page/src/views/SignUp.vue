@@ -58,7 +58,10 @@
         </form>
         <div id="modal-area">
             <transition>
-                <success-alert description="Usuário cadastrado com sucesso!" v-if="showSuccessAlert" action="signup">
+                <success-alert 
+                description="Usuário cadastrado com sucesso!" 
+                v-if="showSuccessAlert" 
+                action="signUp">
                      <div id="icon-1">
                           <i class="fas fa-user-plus"></i>
                       </div>
@@ -66,7 +69,7 @@
 
                 <modal v-if="showModal"
                     :reqBody="reqBody"
-                    action="signup"
+                    action="signUp"
                 >
                     <div id="icon-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
@@ -150,12 +153,13 @@
                 this.showModal = false;
                 this.showingModal = false;
             })
-            EventBus.$on("user-created", () => {
+            EventBus.$on("userCreated", () => {
                 this.showModal = false;
                 this.showingModal = false;
                 this.showSuccessAlert = true;
             })               
             EventBus.$on("closeSuccessAlert", () => {
+                console.log('bus chamado')
                 this.name = ""
                 this.section = ""
                 this.showSuccessAlert = false;

@@ -17,8 +17,13 @@
                         <p>{{userInAction.section}}</p>
                     </b-col>
                     <b-col cols="5">
-                        <div v-if="action == 'payment' || action == 'signup'">
+                        <div v-if="action == 'payment'">
                             <p>Data do pagamento</p>
+                            <!-- <p>28/08/2000</p> -->
+                            <p>{{userInAction.currentDate}}</p>
+                        </div>
+                        <div v-else-if="action == 'signUp'">
+                            <p>Data do cadastro</p>
                             <!-- <p>28/08/2000</p> -->
                             <p>{{userInAction.currentDate}}</p>
                         </div>
@@ -74,7 +79,7 @@ export default {
 <style scoped>
      #alert-success{
         padding: 1em;  
-        width: 60vw;      
+        width: 60vw!important;      
     }
 
     #alert-success h1{

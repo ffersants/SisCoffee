@@ -188,20 +188,38 @@ export default{
             this.reqBody['admPassword'] = admPassword
             this.reqBody['admUser'] = this.admUser
             this.reqBody['surplus'] = this.surplus
-                
+            
+            if(this.action === 'payment') this.reqBody['currentDate'] = this.currentDate
+
             this.$store.dispatch("setUserInAction", this.reqBody)
 
             this.formatsDOMToFetch()                
+
+            let urlToFetch;
+             
+            if(this.action === 'signUp'){
+                urlToFetch = 'http://localhost:3300/create/user'
+            }else if(this.action === 'payment'){
+                urlToFetch = 'http://localhost:3300/coffeeBought'
+            } else if(this.action === 'removeUser'){
+                urlToFetch = 'http://localhost:3300/remove'
+            }
             
-            const response = await this.doesTheFetch()
+            const response = await this.doesTheFetch(urlToFetch)
+            
             this.modalFeedback = response.message
             
             if(response.status === 201){
                 setTimeout(() => {
                     this.fetching = false;
                     this.loading = false;
-                    this.$destroy()
-                    EventBus.$emit('user-created')
+                    if(this.action === 'signUp'){
+                        EventBus.$emit('userCreated')
+                         this.$destroy()
+                    } else if(this.action === 'payment'){
+                        EventBus.$emit('paymentFinished')
+                         this.$destroy()
+                    }
                 }, 3000)
             } else{
                 setTimeout(() => {
@@ -223,8 +241,8 @@ export default{
                 this.loading = true;
             }, 1000)    
         },
-        async doesTheFetch(){
-            const r = await fetch('http://localhost:3300/create/user', {
+        async doesTheFetch(address){
+            const r = await fetch(address, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -253,7 +271,6 @@ export default{
     },
     mounted(){
         this.$nextTick(() => this.$refs.autoFocus.focus())
-    
     }
 }
 </script>
