@@ -12,11 +12,11 @@
                 <b-row id="first-row" class="text-center">
                     <b-col cols="5">
                         <p>Nome</p>
-                        <p>Daniel Alves</p>
+                        <p>{{reqBody.name}}</p>
                     </b-col>
                     <b-col cols="2">
                         <p>Seção</p>
-                        <p>SADS</p>
+                        <p>{{reqBody.section}}</p>
                     </b-col>
                     <b-col cols="5">
                         <div v-if="action == 'payment' || action == 'signup'">
@@ -25,7 +25,7 @@
                         </div>
                         <div v-else>
                             <p>Data do cadastro</p>
-                            <p>{{signUpDate}}</p>
+                            <p>{{reqBody.signUpDate}}</p>
                         </div>
                         <div></div>
                     </b-col>
@@ -33,24 +33,40 @@
 
             </b-container>
             <hr>
-            <form>
+            <form v-on:submit.prevent="checkForm()" novalidate="true">
             <b-container>
                 <b-row id="second-row">
                     <b-col cols="6">
                         <div class="form-input-area">
-                            <input autocomplete="false" class="form-input" required placeholder="Usuário" id="admUser" type="text">
+                            <input
+                                v-model="admUser"
+                                autocomplete="off" 
+                                placeholder="Usuário" 
+                                class="form-input" 
+                                id="admUser" 
+                                type="text">
                             <label class="form-label" for="admUser">Usuário</label>
                         </div>
                     </b-col>
 
                     <b-col cols="6">
                         <div class="form-input-area">
-                            <input autocomplete="false" class="form-input" required placeholder="Senha" id="admPswd" type="password">
+                            <input 
+                                v-model="admPswd"
+                                autocomplete="off" 
+                                placeholder="Senha" 
+                                class="form-input" 
+                                id="admPswd" 
+                                type="password">
                             <label class="form-label" for="admPswd">Senha</label>
                         </div>
                     </b-col>
                     
                 </b-row>
+
+                 <p id="is-invalid-modal" class="invalid-message invalid-inactive" >
+                    Certifique-se de que todos os campos estão preenchidos
+                </p>
 
                 <div id="add-surplus">
                     <p>Deseja adicionar saldo?</p>
@@ -64,7 +80,7 @@
                         </defs>
                         <rect id="coffee-bean" width="53" height="42" fill="url(#pattern)"/>
                         <path id="saldo-background" d="M12.458,0c6.881,0,12.458,6.359,12.458,14.2s-5.578,14.2-12.458,14.2S0,22.046,0,14.2,5.578,0,12.458,0Z" transform="translate(44 7)" fill="#f0a82e"/>
-                        <text  :transform="translateValue" fill="#414141" font-size="16" font-family="ArialMT, Arial"><tspan x="-4.449" y="0" id="saldo">{{surplus}}</tspan></text>
+                        <text :transform="translateValue" fill="#414141" font-size="16" font-family="ArialMT, Arial"><tspan x="-4.449" y="0" id="saldo">{{surplus}}</tspan></text>
                         </svg>
                     </span>
                 </div>
@@ -76,7 +92,7 @@
                         </button>
                     </b-col>
                     <b-col cols="6">
-                        <button type="submit" @click="confirm()" id="confirm">
+                        <button type="submit" id="confirm">
                             Confirmar
                         </button>
                     </b-col>
@@ -89,8 +105,8 @@
 
 <script>
 import {EventBus} from '../event-bus.js'
-
 import ModalBase from './ModalBase.vue';
+import {MD5} from '../md5.js';
 
 export default{
     name: "Modal",
@@ -99,7 +115,8 @@ export default{
     },
     data(){
       return{
-          modalWidth: 60,
+          admUser: "",
+          admPswd: "",
           surplus: 0,
           translateValue: "translate(56 27)"
       }
@@ -108,21 +125,11 @@ export default{
       transform: {
           type: String
       },
-      name: {
-          type: String,
-          required: false
-      },
-      section: {
-          type: String,
-          required: false
-      },
-      signUpDate: {
-          type: String,
-          required: false
-      },
       action: {
           type: String,
           required: false
+      },
+      reqBody: {    
       }
     },
     methods: {
@@ -132,26 +139,44 @@ export default{
           }
           this.surplus += 1
         },
-        verificaInputs(inputsArr){
+        checkForm(){  
             let isInvalid = document.getElementById("is-invalid-modal");
-            isInvalid.classList.remove("invalid-inactive")
-            isInvalid.classList.add("invalid-active")
                 
-            for (const input of inputsArr) {
-                if(input.value.trim() == "") return "false"
+            if(!this.admUser.trim() || !this.admPswd.trim()){
+                isInvalid.classList.remove("invalid-inactive")
+                isInvalid.classList.add("invalid-active")
+            } else{
+                isInvalid.classList.remove("invalid-active")
+                isInvalid.classList.add("invalid-inactive")
+                
+                const admPassword = MD5(this.admPswd)
+                console.log(admPassword)
+                this.reqBody['admPassword'] = admPassword
+                this.reqBody['admUser'] = this.admUser
+                this.reqBody['surplus'] = this.surplus
+                console.log(this.reqBody)
+                this.doesTheFetch()
             }
+        },
+        doesTheFetch(){
+            fetch('http://localhost:3300/create/user', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.reqBody)
+            })
+                .then(r => r.json())
+                .then(r => console.log(r))
+                .catch(r => console.log('deu rim -> ', r))
         },
         cancel(){
             EventBus.$emit("closeModal")
             this.$destroy()
         },
         confirm(){
-            const admUser = document.getElementById("admUser");
-            const admPswd = document.getElementById("admPswd");
-
-            if(!this.verificaInputs([admPswd, admUser])){
-                console.log('passou')
-            }
+            
         }
     }, 
     computed: {
@@ -159,7 +184,7 @@ export default{
             return new Date().toLocaleDateString('pt-br', {
                 dateStyle: 'short'
             })
-        }
+        },
     }
 }
 </script>
@@ -210,6 +235,11 @@ export default{
     .form-input:not(:placeholder-shown) + .form-label{
         transform: translateY(-3.3em) scale(.8);
         margin-left: .5em;
+    }
+
+    #is-invalid-modal{
+        position: relative;
+        top: -1em;
     }
 
     #is-invalid-modal{

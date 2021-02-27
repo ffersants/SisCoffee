@@ -18,7 +18,7 @@
             <div v-if="!fetchFailed && !fetching" id="container">
               <div class="card card-the-next">
            
-                  <div class="bigName" id="big-name-the-next" v-if=" theNext && theNext.name.length > 12">
+                  <div class="bigName" id="big-name-the-next" v-bind:title="theNext.name" v-if="theNext.name.length > 12">
                     <p>{{theNext.name}}</p>
                   </div>
                   <p v-else v-bind:title="theNext.name">{{theNext.name}}</p> 
@@ -32,7 +32,7 @@
 
               <div class="card card-the-one">
                      
-                  <div class="bigName" id="big-name-the-next" v-if=" theOne && theOne.name.length > 12">
+                  <div class="bigName" id="big-name-the-next" v-bind:title="theOne.name" v-if="theOne.name.length > 12">
                     <p>{{theOne.name}}</p>
                   </div>
                   <p v-else v-bind:title="theOne.name">{{theOne.name}}</p> 
@@ -50,7 +50,7 @@
               
               <div class="card card-the-last">
              
-                  <div class="bigName" id="big-name-the-next" v-if=" theLast && theLast.name.length > 12">
+                  <div class="bigName" id="big-name-the-next" v-bind:title="theLast.name" v-if="theLast.name.length > 12">
                     <p>{{theLast.name}}</p>
                   </div>
                   <p v-else v-bind:title="theLast.name">{{theLast.name}}</p> 
@@ -247,6 +247,38 @@ export default {
       background-color: #A35D2F;
     }
 
+    div.bigName{
+    position: relative;
+    box-sizing: border-box;
+    margin-right: 10%;
+    margin-left: 10%;
+    overflow: hidden;
+  }
+
+  div.bigName > p {
+    white-space: nowrap;
+        /* Starting position */
+    -moz-transform:translateX(100%);
+    -webkit-transform:translateX(100%);  
+    transform:translateX(100%);
+    /* Apply animation to this element */ 
+    transition: all .3s; 
+    -moz-animation: example1 5s linear infinite;
+    -webkit-animation: example1 5s linear infinite;
+    animation: leftRoll 5s linear infinite;
+  }
+  @keyframes leftRoll {
+    0%   { 
+      -moz-transform: translateX(80%); /* Firefox bug fix */
+      -webkit-transform: translateX(80%); /* Firefox bug fix */
+      transform: translateX(80%);     
+    }
+    100% { 
+      -moz-transform: translateX(-120%); /* Firefox bug fix */
+      -webkit-transform: translateX(-120%); /* Firefox bug fix */
+      transform: translateX(-120%); 
+    }
+  }
 
     #coffee-icon > img{
       width: 4em;

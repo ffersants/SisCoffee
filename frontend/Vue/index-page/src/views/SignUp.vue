@@ -6,19 +6,29 @@
                 <i class="fas  fa-arrow-left"></i>
             </router-link>
         </Header-Default>
-        <form id="form-sign-up" v-on:submit.prevent="confirmSignUp()">
+        <form novalidate="true" id="form-sign-up" v-on:submit.prevent="checkForm()">
             <b-container class="text-center">
                 <b-row id="first-row" class="text-center">
                     <b-col cols="12" md="6">
                         <div class="holds-input">
-                            <input required autocomplete="off" placeholder="Nome" id="userName" type="text">
+                            <input 
+                            v-model="name"  
+                            autocomplete="off" 
+                            placeholder="Nome" 
+                            id="userName" 
+                            type="text">
                             <label for="userName">Nome</label>
                         </div>
                     </b-col>
 
                     <b-col cols="12" md="6">
                         <div class="holds-input">
-                            <input required autocomplete="off" placeholder="Seção" id="userSection" type="text">
+                            <input 
+                                v-model="section" 
+                                autocomplete="off" 
+                                placeholder="Seção" 
+                                id="userSection" 
+                                type="text">
                             <label for="userSection">Seção</label>
                         </div>
                     </b-col>
@@ -49,9 +59,8 @@
         <div id="modal-area">
             <transition>
                 <modal v-if="showModal"
-                    :name="name" 
-                    :section="section"
-                    :signUpDate="signUpDate"
+                    :reqBody="reqBody"
+                    action="signup"
                 >
                     <div id="icon-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
@@ -84,6 +93,15 @@
                 signUpDate: ""
             }
         },
+        computed: {
+            reqBody(){
+                return {
+                    name: this.name.trim(), 
+                    section: this.section.trim(), 
+                    signUpDate: this.signUpDate.trim()
+                }
+            }
+        },
         methods:{
             addSurplus: function(){
             if(this.surplus > 8){
@@ -91,18 +109,21 @@
             }
                 this.surplus += 1
             },
-            verificaInputs(inputsArr){
+            checkForm(){
                 let isInvalid = document.getElementById("is-invalid");
-                isInvalid.classList.remove("invalid-inactive")
-                isInvalid.classList.add("invalid-active")
-                
-                for (const input of inputsArr) {
-                    if(input.value.trim() == "") return "false"
+            
+                if(!this.name.trim() || !this.name.trim()){
+                    isInvalid.classList.remove("invalid-inactive")
+                    isInvalid.classList.add("invalid-active")
+                    return false
+                } else{
+                    isInvalid.classList.remove("invalid-active")
+                    isInvalid.classList.add("invalid-inactive")
+                    
+                    this.showModal = true
+                    this.showingModal = true
                 }
-            },
-            confirmSignUp(){
-                this.showModal = true
-                this.showingModal = true
+                
             },
             cancelSignUp(){
                 this.$router.push('/')
@@ -112,28 +133,12 @@
             this.signUpDate = new Date().toLocaleDateString('pt-br', {
                     dateStyle: "short"
                 })
-            EventBus.$on("confirmClicked", () => {
-                
-                const userName = document.getElementById("userName");
-                const userSection = document.getElementById("userSection");
-
-                if(!this.verificaInputs([userName, userSection])){
-                    let isInvalid = document.getElementById("is-invalid");
-                    isInvalid.classList.remove("invalid-active")
-                    isInvalid.classList.add("invalid-inactive")
-
-                    this.name = userName.value.trim();
-                    this.section = userSection.value.trim();
-                    this.showModal = true;
-                    this.showingModal = true;
-                } 
-            }),
             EventBus.$on("closeModal", () => {
                 this.showModal = false;
                 this.showingModal = false;
             })   
         },
-         components: {
+        components: {
             HeaderDefault,
             Modal
         },
