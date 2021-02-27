@@ -2,14 +2,15 @@ const connection = require('../database/connection')
 
 module.exports = {
     create: async function (req, res) {
-            const { name, section, signUpDate, surplus} = req.body;
+        try{
+                const { name, section, currentDate, surplus} = req.body;
             //verifica se ação está autenticada corretamente
             
             backDate = new Date().toLocaleDateString("pt-br", {
                 dateStyle: 'short'
             })
 
-            if (signUpDate !== String(backDate)) {
+            if (currentDate !== String(backDate)) {
                 console.log("A data da requisição e do backend diferem!")
                 return res.status(400).json({
                     status: 400,
@@ -36,7 +37,8 @@ module.exports = {
             }
 
             const position = allUsers.length + 1
-            const lastCoffeeAcquisition = signUpDate;
+            const lastCoffeeAcquisition = currentDate;
+            const signUpDate = currentDate;
             await connection('users').insert({
                 name,
                 section,
@@ -47,6 +49,13 @@ module.exports = {
             })
 
             return res.status(201)
+        } catch(e){
+            console.log("FALHA INTERNA NO SERVIDOR -> ", e)
+            return res.status(500).json({
+                status: 500,
+                message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
+            })
+        }
     },
     list: async function (req, res) {
         const users = await connection('users').select('*').orderBy('position', 'asc')

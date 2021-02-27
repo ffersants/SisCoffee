@@ -24,9 +24,9 @@ app.use((req, res, next) => {
 
 app.use(express.json())
 
-async function verificaCredenciais(user, psw){
+async function verificaCredenciais(user, pswd){
  return await connection('adm_tb')
-                .where({userName: user, password: psw})
+                .where({userName: user, password: pswd})
                 .first()
 }
 
@@ -57,9 +57,9 @@ app.get('/', async function (req, res) {
 
 //USER
 app.post('/create/user', async(req, res) => {
-    const {name, section, signUpDate, surplus, admUser, admPassword} = req.body
+    const {name, section, currentDate, surplus, admUser, admPassword} = req.body
     
-    if(!name || !section || !signUpDate || !surplus || !admUser || !admPassword){
+    if(!name || !section || !currentDate || surplus < 0 || !admUser || !admPassword){
         console.log("Formulário enviado com campos a serem preenchidos.")
         return res.status(400).json({
             status: 400,
@@ -82,7 +82,7 @@ app.post('/create/user', async(req, res) => {
     if(created.statusCode !== 201) return
     console.log("Cadastro realizado, prosseguindo com as demais etapadas de criação do usuário...")
     //registro sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
-    await CoffeeRegisterController.create(name, signUpDate, false)
+    await CoffeeRegisterController.create(name, currentDate, false)
 
     if(surplus > 0) {
         console.log(`Cadastrando o bônus do usuário ${name}`)
@@ -91,7 +91,7 @@ app.post('/create/user', async(req, res) => {
              await connection('surplus_tb')
                 .insert({
                     userName: name,
-                    surplusRegisterDate: signUpDate,
+                    surplusRegisterDate: currentDate,
                 })
         }
     }
@@ -104,11 +104,11 @@ app.post('/create/user', async(req, res) => {
 
 app.get('/users', UserController.list)
 
-app.delete('/remove/:userID', async(req, res) => {
+app.delete('/remove/', async(req, res) => {
     
-    const {admUser, admPassword} = req.body;
+    const {userID, admUser, admPassword} = req.body;
   
-    if(!admUser || !admPassword){
+    if(!admUser || !admPassword || userID < 0 || !userID){
         console.log("Formulário enviado com campos a serem preenchidos.")
         return res.status(400).json({
             status: 400,
@@ -126,6 +126,11 @@ app.delete('/remove/:userID', async(req, res) => {
             });
         }
      await UserController.delete(req, res);
+
+     return res.status(201).json({
+         status: 201,
+         message: "Usuário removido!"
+     })
 })
 
 //COFFEE
@@ -264,8 +269,8 @@ app.post('/coffeeBought', async function (req, res) {
 
 
         console.log("Registro de compra de café concluído com sucesso!\n\n")
-        return res.status(200).json({
-            status: 200,
+        return res.status(201).json({
+            status: 201,
             message: "Compra registrada e tabela atualizada!"
         });
 })
