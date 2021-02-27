@@ -18,11 +18,14 @@
             <div v-if="!fetchFailed && !fetching" id="container">
               <div class="card card-the-next">
            
-                  <div class="bigName" id="big-name-the-next" v-bind:title="theNext.name" v-if="theNext.name.length > 12">
+                  <div class="bigName" id="big-name-the-next" v-bind:title="theNext.name" v-if="theNext && theNext.name.length > 12">
                     <p>{{theNext.name}}</p>
                   </div>
-                  <p v-else v-bind:title="theNext.name">{{theNext.name}}</p> 
-            
+                  <p v-else-if="theNext" v-bind:title="theNext.name">{{theNext.name}}</p> 
+                  <div v-else>
+                    <img width="20px" src="../assets/emoji.png" alt="">
+                    <p>Vazio</p>
+                  </div>
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
@@ -32,11 +35,15 @@
 
               <div class="card card-the-one">
                      
-                  <div class="bigName" id="big-name-the-next" v-bind:title="theOne.name" v-if="theOne.name.length > 12">
-                    <p>{{theOne.name}}</p>
+                <div class="bigName" id="big-name-the-next" v-bind:title="theOne.name" v-if="theOne.name.length > 12">
+                  <p>{{theOne.name}}</p>
+                </div>
+                <p v-else-if="theOne" v-bind:title="theOne.name">{{theOne.name}}</p> 
+                <div v-else>
+                    <img width="20px" src="../assets/emoji.png" alt="">
+                    <p>Vazio</p>
                   </div>
-                  <p v-else v-bind:title="theOne.name">{{theOne.name}}</p> 
-          
+                
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
@@ -49,12 +56,16 @@
               </div>
               
               <div class="card card-the-last">
-             
-                  <div class="bigName" id="big-name-the-next" v-bind:title="theLast.name" v-if="theLast.name.length > 12">
+                  <div class="bigName" id="big-name-the-next" v-bind:title="theLast.name" v-if="theLast && theLast.name.length > 12">
                     <p>{{theLast.name}}</p>
                   </div>
-                  <p v-else v-bind:title="theLast.name">{{theLast.name}}</p> 
-        
+                  <p v-else-if="theLast" v-bind:title="theLast.name">{{theLast.name}}</p> 
+                  <div v-else>
+                    <img width="20px" src="../assets/emoji.png" alt="">
+                    <p>Vazio</p>
+                  </div>
+
+
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
@@ -109,6 +120,7 @@ export default {
     return{
       fetching: true,
       fetchFailed: false,
+      emptyResponse: false,
       showModal: false,
       showUserConfig: false,
       theNext: "",
@@ -134,11 +146,11 @@ export default {
            return r.json()
         }
       })
-      .then(r => {   
-        this.theNext = r.theNext
-        this.theOne = r.theOne
-        this.theLast = r.theLast
-        this.fetching = false
+      .then(r => {
+          this.theNext = r.theNext
+          this.theOne = r.theOne
+          this.theLast = r.theLast
+          this.fetching = false
       })
       .catch(r => {
         console.log('ERRO -> ', r)

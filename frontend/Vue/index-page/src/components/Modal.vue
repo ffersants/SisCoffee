@@ -39,6 +39,7 @@
                     <b-col cols="6">
                         <div class="form-input-area">
                             <input
+                                ref="autoFocus"
                                 :disabled="fetching"
                                 v-model="admUser"
                                 autocomplete="off" 
@@ -137,6 +138,7 @@ export default{
           translateValue: "translate(56 27)",
           fetching: false,
           loading: false,
+          modalFeedback: ""
       }
     },
     props:{
@@ -159,10 +161,12 @@ export default{
           this.surplus += 1
         },
         checkForm(){                            
-            var msgErroModal = document.getElementById("msg-erro-modal");
-                msgErroModal.textContent = ""
-                if(!this.admUser.trim() || !this.admPswd.trim()){
-                    msgErroModal.textContent = "Certifique-se de que todos os campos estão preenchidos"
+            const msgErroModal = document.getElementById("msg-erro-modal");
+                this.modalFeedback = ""
+                msgErroModal.textContent = this.modalFeedback
+            if(!this.admUser.trim() || !this.admPswd.trim()){
+                    this.modalFeedback = "Certifique-se de que todos os campos estão preenchidos"
+                    msgErroModal.textContent = this.modalFeedback
                 
                     msgErroModal.classList.remove("invalid-inactive")
                     msgErroModal.classList.add("invalid-active")
@@ -173,31 +177,41 @@ export default{
                     
                     return false
             } else{
-                console.log('entramo aqui')
-                this.badInput = false;
                 this.controller(msgErroModal)
             }
         },
-        async controller(msgErroModal){                
+        async controller(msgErroModal){ 
+            this.modalFeedback = ""
+            msgErroModal.textContent = this.modalFeedback              
             const admPassword = MD5(this.admPswd)
 
             this.reqBody['admPassword'] = admPassword
             this.reqBody['admUser'] = this.admUser
             this.reqBody['surplus'] = this.surplus
                 
+            this.$store.dispatch("setUserInAction", this.reqBody)
+
             this.formatsDOMToFetch()                
             
             const response = await this.doesTheFetch()
-            console.log(response)
-            if(response.status !== 201){
-                setInterval(() => {
+            this.modalFeedback = response.message
+            
+            if(response.status === 201){
+                setTimeout(() => {
+                    this.fetching = false;
+                    this.loading = false;
+                    this.$destroy()
+                    EventBus.$emit('user-created')
+                }, 3000)
+            } else{
+                setTimeout(() => {
                     this.fetching = false;
                     this.loading = false;
                     msgErroModal.classList.remove("invalid-inactive")
                     msgErroModal.classList.add("invalid-active")
-                    msgErroModal.textContent = response.message;
+                    msgErroModal.textContent = this.modalFeedback 
                 }, 3000)
-            } 
+            }
         },
         formatsDOMToFetch(){
             this.fetching = true;
@@ -236,6 +250,10 @@ export default{
                 dateStyle: 'short'
             })
         },
+    },
+    mounted(){
+        this.$nextTick(() => this.$refs.autoFocus.focus())
+    
     }
 }
 </script>
@@ -250,9 +268,11 @@ export default{
     #modal{
         padding: 1em;        
     }
+    .form-input-area{
+        transition: all .3s;
+    }
 
     .form-input-area:focus-within{
-        transition: all .3s;
         transform: scale(1.09);
     }
 
@@ -330,8 +350,6 @@ export default{
     #confirm{
         border: 1px solid #31FF00;
     }
-
-  
 
     .collapse-btn-right{
         animation: collapse-btn-right;

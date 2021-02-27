@@ -58,6 +58,12 @@
         </form>
         <div id="modal-area">
             <transition>
+                <success-alert description="Usuário cadastrado com sucesso!" v-if="showSuccessAlert" action="signup">
+                     <div id="icon-1">
+                          <i class="fas fa-user-plus"></i>
+                      </div>
+                </success-alert>
+
                 <modal v-if="showModal"
                     :reqBody="reqBody"
                     action="signup"
@@ -78,6 +84,7 @@
 <script>
     import {EventBus} from '../event-bus.js'
     import HeaderDefault from '../components/HeaderDefault.vue'
+    import SuccessAlert from '../components/SuccessAlert.vue'
     import Modal from '../components/Modal.vue'
 
     export default {
@@ -86,6 +93,7 @@
             return{
                 surplus: 0,
                 translateValue: "translate(56 27)",
+                showSuccessAlert: false,
                 showModal: false,
                 showingModal: false,
                 name: "",
@@ -98,12 +106,12 @@
                 return {
                     name: this.name.trim(), 
                     section: this.section.trim(), 
-                    signUpDate: this.signUpDate.trim()
+                    currentDate: this.signUpDate.trim()
                 }
             }
         },
         methods:{
-            addSurplus: function(){
+            addSurplus(){
             if(this.surplus > 8){
                 this.translateValue="translate(50 27)"
             }
@@ -136,15 +144,26 @@
         },
         created(){
             this.signUpDate = new Date().toLocaleDateString('pt-br', {
-                    dateStyle: "short"
-                })
+                dateStyle: "short"
+            })
             EventBus.$on("closeModal", () => {
                 this.showModal = false;
                 this.showingModal = false;
-            })   
+            })
+            EventBus.$on("user-created", () => {
+                this.showModal = false;
+                this.showingModal = false;
+                this.showSuccessAlert = true;
+            })               
+            EventBus.$on("closeSuccessAlert", () => {
+                this.name = ""
+                this.section = ""
+                this.showSuccessAlert = false;
+            })
         },
         components: {
             HeaderDefault,
+            SuccessAlert,
             Modal
         },
     }
@@ -164,7 +183,7 @@
         left:0;
     }
 
-     #first-row div{
+    #first-row div{
         margin-top: 1em;
     }
 

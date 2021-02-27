@@ -14,7 +14,7 @@
             <transition>
                 <modal-base v-if="showAlert">
                     <div id="alert-error">
-                        <h1 class="m">AÇÃO NEGADA</h1>
+                        <h1>AÇÃO NEGADA</h1>
                         <i class="fas fa-times-circle"></i>
                         <p>
                             Este usuário já teve sua compra adiantada neste ciclo

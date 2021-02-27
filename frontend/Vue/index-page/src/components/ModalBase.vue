@@ -43,6 +43,7 @@ export default {
 
 
 #modal{
+    width: fit-content;
     color: var(--modal-text-color);
     background-color: #35373E;
     border-radius: 1rem;
