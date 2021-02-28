@@ -31,11 +31,13 @@ async function ckeckCredentials(user, pswd){
 }
 
 function checkReqBody(reqBody){
-    return Object.entries(reqBody).filter( data => {
+    let whatsMissing = Object.entries(reqBody).filter( data => {
         if(data[1] === "" || !data[1] || data[1] === undefined){
            return data[0] === "surplus" ? false : data
         }
     })
+
+    if(whatsMissing.length > 0) true
 }
 
 app.get('/', async function (req, res) {
@@ -63,6 +65,8 @@ app.get('/', async function (req, res) {
     res.send(showThem);
 });
 
+app.get('/users', UserController.list)
+
 //USER
 app.post('/create/user', async(req, res) => {
     const emptyPropertie = checkReqBody(req.body)
@@ -75,7 +79,7 @@ app.post('/create/user', async(req, res) => {
         })
     }
 
-    const autenticado = await ckeckCredentials(admUser, admPassword);
+    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword);
   
     if(!autenticado){
         console.log("Usuário e/ou senha da conta administradoras são inválidas.")
@@ -85,15 +89,19 @@ app.post('/create/user', async(req, res) => {
         });
     }
 
-    const created = await UserController.create(req, res)
+    const { name, section, currentDate, surplus} = req.body;
+
+    const created = await UserController.create(name, section, currentDate, surplus, res)
 
     if(created.statusCode !== 201) return
-    console.log("Cadastro realizado, prosseguindo com as demais etapadas de criação do usuário...")
-    //registro sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
-    await CoffeeRegisterController.create(name, currentDate, false)
 
+    console.log(`Cadastro realizado! Prosseguindo com as demais etapas de registro do ${name}...`)
+    
+    //registro de compra de café sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
+    await CoffeeRegisterController.create(name, currentDate, false)
+    
     if(surplus > 0) {
-        console.log(`Cadastrando o bônus do usuário ${name}`)
+        console.log(`Cadastrando o saldo de ${surplus} registro(s) do usuário ${name}`)
         //alimentar tabela aqui
         for (i = 0; i != surplus; i++) {
              await connection('surplus_tb')
@@ -103,14 +111,15 @@ app.post('/create/user', async(req, res) => {
                 })
         }
     }
-    console.log(`Cadastro de ${name} realizado!`)
+
+    console.log(`Cadastro de ${name} realizado com um total de ${surplus} registro(s) de saldo.`)
+    
     return res.status(201).json({
         status: 201,
         message: 'Usuário cadastrado com sucesso!'
-    }).send()
+    })
 })
 
-app.get('/users', UserController.list)
 
 app.delete('/remove', async(req, res) => {
     
@@ -124,7 +133,7 @@ app.delete('/remove', async(req, res) => {
         })
     }
 
-    const autenticado = await ckeckCredentials(admUser, admPassword)
+    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
     
     if(!autenticado){
             console.log("Usuário e/ou senha da conta administradoras são inválidas.")
@@ -150,7 +159,7 @@ app.post('/coffeeBought', async function (req, res) {
         })
     }
 
-    const autenticado = await ckeckCredentials(admUser, admPassword)
+    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
 
     if(!autenticado){
         console.log("Usuário e/ou senha da conta administradoras são inválidas.\n\n")

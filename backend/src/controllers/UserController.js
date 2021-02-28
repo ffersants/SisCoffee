@@ -1,9 +1,8 @@
 const connection = require('../database/connection')
 
 module.exports = {
-    create: async function (req, res) {
+    create: async function (name, section, currentDate, surplus, res) {
         try{
-                const { name, section, currentDate, surplus} = req.body;
             //verifica se ação está autenticada corretamente
             
             backDate = new Date().toLocaleDateString("pt-br", {
@@ -18,11 +17,12 @@ module.exports = {
                 }).send()
             }
 
-            const allUsers = await connection('users')
+            const allUsersRegistered = await connection('users')
                 .select('name');
+
             let userAlreadyExists;
             
-            allUsers.forEach(user => {
+            allUsersRegistered.forEach(user => {
                 if (user.name === name) {
                     userAlreadyExists = true                    
                 }
@@ -36,9 +36,12 @@ module.exports = {
                 }).send()
             }
 
-            const position = allUsers.length + 1
+            const position = allUsersRegistered.length + 1
+            
             const lastCoffeeAcquisition = currentDate;
+            
             const signUpDate = currentDate;
+            
             await connection('users').insert({
                 name,
                 section,
