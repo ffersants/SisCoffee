@@ -4,34 +4,42 @@
             <h1>AÇÃO REALIZADA</h1>
             <!-- icon -->
             <slot></slot>
+            
             <b-container>
                 <b-row id="first-row" class="text-center">
+                    
                     <b-col cols="5">
                         <p>Nome</p>
                         <!-- <p>Fernando Santos</p> -->
                         <p>{{userInAction.name}}</p>
                     </b-col>
+                    
                     <b-col cols="2">
                         <p>Seção</p>
                         <!-- <p>SSTM</p> -->
                         <p>{{userInAction.section}}</p>
                     </b-col>
+                    
                     <b-col cols="5">
+                        
                         <div v-if="action == 'payment'">
                             <p>Data do pagamento</p>
                             <!-- <p>28/08/2000</p> -->
                             <p>{{userInAction.currentDate}}</p>
                         </div>
+                        
                         <div v-else-if="action == 'signUp'">
                             <p>Data do cadastro</p>
                             <!-- <p>28/08/2000</p> -->
                             <p>{{userInAction.currentDate}}</p>
                         </div>
+                        
                         <div v-else>
                             <p>Data do cadastro</p>
                             <!-- <p>28/08/2000</p> -->
                             <p>{{userInAction.signUpDate}}</p>
                         </div>
+
                     </b-col>
                 </b-row>
             </b-container>
@@ -40,8 +48,6 @@
                 <p>{{description}}</p>
                 <button @click="closeSuccessAlert()">OK</button>
             </div>
-
-            
 
         </div>
     </modal-base>
@@ -54,6 +60,7 @@ import {EventBus} from '../event-bus.js'
 import ModalBase from './ModalBase.vue'
 
 export default {
+    name: 'SuccessAlert',
     props: {
         action: {
             type: String
@@ -63,17 +70,16 @@ export default {
             required: true
         },
     },
+    computed: mapState(['userInAction']),
     methods: {
         closeSuccessAlert(){
             this.$destroy()
             EventBus.$emit("closeSuccessAlert")
         }
     },
-    computed: mapState(['userInAction']),
     components: {
         ModalBase
-    },
-    name: 'SuccessAlert'
+    }
 }
 </script>
 

@@ -4,37 +4,37 @@
             <h1>SALDO POSITIVO</h1>
 
             <div id="main">
-            <p>
-                Foi identificado que este usuário possui saldo disponível
-            </p>
+                <p>
+                    Foi identificado que este usuário possui saldo disponível
+                </p>
 
-            <p>
-                Gostaria de utilizá-lo para registrar essa compra?
-            </p>
+                <p>
+                    Gostaria de utilizá-lo para registrar essa compra?
+                </p>
 
-            <b-container>
-                <b-row id="row-with-btns" class="mb-1">
-                    <b-col cols="6">
-                        <button 
-                            @click="no()" 
-                            id="no"
-                        >
-                            Não
-                        </button>
-                    </b-col>
-                    
-                   
+                <b-container>     
+                    <b-row id="row-with-btns" class="mb-1">
+                        
+                        <b-col cols="6">
+                            <button 
+                                @click="no()" 
+                                id="no"
+                            >
+                                Não
+                            </button>
+                        </b-col>
+                        
+                        <b-col cols="6">
+                            <button  
+                                @click="yes()"
+                                id="yes"
+                            >
+                                Sim
+                            </button>
+                        </b-col>  
 
-                    <b-col cols="6">
-                        <button  
-                            @click="yes()"
-                            id="yes"
-                        >
-                            Sim
-                        </button>
-                    </b-col>  
-                </b-row>
-            </b-container>
+                    </b-row>
+                </b-container>
             </div>
         </div>
     </modal-base>
@@ -42,7 +42,9 @@
 
 <script>
 import {EventBus} from '../event-bus.js'
+
 import ModalBase from './ModalBase.vue'
+
 export default {
     name: "ModalUseSurplus",
     methods: {

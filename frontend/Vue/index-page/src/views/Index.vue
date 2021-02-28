@@ -5,8 +5,9 @@
               <i @click="openUserConfig" id="user-config" class="fas fa-users-cog"></i>
           
               <router-link to="/list-users">
-              <i id="list-users" class="fas fa-list"></i>   
-              </router-link>    
+                <i id="list-users" class="fas fa-list"></i>   
+              </router-link>  
+
           </HeaderDefault>
           
           <div v-if="fetching" class="text-center">
@@ -15,20 +16,26 @@
           </div>
           
           <div id="cards">
+            
             <div v-if="!fetchFailed && !fetching" id="container">
+              
               <div class="card card-the-next">
            
                   <div class="bigName" id="big-name-the-next" v-bind:title="theNext.name" v-if="theNext && theNext.name.length > 12">
                     <p>{{theNext.name}}</p>
                   </div>
+                  
                   <p v-else-if="theNext" v-bind:title="theNext.name">{{theNext.name}}</p> 
+                  
                   <div v-else>
                     <img width="20px" src="../assets/emoji.png" alt="">
                     <p>Vazio</p>
                   </div>
+                
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
+                
                 <p>sua vez <br> está chegando </p>
                 
               </div>
@@ -38,11 +45,13 @@
                 <div class="bigName" id="big-name-the-next" v-bind:title="theOne.name" v-if="theOne.name.length > 12">
                   <p>{{theOne.name}}</p>
                 </div>
+                
                 <p v-else-if="theOne" v-bind:title="theOne.name">{{theOne.name}}</p> 
+                
                 <div v-else>
-                    <img width="20px" src="../assets/emoji.png" alt="">
-                    <p>Vazio</p>
-                  </div>
+                  <img width="20px" src="../assets/emoji.png" alt="">
+                  <p>Vazio</p>
+                </div>
                 
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
@@ -53,13 +62,17 @@
                 <button @click="openModal()" id="pay-btn">
                   TÁ PAGO!
                 </button>
+
               </div>
               
               <div class="card card-the-last">
+                  
                   <div class="bigName" id="big-name-the-next" v-bind:title="theLast.name" v-if="theLast && theLast.name.length > 12">
                     <p>{{theLast.name}}</p>
                   </div>
+                  
                   <p v-else-if="theLast" v-bind:title="theLast.name">{{theLast.name}}</p> 
+                  
                   <div v-else>
                     <img width="20px" src="../assets/emoji.png" alt="">
                     <p>Vazio</p>
@@ -69,69 +82,91 @@
                 <div id="coffee-icon">
                   <img src="../assets/coffee-cup.png" alt="">
                 </div>
+
                 <p>sua vez <br> já passou</p>
+
               </div>
-            </div>
+
+            </div> <!--container ends-->
 
             <div id="fetch-failed-alert"  v-if="fetchFailed">
+              
               <div id="fetch-failed-icon">
                 <img src="../assets/fetch-failed.png" alt="">
               </div>
 
               <div id="fetch-failed-msg">
+                
                 <h1 >
                   Ops... 
                 </h1>
+
                 <br>
+
                 <p>Não foi possível carregar as informações</p>
                 <small>Contate o admnistrador do sistema</small>
+              
               </div>
-            </div>
-          </div>
+
+            </div> <!--fetchFailed div ends-->
+
+          </div> <!--cards area ends-->
           
           <div id="modal-area">
-              <transition>
-                <success-alert 
+              <transition-group>
+
+                <success-alert
+                  key="success-alert" 
                   description="Compra registrada com sucesso!" 
                   v-if="showSuccessAlert" 
-                  action="payment">
+                  action="payment"
+                >
                      <div class="text-center mb-2 mt-2" id="icon-1">
                           <svg id="Cafe_checked" data-name="Cafe checked" xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
                             <path id="coffee-solid" d="M17.272,68.091H34.594c4.782,0,8.661-4.409,8.661-9.843h2.887c6.37,0,11.548-5.885,11.548-13.124S52.513,32,46.143,32H10.776A2.322,2.322,0,0,0,8.61,34.461V58.248C8.61,63.682,12.49,68.091,17.272,68.091ZM46.143,38.562c3.185,0,5.774,2.943,5.774,6.562s-2.589,6.562-5.774,6.562H43.256V38.562Zm4.3,39.372H4.307c-4.295,0-5.5-6.562-3.248-6.562H53.686c2.256,0,1.065,6.562-3.239,6.562Z" transform="translate(0.056 -32)" fill="#f0a82e"/>
                             <path id="check-circle-regular" d="M22.459,8A14.459,14.459,0,1,0,36.918,22.459,14.459,14.459,0,0,0,22.459,8Zm0,2.8A11.661,11.661,0,1,1,10.8,22.459,11.654,11.654,0,0,1,22.459,10.8m8.174,7.6L29.32,17.069a.7.7,0,0,0-.989,0L20.089,25.24,16.6,21.726a.7.7,0,0,0-.989,0l-1.325,1.314a.7.7,0,0,0,0,.989l5.293,5.336a.7.7,0,0,0,.989,0L30.63,19.383a.7.7,0,0,0,0-.989Z" transform="translate(4 -5)" fill="#fff"/>
                           </svg>
                       </div>
+
                 </success-alert>
 
-                <modal-user-config v-if="showUserConfig">
+                <modal-user-config 
+                  v-if="showUserConfig"
+                  key="modal-user-config"
+                >
                 </modal-user-config>
 
-                <modal-use-surplus v-if="showModalUserSurplus">
+                <modal-use-surplus 
+                  v-if="showModalUserSurplus"
+                  key="modal-use-surplus"
+                >
                 </modal-use-surplus>
 
-                  <modal 
-                    v-if="showModal" 
-                    action="payment"
-                    :reqBody="reqBody"
-                  >
-                      <div id="icon-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
-                              <path id="coffee-solid" d="M17.272,68.091H34.594c4.782,0,8.661-4.409,8.661-9.843h2.887c6.37,0,11.548-5.885,11.548-13.124S52.513,32,46.143,32H10.776A2.322,2.322,0,0,0,8.61,34.461V58.248C8.61,63.682,12.49,68.091,17.272,68.091ZM46.143,38.562c3.185,0,5.774,2.943,5.774,6.562s-2.589,6.562-5.774,6.562H43.256V38.562Zm4.3,39.372H4.307c-4.295,0-5.5-6.562-3.248-6.562H53.686c2.256,0,1.065,6.562-3.239,6.562Z" transform="translate(0.056 -32)" fill="#f0a82e"/>
-                              <path id="check-circle-regular" d="M22.459,8A14.459,14.459,0,1,0,36.918,22.459,14.459,14.459,0,0,0,22.459,8Zm0,2.8A11.661,11.661,0,1,1,10.8,22.459,11.654,11.654,0,0,1,22.459,10.8m8.174,7.6L29.32,17.069a.7.7,0,0,0-.989,0L20.089,25.24,16.6,21.726a.7.7,0,0,0-.989,0l-1.325,1.314a.7.7,0,0,0,0,.989l5.293,5.336a.7.7,0,0,0,.989,0L30.63,19.383a.7.7,0,0,0,0-.989Z" transform="translate(4 -5)" fill="#fff"/>
-                          </svg>
-                      </div>
-                  </modal>
-              </transition>
-          </div>
-      </div>
+                <modal 
+                  v-if="showModal" 
+                  action="payment"
+                  :reqBody="reqBody"
+                  key="modal"
+                >
+                  <div id="icon-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="57.747" height="45.934" viewBox="0 0 57.747 45.934">
+                      <path id="coffee-solid" d="M17.272,68.091H34.594c4.782,0,8.661-4.409,8.661-9.843h2.887c6.37,0,11.548-5.885,11.548-13.124S52.513,32,46.143,32H10.776A2.322,2.322,0,0,0,8.61,34.461V58.248C8.61,63.682,12.49,68.091,17.272,68.091ZM46.143,38.562c3.185,0,5.774,2.943,5.774,6.562s-2.589,6.562-5.774,6.562H43.256V38.562Zm4.3,39.372H4.307c-4.295,0-5.5-6.562-3.248-6.562H53.686c2.256,0,1.065,6.562-3.239,6.562Z" transform="translate(0.056 -32)" fill="#f0a82e"/>
+                      <path id="check-circle-regular" d="M22.459,8A14.459,14.459,0,1,0,36.918,22.459,14.459,14.459,0,0,0,22.459,8Zm0,2.8A11.661,11.661,0,1,1,10.8,22.459,11.654,11.654,0,0,1,22.459,10.8m8.174,7.6L29.32,17.069a.7.7,0,0,0-.989,0L20.089,25.24,16.6,21.726a.7.7,0,0,0-.989,0l-1.325,1.314a.7.7,0,0,0,0,.989l5.293,5.336a.7.7,0,0,0,.989,0L30.63,19.383a.7.7,0,0,0,0-.989Z" transform="translate(4 -5)" fill="#fff"/>
+                    </svg>
+                  </div>
+                </modal>
+
+              </transition-group>
+          </div> <!--modal-area ends-->
+      </div> <!--index ends-->
     </transition>
 </template>
 <script>
 import {EventBus} from '../event-bus.js'
 
 import HeaderDefault from '../components/HeaderDefault.vue'
-import ModalUserConfig from '../components/ModalUserConfig.vue'
 import Modal from '../components/Modal.vue'
+import ModalUserConfig from '../components/ModalUserConfig.vue'
 import ModalUseSurplus from '../components/ModalUseSurplus.vue'
 import SuccessAlert from '../components/SuccessAlert.vue'
 
@@ -150,6 +185,15 @@ export default {
       theNext: "",
       theOne: "",
       theLast: ""
+    }
+  },
+  computed: {
+    reqBody(){
+      return {
+        name: this.theOne.name,
+        section: this.theOne.section,
+        useSurplus: String(this.useSurplus)
+      }
     }
   },
   methods: {
@@ -207,29 +251,21 @@ export default {
       this.showModal = true
     })
     EventBus.$on("paymentFinished", () => {
+      this.showModal = false
       this.showSuccessAlert = true
     })
     EventBus.$on("closeSuccessAlert", () => {
-      this.showModal = false
+      this.$router.go()
       this.showSuccessAlert = false
     })
   },
   components: {
     HeaderDefault,
-    ModalUserConfig,
     Modal,
+    ModalUserConfig,
     ModalUseSurplus,
     SuccessAlert
-  },
-  computed: {
-    reqBody(){
-      return {
-        name: this.theOne.name,
-        section: this.theOne.section,
-        useSurplus: String(this.useSurplus)
-      }
-    }
-  }
+  }  
 }
 </script>
 
@@ -410,5 +446,20 @@ export default {
         font-size: 1rem 
       }
     }
+
+  .list-users-enter-active,
+  .list-users-leave-active{
+      transition: opacity .4s;
+  }
+
+  .list-users-enter,
+  .list-users-leave-to{
+      opacity: 0;
+  }
+
+  .list-users-leave,
+  .list-users-enter-to{
+      opacity: 1;
+  }
 
 </style>

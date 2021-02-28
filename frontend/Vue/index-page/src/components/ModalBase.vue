@@ -1,19 +1,20 @@
 <template>
     <transition>
         <div id="makes-fullscreen">
+            
             <div id="smoked-mask">
-            <div id="modal">
-                <slot></slot>
+                <div id="modal">
+                    <slot></slot>
+                </div>
             </div>
-            </div>
+
         </div>
     </transition>
 </template>
 
 <script>
 export default {
-    name: "ModalBase",
-
+    name: "ModalBase"
 }
 </script>
 

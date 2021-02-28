@@ -1,6 +1,8 @@
 <template>
   <b-container id="header-default" class="mt-4">
+    
     <b-row>
+      
       <b-col class="text-left">
         <slot id="slot"></slot>
       </b-col>
@@ -12,29 +14,29 @@
       <b-col class="text-right">
         <span>{{time}}</span>
       </b-col>
+    
     </b-row>
+    
     <h1 class="mt-4 mb-5">{{title}}</h1>
+
   </b-container>
 </template>
 
 <script>
-  export default {
-    name: "HeaderDefault",
-    data() {
-      return {
-        time: ""
-      }
-    },
-    props:{
-      title: {
-        type: String,
-        required: true
-      }
-    },
-    methods: {
-
-    },
-    beforeCreate(){
+export default {
+  name: "HeaderDefault",
+  data() {
+    return {
+      time: ""
+    }
+  },
+  props:{
+    title: {
+      type: String,
+      required: true
+    }
+  },
+  beforeCreate(){
     setInterval(() => {
             let date = new Date().toLocaleDateString("pt-br", {
                 dateStyle: 'short'
@@ -50,9 +52,9 @@
             weekday = weekday[0].toUpperCase() + weekday.substr(1, 2) 
             
             this.time = `${date} ${weekday} ${time}`
-        }, 1000);
+        }, 10000);
   }
-  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

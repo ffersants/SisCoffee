@@ -1,6 +1,8 @@
 <template>
     <modal-base>
+        
         <div id="close" @click="closeModal"><span>X</span></div>
+        
         <div id="modal-user-config">
             <div>
                 <h1>ESCOLHA UMA <br> OPÇÃO</h1>
@@ -15,19 +17,19 @@
                 <button @click="removeUser()">
                     Remover usuário
                 </button>
-            </section>          
+            </section>  
+
         </div>
+        
     </modal-base>
 </template>
 
 <script>
 import {EventBus} from '../event-bus.js'
 import ModalBase from './ModalBase.vue';
+
 export default {
     name: "ModalUserConfig",
-    components:{
-        ModalBase
-    },
     methods:{
         closeModal(){
             EventBus.$emit('closeUserConfig')
@@ -39,7 +41,9 @@ export default {
             this.$router.push('/remove-user')
         }
     },
-    
+    components:{
+        ModalBase
+    }   
 }
 </script>
 
