@@ -73,6 +73,7 @@ export default {
     components: {
         ModalBase
     },
+    name: 'SuccessAlert'
 }
 </script>
 

@@ -72,6 +72,7 @@ import ModalUseSurplus from '../components/ModalUseSurplus.vue'
 import SuccessAlert from '../components/SuccessAlert.vue'
 
 export default {
+    name: 'ListUsers',
     data(){
         return{
             action: 'pagar',
@@ -79,7 +80,7 @@ export default {
             showAlert: false,
             showModalUserSurplus: false,
             showSuccessAlert: false,
-            useSurplus: false,
+            useSurplus: false
         }
     },
     created(){
@@ -94,6 +95,7 @@ export default {
             
         }),
         EventBus.$on("closeModal", () => {
+            this.useSurplus = false
             this.showModal = false;
         }),
         EventBus.$on("openAlert", () => {
@@ -103,9 +105,11 @@ export default {
         EventBus.$on("dontUseSurplus", () => {
             this.showModalUserSurplus = false
             this.showModal = true
+            this.useSurplus = false
+            console.log('yes, use surplus')
         })
         EventBus.$on("yesUseSurplus", () => {
-            this.userSurplus = true
+            this.useSurplus = true
             this.showModalUserSurplus = false
             this.showModal = true
         })
@@ -114,7 +118,9 @@ export default {
             this.showSuccessAlert = true
         })
         EventBus.$on("closeSuccessAlert", () => {
+            this.showModal = false
             this.showSuccessAlert = false
+            this.$router.go()
         })  
     },
     computed: {

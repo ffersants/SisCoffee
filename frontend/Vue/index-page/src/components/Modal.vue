@@ -69,7 +69,7 @@
 
                 <p id="msg-erro-modal" class="invalid-message invalid-inactive"></p>
                 
-                <div id="add-surplus">
+                <div v-if="action !== 'removeUser'" id="add-surplus">
                     <p>Deseja adicionar saldo?</p>
                     <small>Clique no ícone abaixo</small>
                     <span @click="addSurplus()" id="coffee-icon">
@@ -196,16 +196,20 @@ export default{
             this.formatsDOMToFetch()                
 
             let urlToFetch;
+            let method;
              
             if(this.action === 'signUp'){
                 urlToFetch = 'http://localhost:3300/create/user'
+                method = 'POST'
             }else if(this.action === 'payment'){
                 urlToFetch = 'http://localhost:3300/coffeeBought'
+                method = 'POST'
             } else if(this.action === 'removeUser'){
                 urlToFetch = 'http://localhost:3300/remove'
+                method = 'DELETE'
             }
-            
-            const response = await this.doesTheFetch(urlToFetch)
+
+            const response = await this.doesTheFetch(urlToFetch, method)
             
             this.modalFeedback = response.message
             
@@ -219,6 +223,9 @@ export default{
                     } else if(this.action === 'payment'){
                         EventBus.$emit('paymentFinished')
                          this.$destroy()
+                    } else if(this.action === 'removeUser'){
+                        EventBus.$emit('userRemoved')
+                        this.$destroy()
                     }
                 }, 3000)
             } else{
@@ -241,9 +248,11 @@ export default{
                 this.loading = true;
             }, 1000)    
         },
-        async doesTheFetch(address){
+        async doesTheFetch(address, method){
+            console.log(address)
+            console.log(this.reqBody)
             const r = await fetch(address, {
-                method: 'POST',
+                method: method,
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -251,7 +260,7 @@ export default{
                 body: JSON.stringify(this.reqBody)
             })
                 .then(r => r.json())
-                .catch(r => console.log('deu rim -> ', r))
+                .catch(r => console.log(r))
             return r
         },
         cancel(){
