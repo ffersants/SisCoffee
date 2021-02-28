@@ -263,7 +263,6 @@ app.post('/coffeeBought', async function (req, res) {
 })
 
 app.delete('/remove', async(req, res) => {
-    
     const emptyPropertie = checkReqBody(req.body)
     
     if(emptyPropertie){
@@ -286,7 +285,7 @@ app.delete('/remove', async(req, res) => {
 
     
     const name = req.body.name
-
+    await UserController.update.position(name, false, "removingUser")
     await UserController.delete(name, res);
 })
 

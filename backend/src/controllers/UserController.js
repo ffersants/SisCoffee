@@ -113,17 +113,19 @@ module.exports = {
         }
     },
     update: {
-        position: async function (user, isAhead) {
+        position: async function (user, isAhead, action) {
             //informações do usuário que está pagando
             try {
                 const totalUsers = await connection('users').select('name');
-
+                
                 const userPosition = (await connection('users')
                     .where('name', user)
                     .select('position')
                     .first()).position
 
                 await organizeTable(userPosition, totalUsers.length)
+
+                if(action === 'removingUser') return
 
                 //teremos dois registros na mesma posição após a organização da tabela,
                 //então, o usuário que pagou será colocado em última posição com o código abaixo
@@ -135,8 +137,12 @@ module.exports = {
                         isAhead: isAhead 
                     })
 
-            } catch (err) {
-                console.error('Isso é um erro: ' + err)
+            } catch(err){
+                console.log("FALHA INTERNA NO SERVIDOR -> ", err)
+                return res.status(500).json({
+                    status: 500,
+                    message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
+                })
             }
             ///////////////////METHODS
             async function organizeTable(userPosition, totalPositions) {
