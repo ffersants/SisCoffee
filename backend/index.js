@@ -24,10 +24,18 @@ app.use((req, res, next) => {
 
 app.use(express.json())
 
-async function verificaCredenciais(user, pswd){
+async function ckeckCredentials(user, pswd){
  return await connection('adm_tb')
                 .where({userName: user, password: pswd})
                 .first()
+}
+
+function checkReqBody(reqBody){
+    return Object.entries(reqBody).filter( data => {
+        if(data[1] === "" || !data[1] || data[1] === undefined){
+           return data[0] === "surplus" ? false : data
+        }
+    })
 }
 
 app.get('/', async function (req, res) {
@@ -57,17 +65,17 @@ app.get('/', async function (req, res) {
 
 //USER
 app.post('/create/user', async(req, res) => {
-    const {name, section, currentDate, surplus, admUser, admPassword} = req.body
+    const emptyPropertie = checkReqBody(req.body)
     
-    if(!name || !section || !currentDate || surplus < 0 || !admUser || !admPassword){
-        console.log("Formulário enviado com campos a serem preenchidos.")
+    if(emptyPropertie){
+        console.log(`Corpo da requisição inválido.`, emptyPropertie)
         return res.status(400).json({
             status: 400,
             message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
         })
     }
 
-    const autenticado = await verificaCredenciais(admUser, admPassword);
+    const autenticado = await ckeckCredentials(admUser, admPassword);
   
     if(!autenticado){
         console.log("Usuário e/ou senha da conta administradoras são inválidas.")
@@ -106,17 +114,17 @@ app.get('/users', UserController.list)
 
 app.delete('/remove', async(req, res) => {
     
-    const {name, admUser, admPassword} = req.body;
-  
-    if(!admUser || !admPassword || !name){
-        console.log("Formulário enviado com campos a serem preenchidos.")
+    const emptyPropertie = checkReqBody(req.body)
+    
+    if(emptyPropertie){
+        console.log(`Corpo da requisição inválido.`, emptyPropertie)
         return res.status(400).json({
             status: 400,
             message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
         })
     }
 
-    const autenticado = await verificaCredenciais(admUser, admPassword)
+    const autenticado = await ckeckCredentials(admUser, admPassword)
     
     if(!autenticado){
             console.log("Usuário e/ou senha da conta administradoras são inválidas.")
@@ -132,18 +140,17 @@ app.delete('/remove', async(req, res) => {
 
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
-    const { name, currentDate, surplus, useSurplus, admUser, admPassword } = req.body;
-    //verificação da requisição
-    if (!name || !currentDate || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus || !admUser || !admPassword) {
-        console.log("Formulário enviado com campos a serem preenchidos.\n\n")
-        console.log(name, currentDate, surplus, useSurplus, admUser, admPassword)
+    const emptyPropertie = checkReqBody(req.body)
+    
+    if(emptyPropertie){
+        console.log(`Corpo da requisição inválido.`, emptyPropertie)
         return res.status(400).json({
             status: 400,
             message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
         })
     }
 
-    const autenticado = await verificaCredenciais(admUser, admPassword)
+    const autenticado = await ckeckCredentials(admUser, admPassword)
 
     if(!autenticado){
         console.log("Usuário e/ou senha da conta administradoras são inválidas.\n\n")
