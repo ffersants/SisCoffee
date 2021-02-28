@@ -31,13 +31,13 @@ async function ckeckCredentials(user, pswd){
 }
 
 function checkReqBody(reqBody){
-    let whatsMissing = Object.entries(reqBody).filter( data => {
-        if(data[1] === "" || !data[1] || data[1] === undefined){
+    let whatsMissing = Object.entries(reqBody).filter( data => {    
+        if(data[1].trim() === "" || !data[1] || data[1] === undefined){
            return data[0] === "surplus" ? false : data
         }
     })
 
-    if(whatsMissing.length > 0) true
+    if(whatsMissing.length > 0) return true
 }
 
 app.get('/', async function (req, res) {
@@ -273,10 +273,12 @@ app.delete('/remove', async(req, res) => {
         })
     }
 
+    console.log(emptyPropertie)
+
     const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
     
     if(!autenticado){
-        console.log("Usuário e/ou senha da conta administradoras são inválidas.")
+        console.log("Usuário e/ou senha da contas administradoras são inválidas.")
         return res.status(401).json({
             status: 401,
             message: "Credenciais inválidas!"
@@ -285,7 +287,10 @@ app.delete('/remove', async(req, res) => {
 
     
     const name = req.body.name
-    await UserController.update.position(name, false, "removingUser")
+    const update = await UserController.update.position(name, false, "removingUser", res)
+    
+    if(update.statusCode === 500) return
+    
     await UserController.delete(name, res);
 })
 

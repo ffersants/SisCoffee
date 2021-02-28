@@ -53,7 +53,7 @@ module.exports = {
 
             return res.status(201)
         } catch(err){
-            console.log("FALHA INTERNA NO SERVIDOR -> ", err)
+            console.log("FALHA INTERNO NO SERVIDOR -> ", err)
             return res.status(500).json({
                 status: 500,
                 message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
@@ -61,8 +61,16 @@ module.exports = {
         }
     },
     list: async function (req, res) {
-        const users = await connection('users').select('*').orderBy('position', 'asc')
-        return res.json(users)
+        try{
+            const users = await connection('users').select('*').orderBy('position', 'asc')
+            return res.json(users)
+        } catch(err){
+            console.log("FALHA INTERNO NO SERVIDOR -> ", err)
+            return res.status(500).json({
+                status: 500,
+                message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
+            })
+        }
     },
     delete: async function (name, res) {
         try{
@@ -105,7 +113,7 @@ module.exports = {
                 message:'Usuário removido com sucesso!'
             })
         }catch(err){
-            console.log("FALHA INTERNA NO SERVIDOR -> ", err)
+            console.log("FALHA INTERNO NO SERVIDOR -> ", err)
             return res.status(500).json({
                 status: 500,
                 message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
@@ -113,11 +121,11 @@ module.exports = {
         }
     },
     update: {
-        position: async function (user, isAhead, action) {
+        position: async function (user, isAhead, action, res) {
             //informações do usuário que está pagando
             try {
                 const totalUsers = await connection('users').select('name');
-                
+
                 const userPosition = (await connection('users')
                     .where('name', user)
                     .select('position')
@@ -138,7 +146,7 @@ module.exports = {
                     })
 
             } catch(err){
-                console.log("FALHA INTERNA NO SERVIDOR -> ", err)
+                console.log("FALHA INTERNO NO SERVIDOR UserController.update.position -> ", err)
                 return res.status(500).json({
                     status: 500,
                     message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
@@ -160,7 +168,11 @@ module.exports = {
                     .where('name', name)
                     .update({ lastCoffeeAcquisition: date })
             } catch (err) {
-                throw new Error('Falha ao atualizar a coluna lastCoffeeAcquisition.' + err)
+                console.log("FALHA INTERNO NO SERVIDOR -> ", err)
+                return res.status(500).json({
+                    status: 500,
+                    message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
+                })
             }
         },
         saldo: async function (name) {
@@ -175,7 +187,7 @@ module.exports = {
                     .update({ surplus: surplusInTable})
 
             } catch (err) {
-                console.log("FALHA INTERNA NO SERVIDOR -> ", err)
+                console.log("FALHA INTERNO NO SERVIDOR -> ", err)
                 return res.status(500).json({
                     status: 500,
                     message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
