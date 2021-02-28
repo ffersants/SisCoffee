@@ -62,15 +62,15 @@ module.exports = {
         return res.json(users)
     },
     delete: async function (req, res) {
-        const { userID} = req.params;
-       
+        const {name} = req.body;
+      
         const userName = await connection('users')
-            .where('userID', userID)
+            .where('name', name)
             .select('name')
             .first()
 
         if(!userName){
-            console.log(`Nenhum usuário com o ID ${userID} foi encontrado.`)
+            console.log(`Nenhum usuário com o nome ${name} foi encontrado.`)
             return res.status(404).json({
                 status: 404,
                 message: "O usuário que você está tentando deletar não existe!"
@@ -92,11 +92,11 @@ module.exports = {
         }
 
         await connection('users')
-            .where('userID', userID)
+            .where('name', name)
             .delete();
 
-        return res.status(200).json({
-            status: 200,
+        return res.status(201).json({
+            status: 201,
             message:'Usuário removido com sucesso!'
         })
     },

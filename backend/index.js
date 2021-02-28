@@ -104,11 +104,11 @@ app.post('/create/user', async(req, res) => {
 
 app.get('/users', UserController.list)
 
-app.delete('/remove/', async(req, res) => {
+app.delete('/remove', async(req, res) => {
     
-    const {userID, admUser, admPassword} = req.body;
+    const {name, admUser, admPassword} = req.body;
   
-    if(!admUser || !admPassword || userID < 0 || !userID){
+    if(!admUser || !admPassword || !name){
         console.log("Formulário enviado com campos a serem preenchidos.")
         return res.status(400).json({
             status: 400,
@@ -125,20 +125,18 @@ app.delete('/remove/', async(req, res) => {
                 message: "Credenciais inválidas!"
             });
         }
-     await UserController.delete(req, res);
+    console.log(await UserController.delete(req, res));
 
-     return res.status(201).json({
-         status: 201,
-         message: "Usuário removido!"
-     })
+   
 })
 
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
-    const { name, date, surplus, useSurplus, admUser, admPassword } = req.body;
+    const { name, currentDate, surplus, useSurplus, admUser, admPassword } = req.body;
     //verificação da requisição
-    if (!name || !date || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus || !admUser || !admPassword) {
+    if (!name || !currentDate || surplus === undefined || surplus === "" || surplus === NaN || !useSurplus || !admUser || !admPassword) {
         console.log("Formulário enviado com campos a serem preenchidos.\n\n")
+        console.log(name, currentDate, surplus, useSurplus, admUser, admPassword)
         return res.status(400).json({
             status: 400,
             message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
@@ -171,6 +169,8 @@ app.post('/coffeeBought', async function (req, res) {
             dateStyle: 'short'
         })
 
+        const date = currentDate
+
         if (date !== String(backDate)) {
            return res.status(401).json({
                status: 401,
@@ -199,8 +199,6 @@ app.post('/coffeeBought', async function (req, res) {
             .select("isAhead")
             .first()
         )[0]
-
-        console.log(aheadAlready)
 
         if(userPosition !== 1 && aheadAlready === "true"){
             console.log(`Falha ao registrar adiantamento de pagamento de ${name}. Usuário já adiantado.`)
