@@ -23,7 +23,7 @@ module.exports = {
             let userAlreadyExists;
             
             allUsersRegistered.forEach(user => {
-                if (user.name === name) {
+                if (user.name.toUpperCase() === name.toUpperCase()) {
                     userAlreadyExists = true                    
                 }
             })
@@ -52,8 +52,8 @@ module.exports = {
             })
 
             return res.status(201)
-        } catch(e){
-            console.log("FALHA INTERNA NO SERVIDOR -> ", e)
+        } catch(err){
+            console.log("FALHA INTERNA NO SERVIDOR -> ", err)
             return res.status(500).json({
                 status: 500,
                 message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
@@ -64,44 +64,53 @@ module.exports = {
         const users = await connection('users').select('*').orderBy('position', 'asc')
         return res.json(users)
     },
-    delete: async function (req, res) {
-        const {name} = req.body;
-      
-        const userName = await connection('users')
-            .where('name', name)
-            .select('name')
-            .first()
-
-        if(!userName){
-            console.log(`Nenhum usuário com o nome ${name} foi encontrado.`)
-            return res.status(404).json({
-                status: 404,
-                message: "O usuário que você está tentando deletar não existe!"
-            })
-        }
-        
-        const hasSurplus = (await connection('surplus_tb')
-                .where({
-                    userName: userName.name,
-                    used: 'false'
+    delete: async function (name, res) {
+        try{
+            const userInTable = await connection('users')
+                .where('name', name)
+                .select('name')
+                .first()
+            
+            if(!userInTable){
+                console.log(`Nenhum usuário com o nome ${name} foi encontrado.`)
+                return res.status(404).json({
+                    status: 404,
+                    message: "O usuário que você está tentando deletar não existe!"
                 })
-            ).length
+            }
+            
+            const hasSurplus = (await connection('surplus_tb')
+                    .where({
+                        userName: userInTable.name,
+                        used: 'false'
+                    })
+                ).length
 
-        if(hasSurplus !== 0){
-            return res.status(401).json({
-                status: 401,
-                message: "Não é possível excluir um usuário que ainda possui saldo a ser utilizado."
+            if(hasSurplus){
+                console.log(`Não foi possível excluir o usuário ${name}, pois ele possui saldo disponível.`)
+                return res.status(401).json({
+                    status: 401,
+                    message: "Não é possível excluir um usuário que ainda possui saldo a ser utilizado."
+                })
+            }
+
+            await connection('users')
+                .where('name', name)
+                .delete();
+
+            console.log(`Usuário ${name} removido com sucesso!`)
+
+            return res.status(201).json({
+                status: 201,
+                message:'Usuário removido com sucesso!'
+            })
+        }catch(err){
+            console.log("FALHA INTERNA NO SERVIDOR -> ", err)
+            return res.status(500).json({
+                status: 500,
+                message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
             })
         }
-
-        await connection('users')
-            .where('name', name)
-            .delete();
-
-        return res.status(201).json({
-            status: 201,
-            message:'Usuário removido com sucesso!'
-        })
     },
     update: {
         position: async function (user, isAhead) {
@@ -149,9 +158,7 @@ module.exports = {
             }
         },
         saldo: async function (name) {
-
             try {
-
                 const surplusInTable = Object.values(await connection('surplus_tb')
                     .where('userName', name)
                     .where('used', 'false')).length;
@@ -162,7 +169,11 @@ module.exports = {
                     .update({ surplus: surplusInTable})
 
             } catch (err) {
-                throw new Error('Falha na hora de registrar o saldo no banco.' + err)
+                console.log("FALHA INTERNA NO SERVIDOR -> ", err)
+                return res.status(500).json({
+                    status: 500,
+                    message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
+                })
             }
 
 

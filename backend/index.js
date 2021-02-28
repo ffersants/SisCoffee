@@ -120,33 +120,6 @@ app.post('/create/user', async(req, res) => {
     })
 })
 
-
-app.delete('/remove', async(req, res) => {
-    
-    const emptyPropertie = checkReqBody(req.body)
-    
-    if(emptyPropertie){
-        console.log(`Corpo da requisição inválido.`, emptyPropertie)
-        return res.status(400).json({
-            status: 400,
-            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
-        })
-    }
-
-    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
-    
-    if(!autenticado){
-            console.log("Usuário e/ou senha da conta administradoras são inválidas.")
-            return res.status(401).json({
-                status: 401,
-                message: "Credenciais inválidas!"
-            });
-        }
-    console.log(await UserController.delete(req, res));
-
-   
-})
-
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
     const emptyPropertie = checkReqBody(req.body)
@@ -288,6 +261,36 @@ app.post('/coffeeBought', async function (req, res) {
             message: "Compra registrada e tabela atualizada!"
         });
 })
+
+app.delete('/remove', async(req, res) => {
+    
+    const emptyPropertie = checkReqBody(req.body)
+    
+    if(emptyPropertie){
+        console.log(`Corpo da requisição inválido.`, emptyPropertie)
+        return res.status(400).json({
+            status: 400,
+            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        })
+    }
+
+    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
+    
+    if(!autenticado){
+        console.log("Usuário e/ou senha da conta administradoras são inválidas.")
+        return res.status(401).json({
+            status: 401,
+            message: "Credenciais inválidas!"
+        });
+    }
+
+    
+    const name = req.body.name
+
+    await UserController.delete(name, res);
+})
+
+
 
 app.listen(3300, function () {
     console.table('Servidor rodando na porta 3300')
