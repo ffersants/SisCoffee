@@ -232,6 +232,13 @@ export default {
         this.fetching = false
         this.fetchFailed = true
       })
+
+      setTimeout(() =>{
+        if(this.fetching === true){
+          this.fetching = false
+          this.fetchFailed = true
+        } 
+      }, 10000)
   },
   created(){
     EventBus.$on("closeUserConfig", () => {
