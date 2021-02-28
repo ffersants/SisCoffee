@@ -122,26 +122,29 @@ app.post('/create/user', async(req, res) => {
 
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
-    const emptyPropertie = checkReqBody(req.body)
+    try{
+        const emptyPropertie = checkReqBody(req.body)
     
-    if(emptyPropertie){
-        console.log(`Corpo da requisição inválido.`, emptyPropertie)
-        return res.status(400).json({
-            status: 400,
-            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
-        })
-    }
+        if(emptyPropertie){
+            console.log(`Corpo da requisição inválido.`, emptyPropertie)
+            return res.status(400).json({
+                status: 400,
+                message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+            })
+        }
 
-    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
+        const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
 
-    if(!autenticado){
-        console.log("Usuário e/ou senha da conta administradoras são inválidas.\n\n")
-        return res.status(401).json({
-            status: 401,
-            message: "Credenciais inválidas!"
-        });
-    }
-  
+        if(!autenticado){
+            console.log("Usuário e/ou senha da conta administradoras são inválidas.\n\n")
+            return res.status(401).json({
+                status: 401,
+                message: "Credenciais inválidas!"
+            });
+        }
+
+        const { name, currentDate, surplus, useSurplus} = req.body;
+    
         nameExists = await connection('users')
             .where('name', name)
             .first();
@@ -161,13 +164,11 @@ app.post('/coffeeBought', async function (req, res) {
         const date = currentDate
 
         if (date !== String(backDate)) {
-           return res.status(401).json({
-               status: 401,
-               message: "A data da requisição e do backend diferem!"
-           })
+            return res.status(401).json({
+                status: 401,
+                message: "A data da requisição e do backend diferem!"
+            })
         }
-
-        // fim da verificação da requisição
 
         hasSurplus = Object.values(await connection('surplus_tb')
                 .where({
@@ -176,7 +177,6 @@ app.post('/coffeeBought', async function (req, res) {
                 })
         )
 
-                //pega a posição do usuário que está querendo realizar registro de pagamento
         const userPosition = Object.values(await connection('users')
             .where('name', name)
             .select('position')
@@ -196,20 +196,20 @@ app.post('/coffeeBought', async function (req, res) {
                 message: `Este usuário já adiantou um pagamento no ciclo atual. É permitido apenas um adiantamento por ciclo. Aguarde o fim do ciclo atual para adiantar o pagamento do usuário.` 
             })
         }
-            
+                
         let isAhead = userPosition !== 1 ? 'true' : 'false'
-            
-        //usuário não possui saldo mas está tentando registrar compra utilizando saldo
+                
+            //usuário não possui saldo mas está tentando registrar compra utilizando saldo
         if (hasSurplus.length === 0 && useSurplus === 'true') {
-            console.log("Usuário não possui saldo para ser utilizado!\n\n")
+            console.log(`Usuário ${name} não possui saldo para ser utilizado!\n\n`)
             return res.status(401).json({
                 status:401,
                 message:'Não há saldo disponível para uso!'
             })
         } else if (hasSurplus.length > 0 && useSurplus === 'true') {
             console.log("Registrando compra utilizando saldo disponível...\n\n")
-            //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
-            
+                //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
+                
             const surplusID = Object.values(
                 await connection('surplus_tb')
                     .where('surplusID', hasSurplus[0].surplusID)
@@ -231,8 +231,8 @@ app.post('/coffeeBought', async function (req, res) {
         }
 
         if (surplus > 0) {
-            console.log("Adicionando saldo passado ao registrar a compra...\n\n")
-            console.log("SURPLUS = ", surplus)
+            console.log(`Adicionando ${surplus} de saldo passado ao registrar a compra...\n\n`)
+                
             for (i = 0; i != surplus; i++) {
                 try {
                     await connection('surplus_tb')
@@ -248,53 +248,66 @@ app.post('/coffeeBought', async function (req, res) {
         }
         console.log("Atualizando o saldo na tabela surplus_tb.\n\n")
         await UserController.update.saldo(name);
+        
         console.log("Atualizando posição do usuário na tabela users.\n\n")
         await UserController.update.position(name, isAhead);
+        
         console.log("Atualizando data da última aquisição do usuário na tabela users.\n\n")
         await UserController.update.lastCoffeeAcquisition(name, date)
-
-
 
         console.log("Registro de compra de café concluído com sucesso!\n\n")
         return res.status(201).json({
             status: 201,
             message: "Compra registrada e tabela atualizada!"
         });
+    } catch(err){
+        console.log("FALHA INTERNO NO SERVIDOR UserController.update.position -> ", err)
+        return res.status(500).json({
+            status: 500,
+            message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
+        })
+    }
 })
 
 app.delete('/remove', async(req, res) => {
-    const emptyPropertie = checkReqBody(req.body)
+    try{
+        const emptyPropertie = checkReqBody(req.body)
     
-    if(emptyPropertie){
-        console.log(`Corpo da requisição inválido.`, emptyPropertie)
-        return res.status(400).json({
-            status: 400,
-            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        if(emptyPropertie){
+            console.log(`Corpo da requisição inválido.`, emptyPropertie)
+            return res.status(400).json({
+                status: 400,
+                message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+            })
+        }
+
+        console.log(emptyPropertie)
+
+        const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
+        
+        if(!autenticado){
+            console.log("Usuário e/ou senha da contas administradoras são inválidas.")
+            return res.status(401).json({
+                status: 401,
+                message: "Credenciais inválidas!"
+            });
+        }
+
+        
+        const name = req.body.name
+        const update = await UserController.update.position(name, false, "removingUser", res)
+        
+        if(update.statusCode === 500) return
+        
+        await UserController.delete(name, res);
+    } catch(err){
+        console.log("FALHA INTERNO NO SERVIDOR UserController.update.position -> ", err)
+        return res.status(500).json({
+            status: 500,
+            message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
         })
     }
-
-    console.log(emptyPropertie)
-
-    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
-    
-    if(!autenticado){
-        console.log("Usuário e/ou senha da contas administradoras são inválidas.")
-        return res.status(401).json({
-            status: 401,
-            message: "Credenciais inválidas!"
-        });
-    }
-
-    
-    const name = req.body.name
-    const update = await UserController.update.position(name, false, "removingUser", res)
-    
-    if(update.statusCode === 500) return
-    
-    await UserController.delete(name, res);
 })
-
-
 
 app.listen(3300, function () {
     console.table('Servidor rodando na porta 3300')
