@@ -29,7 +29,7 @@ module.exports = {
             })
    
             if(userAlreadyExists){
-                console.log(`Não foi possível cadastrar o usuário ${name}. Nome já registrado!`)
+                console.log(`\nNão foi possível cadastrar o usuário ${name}. Nome já registrado!`)
                 return res.status(409).json({
                     status: 409,
                     message: "Nome já em uso."
@@ -80,7 +80,7 @@ module.exports = {
                 .first()
             
             if(!userInTable){
-                console.log(`Nenhum usuário com o nome ${name} foi encontrado.`)
+                console.log(`\nNenhum usuário com o nome ${name} foi encontrado.`)
                 return res.status(404).json({
                     status: 404,
                     message: "O usuário que você está tentando deletar não existe!"
@@ -95,7 +95,7 @@ module.exports = {
                 ).length
 
             if(hasSurplus){
-                console.log(`Não foi possível excluir o usuário ${name}, pois ele possui saldo disponível.`)
+                console.log(`\nNão foi possível excluir o usuário ${name}, pois ele possui saldo disponível.`)
                 return res.status(401).json({
                     status: 401,
                     message: "Não é possível excluir um usuário que ainda possui saldo a ser utilizado."
@@ -106,7 +106,7 @@ module.exports = {
                 .where('name', name)
                 .delete();
 
-            console.log(`Usuário ${name} removido com sucesso!`)
+            console.log(`\nUsuário ${name} removido com sucesso!`)
 
             return res.status(201).json({
                 status: 201,
@@ -177,6 +177,7 @@ module.exports = {
         },
         saldo: async function (name) {
             try {
+                
                 const surplusInTable = Object.values(await connection('surplus_tb')
                     .where('userName', name)
                     .where('used', 'false')).length;

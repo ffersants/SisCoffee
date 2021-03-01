@@ -139,7 +139,7 @@ export default {
     name: "TableWithUsers",
     data(){
         return{
-            fetching: false,
+            fetching: true,
             fetchFailed: false,
             currentPage: 1,
             perPage: 5,

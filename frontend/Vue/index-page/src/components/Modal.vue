@@ -27,7 +27,7 @@
                     
                     <b-col cols="5">
                         
-                        <div v-if="action == 'payment' || action == 'signup'">
+                        <div v-if="action == 'payment' || action == 'signUp'">
                             <p>Data do pagamento</p>
                             <p>{{currentDate}}</p>
                         </div>

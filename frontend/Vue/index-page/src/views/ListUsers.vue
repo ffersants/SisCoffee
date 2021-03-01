@@ -101,11 +101,9 @@ export default {
     created(){
         EventBus.$on("openModal", () => {
             if(this.userInTable.surplus > 0){
-                document.querySelector('list-users').style.overflow = 'hidden!important'
                 this.showModalUserSurplus = true
             }else{
                 this.showModal = true;
-                document.getElementById("list-users").style.position = 'hidden!important';
             }
             
         }),

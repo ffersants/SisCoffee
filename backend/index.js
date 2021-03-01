@@ -73,55 +73,67 @@ app.get('/users', UserController.list)
 
 //USER
 app.post('/create/user', async(req, res) => {
-    const emptyPropertie = checkReqBody(req.body)
+    try{
+        const emptyPropertie = checkReqBody(req.body)
     
-    if(emptyPropertie){
-        console.log(`Corpo da requisição inválido.`, emptyPropertie)
-        return res.status(400).json({
-            status: 400,
-            message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+        if(emptyPropertie){
+            console.log(`\nCorpo da requisição inválido.`, emptyPropertie)
+            return res.status(400).json({
+                status: 400,
+                message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
+            })
+        }
+
+        const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword);
+    
+        if(!autenticado){
+            console.log("\nUsuário e/ou senha da conta administradoras são inválidas.")
+            return res.status(401).json({
+                status: 401,
+                message: "Credenciais inválidas!"
+            });
+        }
+
+        const { name, section, currentDate, surplus} = req.body;
+
+        console.log(`\n\n\n----START\n Cadastrando usuário ${name}.`)
+
+        const created = await UserController.create(name, section, currentDate, surplus, res)
+
+        if(created.statusCode !== 201) return
+
+        console.log(`\nCadastro realizado! Prosseguindo com as demais etapas de registro do ${name}...`)
+        
+        //registro de compra de café sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
+        await CoffeeRegisterController.create(name, currentDate, false)
+        console.log(`\nRegistro da primeira compra de café realizado.\n`)
+
+        if(surplus > 0) {
+            console.log(`\nCadastrando o saldo de ${surplus} registro(s) do usuário ${name}`)
+            //alimentar tabela aqui
+            for (i = 0; i != surplus; i++) {
+                await connection('surplus_tb')
+                    .insert({
+                        userName: name,
+                        surplusRegisterDate: currentDate,
+                    })
+            }
+        }
+
+        console.log(`\nCadastro de ${name} realizado com um total de ${surplus} registro(s) de saldo.\n----END`)
+        
+        return res.status(201).json({
+            status: 201,
+            message: 'Usuário cadastrado com sucesso!'
+        }) 
+    } catch(err){
+        console.log("\nFALHA INTERNO NO SERVIDOR  -> index.js - rota /sign-up ->", err)
+            
+        return res.status(500).json({
+            status: 500,
+            message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
         })
     }
-
-    const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword);
-  
-    if(!autenticado){
-        console.log("Usuário e/ou senha da conta administradoras são inválidas.")
-        return res.status(401).json({
-            status: 401,
-            message: "Credenciais inválidas!"
-        });
-    }
-
-    const { name, section, currentDate, surplus} = req.body;
-
-    const created = await UserController.create(name, section, currentDate, surplus, res)
-
-    if(created.statusCode !== 201) return
-
-    console.log(`Cadastro realizado! Prosseguindo com as demais etapas de registro do ${name}...`)
-    
-    //registro de compra de café sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
-    await CoffeeRegisterController.create(name, currentDate, false)
-    
-    if(surplus > 0) {
-        console.log(`Cadastrando o saldo de ${surplus} registro(s) do usuário ${name}`)
-        //alimentar tabela aqui
-        for (i = 0; i != surplus; i++) {
-             await connection('surplus_tb')
-                .insert({
-                    userName: name,
-                    surplusRegisterDate: currentDate,
-                })
-        }
-    }
-
-    console.log(`Cadastro de ${name} realizado com um total de ${surplus} registro(s) de saldo.`)
-    
-    return res.status(201).json({
-        status: 201,
-        message: 'Usuário cadastrado com sucesso!'
-    })
 })
 
 //COFFEE
@@ -130,7 +142,7 @@ app.post('/coffeeBought', async function (req, res) {
         const emptyPropertie = checkReqBody(req.body)
     
         if(emptyPropertie){
-            console.log(`Corpo da requisição inválido.`, emptyPropertie)
+            console.log(`\nCorpo da requisição inválido.`, emptyPropertie)
             return res.status(400).json({
                 status: 400,
                 message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
@@ -140,7 +152,7 @@ app.post('/coffeeBought', async function (req, res) {
         const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
 
         if(!autenticado){
-            console.log("Usuário e/ou senha da conta administradoras são inválidas.\n\n")
+            console.log("\nUsuário e/ou senha da conta administradoras são inválidas.\n")
             return res.status(401).json({
                 status: 401,
                 message: "Credenciais inválidas!"
@@ -154,7 +166,7 @@ app.post('/coffeeBought', async function (req, res) {
             .first();
 
         if(!nameExists){
-            console.log("Usuário não encontrado.\n\n")
+            console.log("\nUsuário não encontrado.\n")
             return res.status(404).json({
                 status: 404,
                 message: "Não foi possível identificar o usuário informado."
@@ -194,7 +206,7 @@ app.post('/coffeeBought', async function (req, res) {
         )[0]
 
         if(userPosition !== 1 && aheadAlready === "true"){
-            console.log(`Falha ao registrar adiantamento de pagamento de ${name}. Usuário já adiantado.`)
+            console.log(`\nFalha ao registrar adiantamento de pagamento de ${name}. Usuário já adiantado.`)
             return res.status(403).json({
                 status: 403,
                 message: `Este usuário já adiantou um pagamento no ciclo atual. É permitido apenas um adiantamento por ciclo. Aguarde o fim do ciclo atual para adiantar o pagamento do usuário.` 
@@ -205,13 +217,13 @@ app.post('/coffeeBought', async function (req, res) {
                 
             //usuário não possui saldo mas está tentando registrar compra utilizando saldo
         if (hasSurplus.length === 0 && useSurplus === 'true') {
-            console.log(`Usuário ${name} não possui saldo para ser utilizado!\n\n`)
+            console.log(`\nUsuário ${name} não possui saldo para ser utilizado!\n`)
             return res.status(401).json({
                 status:401,
                 message:'Não há saldo disponível para uso!'
             })
         } else if (hasSurplus.length > 0 && useSurplus === 'true') {
-            console.log("Registrando compra utilizando saldo disponível...\n\n")
+            console.log(`----START\nRegistrando compra ${name} utilizando saldo disponível...\n`)
                 //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
                 
             const surplusID = Object.values(
@@ -222,7 +234,7 @@ app.post('/coffeeBought', async function (req, res) {
 
             //recebe o ID do registro realizado na tabela coffee_register usando saldo
             coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID, isAhead);
-            console.log("Registro realizado com sucesso na tabela coffee_registers.\n\n")
+            console.log("\nRegistro realizado com sucesso na tabela coffee_registers.\n")
             //atualiza a surplus_tb para remover saldo e indicar o ID do registro em que o saldo foi utilizado
             await connection('surplus_tb')
                 .where('surplusID', surplusID)
@@ -230,12 +242,14 @@ app.post('/coffeeBought', async function (req, res) {
                     used: 'true',
                     usedInCoffeeRegister: coffeeRegisterID
                 })
+            console.log(`Um registro de saldo do usuário ${name} foi colocado como já utilizado.`)
         } else {
+            console.log(`----START\nRegistrando compra de ${name}`)
             await CoffeeRegisterController.create(name, date, false, isAhead)
         }
 
         if (surplus > 0) {
-            console.log(`Adicionando ${surplus} de saldo passado ao registrar a compra...\n\n`)
+            console.log(`\nAdicionando ${surplus} de saldo passado ao registrar a compra...\n`)
                 
             for (i = 0; i != surplus; i++) {
                 try {
@@ -247,25 +261,26 @@ app.post('/coffeeBought', async function (req, res) {
                 } catch (err) {
                     throw new Error('Não foi possível inserir o saldo.' + err.message)
                 }
-                console.log("passamos no loop ", i)
             }
         }
-        console.log("Atualizando o saldo na tabela surplus_tb.\n\n")
+        console.log(`\nAtualizando o saldo na tabela surplus_tb. Neste registro foi passado ${surplus} registro(s) de saldo.\n`)
+        //caso tenha adicionado saldo, o valor será atualizado para o total que o usuário possui
+        //caso não tenha, o total será igual ao total que o usuário já possuía
         await UserController.update.saldo(name);
         
-        console.log("Atualizando posição do usuário na tabela users.\n\n")
+        console.log(`\nAtualizando posição do ${name} na tabela users.\n`)
         await UserController.update.position(name, isAhead);
         
-        console.log("Atualizando data da última aquisição do usuário na tabela users.\n\n")
+        console.log(`\nAtualizando data da última aquisição do ${name} na tabela users.\n`)
         await UserController.update.lastCoffeeAcquisition(name, date)
 
-        console.log("Registro de compra de café concluído com sucesso!\n\n")
+        console.log("\nRegistro de compra de café concluído com sucesso!\n ----END \n\n\n")
         return res.status(201).json({
             status: 201,
             message: "Compra registrada e tabela atualizada!"
         });
     } catch(err){
-        console.log("FALHA INTERNO NO SERVIDOR UserController.update.position -> ", err)
+        console.log("\nFALHA INTERNO NO SERVIDOR -> index.js - rota /coffeeBought -> ", err)
         return res.status(500).json({
             status: 500,
             message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
@@ -278,19 +293,17 @@ app.delete('/remove', async(req, res) => {
         const emptyPropertie = checkReqBody(req.body)
     
         if(emptyPropertie){
-            console.log(`Corpo da requisição inválido.`, emptyPropertie)
+            console.log(`\nCorpo da requisição inválido.`, emptyPropertie)
             return res.status(400).json({
                 status: 400,
                 message: "Verifique se todos os campos do formulário estão devidamente preenchidos e tente novamente."
             })
         }
 
-        console.log(emptyPropertie)
-
         const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
         
         if(!autenticado){
-            console.log("Usuário e/ou senha da contas administradoras são inválidas.")
+            console.log("\nUsuário e/ou senha da contas administradoras são inválidas.")
             return res.status(401).json({
                 status: 401,
                 message: "Credenciais inválidas!"
@@ -305,7 +318,7 @@ app.delete('/remove', async(req, res) => {
         
         await UserController.delete(name, res);
     } catch(err){
-        console.log("FALHA INTERNO NO SERVIDOR UserController.update.position -> ", err)
+        console.log("\nFALHA INTERNO NO SERVIDOR  -> index.js - rota /remove ->", err)
         return res.status(500).json({
             status: 500,
             message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."

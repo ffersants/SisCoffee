@@ -9,7 +9,7 @@
                 </p>
 
                 <p>
-                    Gostaria de utilizá-lo para registrar essa compra?
+                    Gostaria de utilizá-lo para registrar esta compra?
                 </p>
 
                 <b-container>     

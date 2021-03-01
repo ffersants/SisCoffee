@@ -176,7 +176,6 @@ export default {
     return{
       fetching: true,
       fetchFailed: false,
-      emptyResponse: false,
       showModal: false,
       showUserConfig: false,
       showModalUserSurplus: false,
@@ -222,10 +221,12 @@ export default {
         }
       })
       .then(r => {
-          this.theNext = r.theNext
-          this.theOne = r.theOne
-          this.theLast = r.theLast
-          this.fetching = false
+          if(r.theOne != undefined){
+            this.theNext = r.theNext
+            this.theOne = r.theOne
+            this.theLast = r.theLast
+            this.fetching = false
+          } 
       })
       .catch(r => {
         console.log('ERRO -> ', r)
@@ -234,7 +235,7 @@ export default {
       })
 
       setTimeout(() =>{
-        if(this.fetching === true){
+        if(this.fetching === true || !this.theOne){
           this.fetching = false
           this.fetchFailed = true
         } 
