@@ -2,9 +2,9 @@ const connection = require('../database/connection')
 
 module.exports = {
     create: async function (name, section, currentDate, surplus, res) {
-        try{
+        try {
             //verifica se ação está autenticada corretamente
-            
+
             backDate = new Date().toLocaleDateString("pt-br", {
                 dateStyle: 'short'
             })
@@ -13,7 +13,7 @@ module.exports = {
                 console.log("A data da requisição e do backend diferem!")
                 return res.status(400).json({
                     status: 400,
-                    message:`A data da requisição e do backend diferem!`
+                    message: `A data da requisição e do backend diferem!`
                 }).send()
             }
 
@@ -21,14 +21,14 @@ module.exports = {
                 .select('name');
 
             let userAlreadyExists;
-            
+
             allUsersRegistered.forEach(user => {
                 if (user.name.toUpperCase() === name.toUpperCase()) {
-                    userAlreadyExists = true                    
+                    userAlreadyExists = true
                 }
             })
-   
-            if(userAlreadyExists){
+
+            if (userAlreadyExists) {
                 console.log(`\nNão foi possível cadastrar o usuário ${name}. Nome já registrado!`)
                 return res.status(409).json({
                     status: 409,
@@ -37,11 +37,11 @@ module.exports = {
             }
 
             const position = allUsersRegistered.length + 1
-            
+
             const lastCoffeeAcquisition = currentDate;
-            
+
             const signUpDate = currentDate;
-            
+
             await connection('users').insert({
                 name,
                 section,
@@ -52,7 +52,7 @@ module.exports = {
             })
 
             return res.status(201)
-        } catch(err){
+        } catch (err) {
             console.log("FALHA INTERNO NO SERVIDOR -> ", err)
             return res.status(500).json({
                 status: 500,
@@ -61,10 +61,10 @@ module.exports = {
         }
     },
     list: async function (req, res) {
-        try{
+        try {
             const users = await connection('users').select('*').orderBy('position', 'asc')
             return res.json(users)
-        } catch(err){
+        } catch (err) {
             console.log("FALHA INTERNO NO SERVIDOR -> ", err)
             return res.status(500).json({
                 status: 500,
@@ -73,28 +73,28 @@ module.exports = {
         }
     },
     delete: async function (name, res) {
-        try{
+        try {
             const userInTable = await connection('users')
                 .where('name', name)
                 .select('name')
                 .first()
-            
-            if(!userInTable){
+
+            if (!userInTable) {
                 console.log(`\nNenhum usuário com o nome ${name} foi encontrado.`)
                 return res.status(404).json({
                     status: 404,
                     message: "O usuário que você está tentando deletar não existe!"
                 })
             }
-            
-            const hasSurplus = (await connection('surplus_tb')
-                    .where({
-                        userName: userInTable.name,
-                        used: 'false'
-                    })
-                ).length
 
-            if(hasSurplus){
+            const hasSurplus = (await connection('surplus_tb')
+                .where({
+                    userName: userInTable.name,
+                    used: 'false'
+                })
+            ).length
+
+            if (hasSurplus) {
                 console.log(`\nNão foi possível excluir o usuário ${name}, pois ele possui saldo disponível.`)
                 return res.status(401).json({
                     status: 401,
@@ -110,9 +110,9 @@ module.exports = {
 
             return res.status(201).json({
                 status: 201,
-                message:'Usuário removido com sucesso!'
+                message: 'Usuário removido com sucesso!'
             })
-        }catch(err){
+        } catch (err) {
             console.log("FALHA INTERNO NO SERVIDOR -> ", err)
             return res.status(500).json({
                 status: 500,
@@ -121,7 +121,7 @@ module.exports = {
         }
     },
     update: {
-        position: async function (user, isAhead, action, res) {
+        position: async function (user, action, res) {
             //informações do usuário que está pagando
             try {
                 const totalUsers = await connection('users').select('name');
@@ -133,19 +133,18 @@ module.exports = {
 
                 await organizeTable(userPosition, totalUsers.length)
 
-                if(action === 'removingUser') return
+                if (action === 'removingUser') return res.status(201)
 
                 //teremos dois registros na mesma posição após a organização da tabela,
                 //então, o usuário que pagou será colocado em última posição com o código abaixo
                 await connection('users')
                     .where('name', user)
                     .select('position')
-                    .update({ 
+                    .update({
                         position: totalUsers.length,
-                        isAhead: isAhead 
                     })
 
-            } catch(err){
+            } catch (err) {
                 console.log("FALHA INTERNO NO SERVIDOR UserController.update.position -> ", err)
                 return res.status(500).json({
                     status: 500,
@@ -183,7 +182,7 @@ module.exports = {
                 await connection('users')
                     .where('name', name)
                     .select('surplus')
-                    .update({ surplus: surplusInTable})
+                    .update({ surplus: surplusInTable })
 
             } catch (err) {
                 console.log("FALHA INTERNO NO SERVIDOR -> ", err)

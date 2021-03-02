@@ -2,26 +2,23 @@
 
 module.exports = {
   development: {
-    client: 'pg',
+    client: 'sqlite3',
     connection: {
-      database: 'siscoffee_db',
-      user:     'postgres',
-      password: '@$PAjats252817'
+      filename: './src/database/db.sqlite'
     },
     migrations: {
-      tableName: 'knex_migrations',
       directory: './src/database/migrations'
     },
     seeds: {
       directory: './src/database/seeds'
-    }
-
+    },
+    useNullAsDefault: true
   },
   production: {
     client: 'pg',
     connection: {
       database: 'siscoffee_db',
-      user:     'postgres',
+      user: 'postgres',
       password: '@$PAjats252817'
     },
     pool: {

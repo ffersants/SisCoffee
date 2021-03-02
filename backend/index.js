@@ -25,30 +25,30 @@ app.use((req, res, next) => {
 
 app.use(express.json())
 
-const MD5 = function(r){function n(r,n){return r<<n|r>>>32-n}function t(r,n){var t,o,e,u,f;return e=2147483648&r,u=2147483648&n,f=(1073741823&r)+(1073741823&n),(t=1073741824&r)&(o=1073741824&n)?2147483648^f^e^u:t|o?1073741824&f?3221225472^f^e^u:1073741824^f^e^u:f^e^u}function o(r,o,e,u,f,i,a){return r=t(r,t(t(function(r,n,t){return r&n|~r&t}(o,e,u),f),a)),t(n(r,i),o)}function e(r,o,e,u,f,i,a){return r=t(r,t(t(function(r,n,t){return r&t|n&~t}(o,e,u),f),a)),t(n(r,i),o)}function u(r,o,e,u,f,i,a){return r=t(r,t(t(function(r,n,t){return r^n^t}(o,e,u),f),a)),t(n(r,i),o)}function f(r,o,e,u,f,i,a){return r=t(r,t(t(function(r,n,t){return n^(r|~t)}(o,e,u),f),a)),t(n(r,i),o)}function i(r){var n,t="",o="";for(n=0;n<=3;n++)t+=(o="0"+(r>>>8*n&255).toString(16)).substr(o.length-2,2);return t}var a,c,C,g,h,d,v,S,m,l=Array();for(l=function(r){for(var n,t=r.length,o=t+8,e=16*((o-o%64)/64+1),u=Array(e-1),f=0,i=0;i<t;)f=i%4*8,u[n=(i-i%4)/4]=u[n]|r.charCodeAt(i)<<f,i++;return f=i%4*8,u[n=(i-i%4)/4]=u[n]|128<<f,u[e-2]=t<<3,u[e-1]=t>>>29,u}(r=function(r){r=r.replace(/\r\n/g,"\n");for(var n="",t=0;t<r.length;t++){var o=r.charCodeAt(t);o<128?n+=String.fromCharCode(o):o>127&&o<2048?(n+=String.fromCharCode(o>>6|192),n+=String.fromCharCode(63&o|128)):(n+=String.fromCharCode(o>>12|224),n+=String.fromCharCode(o>>6&63|128),n+=String.fromCharCode(63&o|128))}return n}(r)),d=1732584193,v=4023233417,S=2562383102,m=271733878,a=0;a<l.length;a+=16)c=d,C=v,g=S,h=m,d=o(d,v,S,m,l[a+0],7,3614090360),m=o(m,d,v,S,l[a+1],12,3905402710),S=o(S,m,d,v,l[a+2],17,606105819),v=o(v,S,m,d,l[a+3],22,3250441966),d=o(d,v,S,m,l[a+4],7,4118548399),m=o(m,d,v,S,l[a+5],12,1200080426),S=o(S,m,d,v,l[a+6],17,2821735955),v=o(v,S,m,d,l[a+7],22,4249261313),d=o(d,v,S,m,l[a+8],7,1770035416),m=o(m,d,v,S,l[a+9],12,2336552879),S=o(S,m,d,v,l[a+10],17,4294925233),v=o(v,S,m,d,l[a+11],22,2304563134),d=o(d,v,S,m,l[a+12],7,1804603682),m=o(m,d,v,S,l[a+13],12,4254626195),S=o(S,m,d,v,l[a+14],17,2792965006),d=e(d,v=o(v,S,m,d,l[a+15],22,1236535329),S,m,l[a+1],5,4129170786),m=e(m,d,v,S,l[a+6],9,3225465664),S=e(S,m,d,v,l[a+11],14,643717713),v=e(v,S,m,d,l[a+0],20,3921069994),d=e(d,v,S,m,l[a+5],5,3593408605),m=e(m,d,v,S,l[a+10],9,38016083),S=e(S,m,d,v,l[a+15],14,3634488961),v=e(v,S,m,d,l[a+4],20,3889429448),d=e(d,v,S,m,l[a+9],5,568446438),m=e(m,d,v,S,l[a+14],9,3275163606),S=e(S,m,d,v,l[a+3],14,4107603335),v=e(v,S,m,d,l[a+8],20,1163531501),d=e(d,v,S,m,l[a+13],5,2850285829),m=e(m,d,v,S,l[a+2],9,4243563512),S=e(S,m,d,v,l[a+7],14,1735328473),d=u(d,v=e(v,S,m,d,l[a+12],20,2368359562),S,m,l[a+5],4,4294588738),m=u(m,d,v,S,l[a+8],11,2272392833),S=u(S,m,d,v,l[a+11],16,1839030562),v=u(v,S,m,d,l[a+14],23,4259657740),d=u(d,v,S,m,l[a+1],4,2763975236),m=u(m,d,v,S,l[a+4],11,1272893353),S=u(S,m,d,v,l[a+7],16,4139469664),v=u(v,S,m,d,l[a+10],23,3200236656),d=u(d,v,S,m,l[a+13],4,681279174),m=u(m,d,v,S,l[a+0],11,3936430074),S=u(S,m,d,v,l[a+3],16,3572445317),v=u(v,S,m,d,l[a+6],23,76029189),d=u(d,v,S,m,l[a+9],4,3654602809),m=u(m,d,v,S,l[a+12],11,3873151461),S=u(S,m,d,v,l[a+15],16,530742520),d=f(d,v=u(v,S,m,d,l[a+2],23,3299628645),S,m,l[a+0],6,4096336452),m=f(m,d,v,S,l[a+7],10,1126891415),S=f(S,m,d,v,l[a+14],15,2878612391),v=f(v,S,m,d,l[a+5],21,4237533241),d=f(d,v,S,m,l[a+12],6,1700485571),m=f(m,d,v,S,l[a+3],10,2399980690),S=f(S,m,d,v,l[a+10],15,4293915773),v=f(v,S,m,d,l[a+1],21,2240044497),d=f(d,v,S,m,l[a+8],6,1873313359),m=f(m,d,v,S,l[a+15],10,4264355552),S=f(S,m,d,v,l[a+6],15,2734768916),v=f(v,S,m,d,l[a+13],21,1309151649),d=f(d,v,S,m,l[a+4],6,4149444226),m=f(m,d,v,S,l[a+11],10,3174756917),S=f(S,m,d,v,l[a+2],15,718787259),v=f(v,S,m,d,l[a+9],21,3951481745),d=t(d,c),v=t(v,C),S=t(S,g),m=t(m,h);return(i(d)+i(v)+i(S)+i(m)).toLowerCase()};
+const MD5 = function (r) { function n(r, n) { return r << n | r >>> 32 - n } function t(r, n) { var t, o, e, u, f; return e = 2147483648 & r, u = 2147483648 & n, f = (1073741823 & r) + (1073741823 & n), (t = 1073741824 & r) & (o = 1073741824 & n) ? 2147483648 ^ f ^ e ^ u : t | o ? 1073741824 & f ? 3221225472 ^ f ^ e ^ u : 1073741824 ^ f ^ e ^ u : f ^ e ^ u } function o(r, o, e, u, f, i, a) { return r = t(r, t(t(function (r, n, t) { return r & n | ~r & t }(o, e, u), f), a)), t(n(r, i), o) } function e(r, o, e, u, f, i, a) { return r = t(r, t(t(function (r, n, t) { return r & t | n & ~t }(o, e, u), f), a)), t(n(r, i), o) } function u(r, o, e, u, f, i, a) { return r = t(r, t(t(function (r, n, t) { return r ^ n ^ t }(o, e, u), f), a)), t(n(r, i), o) } function f(r, o, e, u, f, i, a) { return r = t(r, t(t(function (r, n, t) { return n ^ (r | ~t) }(o, e, u), f), a)), t(n(r, i), o) } function i(r) { var n, t = "", o = ""; for (n = 0; n <= 3; n++)t += (o = "0" + (r >>> 8 * n & 255).toString(16)).substr(o.length - 2, 2); return t } var a, c, C, g, h, d, v, S, m, l = Array(); for (l = function (r) { for (var n, t = r.length, o = t + 8, e = 16 * ((o - o % 64) / 64 + 1), u = Array(e - 1), f = 0, i = 0; i < t;)f = i % 4 * 8, u[n = (i - i % 4) / 4] = u[n] | r.charCodeAt(i) << f, i++; return f = i % 4 * 8, u[n = (i - i % 4) / 4] = u[n] | 128 << f, u[e - 2] = t << 3, u[e - 1] = t >>> 29, u }(r = function (r) { r = r.replace(/\r\n/g, "\n"); for (var n = "", t = 0; t < r.length; t++) { var o = r.charCodeAt(t); o < 128 ? n += String.fromCharCode(o) : o > 127 && o < 2048 ? (n += String.fromCharCode(o >> 6 | 192), n += String.fromCharCode(63 & o | 128)) : (n += String.fromCharCode(o >> 12 | 224), n += String.fromCharCode(o >> 6 & 63 | 128), n += String.fromCharCode(63 & o | 128)) } return n }(r)), d = 1732584193, v = 4023233417, S = 2562383102, m = 271733878, a = 0; a < l.length; a += 16)c = d, C = v, g = S, h = m, d = o(d, v, S, m, l[a + 0], 7, 3614090360), m = o(m, d, v, S, l[a + 1], 12, 3905402710), S = o(S, m, d, v, l[a + 2], 17, 606105819), v = o(v, S, m, d, l[a + 3], 22, 3250441966), d = o(d, v, S, m, l[a + 4], 7, 4118548399), m = o(m, d, v, S, l[a + 5], 12, 1200080426), S = o(S, m, d, v, l[a + 6], 17, 2821735955), v = o(v, S, m, d, l[a + 7], 22, 4249261313), d = o(d, v, S, m, l[a + 8], 7, 1770035416), m = o(m, d, v, S, l[a + 9], 12, 2336552879), S = o(S, m, d, v, l[a + 10], 17, 4294925233), v = o(v, S, m, d, l[a + 11], 22, 2304563134), d = o(d, v, S, m, l[a + 12], 7, 1804603682), m = o(m, d, v, S, l[a + 13], 12, 4254626195), S = o(S, m, d, v, l[a + 14], 17, 2792965006), d = e(d, v = o(v, S, m, d, l[a + 15], 22, 1236535329), S, m, l[a + 1], 5, 4129170786), m = e(m, d, v, S, l[a + 6], 9, 3225465664), S = e(S, m, d, v, l[a + 11], 14, 643717713), v = e(v, S, m, d, l[a + 0], 20, 3921069994), d = e(d, v, S, m, l[a + 5], 5, 3593408605), m = e(m, d, v, S, l[a + 10], 9, 38016083), S = e(S, m, d, v, l[a + 15], 14, 3634488961), v = e(v, S, m, d, l[a + 4], 20, 3889429448), d = e(d, v, S, m, l[a + 9], 5, 568446438), m = e(m, d, v, S, l[a + 14], 9, 3275163606), S = e(S, m, d, v, l[a + 3], 14, 4107603335), v = e(v, S, m, d, l[a + 8], 20, 1163531501), d = e(d, v, S, m, l[a + 13], 5, 2850285829), m = e(m, d, v, S, l[a + 2], 9, 4243563512), S = e(S, m, d, v, l[a + 7], 14, 1735328473), d = u(d, v = e(v, S, m, d, l[a + 12], 20, 2368359562), S, m, l[a + 5], 4, 4294588738), m = u(m, d, v, S, l[a + 8], 11, 2272392833), S = u(S, m, d, v, l[a + 11], 16, 1839030562), v = u(v, S, m, d, l[a + 14], 23, 4259657740), d = u(d, v, S, m, l[a + 1], 4, 2763975236), m = u(m, d, v, S, l[a + 4], 11, 1272893353), S = u(S, m, d, v, l[a + 7], 16, 4139469664), v = u(v, S, m, d, l[a + 10], 23, 3200236656), d = u(d, v, S, m, l[a + 13], 4, 681279174), m = u(m, d, v, S, l[a + 0], 11, 3936430074), S = u(S, m, d, v, l[a + 3], 16, 3572445317), v = u(v, S, m, d, l[a + 6], 23, 76029189), d = u(d, v, S, m, l[a + 9], 4, 3654602809), m = u(m, d, v, S, l[a + 12], 11, 3873151461), S = u(S, m, d, v, l[a + 15], 16, 530742520), d = f(d, v = u(v, S, m, d, l[a + 2], 23, 3299628645), S, m, l[a + 0], 6, 4096336452), m = f(m, d, v, S, l[a + 7], 10, 1126891415), S = f(S, m, d, v, l[a + 14], 15, 2878612391), v = f(v, S, m, d, l[a + 5], 21, 4237533241), d = f(d, v, S, m, l[a + 12], 6, 1700485571), m = f(m, d, v, S, l[a + 3], 10, 2399980690), S = f(S, m, d, v, l[a + 10], 15, 4293915773), v = f(v, S, m, d, l[a + 1], 21, 2240044497), d = f(d, v, S, m, l[a + 8], 6, 1873313359), m = f(m, d, v, S, l[a + 15], 10, 4264355552), S = f(S, m, d, v, l[a + 6], 15, 2734768916), v = f(v, S, m, d, l[a + 13], 21, 1309151649), d = f(d, v, S, m, l[a + 4], 6, 4149444226), m = f(m, d, v, S, l[a + 11], 10, 3174756917), S = f(S, m, d, v, l[a + 2], 15, 718787259), v = f(v, S, m, d, l[a + 9], 21, 3951481745), d = t(d, c), v = t(v, C), S = t(S, g), m = t(m, h); return (i(d) + i(v) + i(S) + i(m)).toLowerCase() };
 
-async function ckeckCredentials(user, pswd){
- pswd = MD5(pswd)
- return await connection('adm_tb')
-                .where({userName: user, password: pswd})
-                .first()
+async function ckeckCredentials(user, pswd) {
+    pswd = MD5(pswd)
+    return await connection('adm_tb')
+        .where({ userName: user, password: pswd })
+        .first()
 }
 
-function checkReqBody(reqBody){
-    let whatsMissing = Object.entries(reqBody).filter( data => {    
-        if(String(data[1]).trim() === "" || !data[1] || data[1] === undefined){
-           return data[0] === "surplus" ? false : data
+function checkReqBody(reqBody) {
+    let whatsMissing = Object.entries(reqBody).filter(data => {
+        if (String(data[1]).trim() === "" || !data[1] || data[1] === undefined) {
+            return data[0] === "surplus" ? false : data
         }
     })
 
-    if(whatsMissing.length > 0) return true
+    if (whatsMissing.length > 0) return true
 }
 
 app.get('/', async function (req, res) {
     const allUsers = await connection('users')
         .orderBy('position', 'asc');
     let showThem = {};
-   
+
     if (allUsers.length === 2) {
         showThem = {
             theNext: allUsers[1],
@@ -72,11 +72,11 @@ app.get('/', async function (req, res) {
 app.get('/users', UserController.list)
 
 //USER
-app.post('/create/user', async(req, res) => {
-    try{
+app.post('/create/user', async (req, res) => {
+    try {
         const emptyPropertie = checkReqBody(req.body)
-    
-        if(emptyPropertie){
+
+        if (emptyPropertie) {
             console.log(`\nCorpo da requisição inválido.`, emptyPropertie)
             return res.status(400).json({
                 status: 400,
@@ -85,8 +85,8 @@ app.post('/create/user', async(req, res) => {
         }
 
         const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword);
-    
-        if(!autenticado){
+
+        if (!autenticado) {
             console.log("\nUsuário e/ou senha da conta administradoras são inválidas.")
             return res.status(401).json({
                 status: 401,
@@ -94,21 +94,21 @@ app.post('/create/user', async(req, res) => {
             });
         }
 
-        const { name, section, currentDate, surplus} = req.body;
+        const { name, section, currentDate, surplus } = req.body;
 
         console.log(`\n\n\n----START\n Cadastrando usuário ${name}.`)
 
         const created = await UserController.create(name, section, currentDate, surplus, res)
 
-        if(created.statusCode !== 201) return
+        if (created.statusCode !== 201) return
 
         console.log(`\nCadastro realizado! Prosseguindo com as demais etapas de registro do ${name}...`)
-        
+
         //registro de compra de café sem utilizar saldo, pois o usuário está sendo criado, surplusID = false
         await CoffeeRegisterController.create(name, currentDate, false)
         console.log(`\nRegistro da primeira compra de café realizado.\n`)
 
-        if(surplus > 0) {
+        if (surplus > 0) {
             console.log(`\nCadastrando o saldo de ${surplus} registro(s) do usuário ${name}`)
             //alimentar tabela aqui
             for (i = 0; i != surplus; i++) {
@@ -121,14 +121,14 @@ app.post('/create/user', async(req, res) => {
         }
 
         console.log(`\nCadastro de ${name} realizado com um total de ${surplus} registro(s) de saldo.\n----END`)
-        
+
         return res.status(201).json({
             status: 201,
             message: 'Usuário cadastrado com sucesso!'
-        }) 
-    } catch(err){
+        })
+    } catch (err) {
         console.log("\nFALHA INTERNO NO SERVIDOR  -> index.js - rota /sign-up ->", err)
-            
+
         return res.status(500).json({
             status: 500,
             message: "Erro interno no servidor. Favor contatar o admnistrador do sistema."
@@ -138,10 +138,10 @@ app.post('/create/user', async(req, res) => {
 
 //COFFEE
 app.post('/coffeeBought', async function (req, res) {
-    try{
+    try {
         const emptyPropertie = checkReqBody(req.body)
-    
-        if(emptyPropertie){
+
+        if (emptyPropertie) {
             console.log(`\nCorpo da requisição inválido.`, emptyPropertie)
             return res.status(400).json({
                 status: 400,
@@ -151,7 +151,7 @@ app.post('/coffeeBought', async function (req, res) {
 
         const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
 
-        if(!autenticado){
+        if (!autenticado) {
             console.log("\nUsuário e/ou senha da conta administradoras são inválidas.\n")
             return res.status(401).json({
                 status: 401,
@@ -159,13 +159,13 @@ app.post('/coffeeBought', async function (req, res) {
             });
         }
 
-        const { name, currentDate, surplus, useSurplus} = req.body;
-    
+        const { name, currentDate, surplus, useSurplus } = req.body;
+
         nameExists = await connection('users')
             .where('name', name)
             .first();
 
-        if(!nameExists){
+        if (!nameExists) {
             console.log("\nUsuário não encontrado.\n")
             return res.status(404).json({
                 status: 404,
@@ -205,37 +205,37 @@ app.post('/coffeeBought', async function (req, res) {
         //         message: `Este usuário já adiantou um pagamento no ciclo atual. É permitido apenas um adiantamento por ciclo. Aguarde o fim do ciclo atual para adiantar o pagamento do usuário.` 
         //     })
         // }
-                
+
         let isAhead = userPosition !== 1 ? 'true' : 'false'
-        
+
         hasSurplus = Object.values(await connection('surplus_tb')
             .where({
-                userName: name, 
+                userName: name,
                 used: 'false'
             })
         )
-            //usuário não possui saldo mas está tentando registrar compra utilizando saldo
-        
+        //usuário não possui saldo mas está tentando registrar compra utilizando saldo
+
         if (hasSurplus.length === 0 && useSurplus === 'true') {
             console.log(`\nUsuário ${name} não possui saldo para ser utilizado!\n`)
             return res.status(401).json({
-                status:401,
-                message:'Não há saldo disponível para uso!'
+                status: 401,
+                message: 'Não há saldo disponível para uso!'
             })
-        } else if(isAhead === 'true'){
+        } else if (isAhead === 'true') {
             console.log(`\nO usuário ${name} está registrando uma compra adiantada estando na posição ${userPosition}.`)
-            if(surplus > 0){
+            if (surplus > 0) {
                 console.log(`\nAdicionando ${surplus} de saldo passado ao registrar a compra.\n`)
                 addSurplus(surplus)
-            } else{
+            } else {
                 console.log(`\nAdicionando 1 de saldo.\n`)
                 addSurplus(1)
             }
-            
+
         } else if (hasSurplus.length > 0 && useSurplus === 'true') {
             console.log(`----START\nRegistrando compra ${name} utilizando saldo disponível...\n`)
-                //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
-                
+            //resgata o ID de um saldo válido para passá-lo no registro que será feito na tabela coffee_register
+
             const surplusID = Object.values(
                 await connection('surplus_tb')
                     .where('surplusID', hasSurplus[0].surplusID)
@@ -253,40 +253,40 @@ app.post('/coffeeBought', async function (req, res) {
                     usedInCoffeeRegister: coffeeRegisterID
                 })
             console.log(`Um registro de saldo do usuário ${name} foi colocado como já utilizado.`)
-        
-            if(surplus > 0){
+
+            if (surplus > 0) {
                 addSurplus(surplus)
-            } 
+            }
 
         } else {
             console.log(`----START\nRegistrando compra de ${name}, que está na posição ${userPosition}, não adiantado.`)
             await CoffeeRegisterController.create(name, date, false)
             console.log(`\n Compra sem utilizar saldo e sem adicionar saldo registrada na tabela coffee_registers.`)
-            if(surplus > 0){
+            if (surplus > 0) {
                 console.log(`\nAdicionando ${surplus} de saldo passado ao registrar a compra.\n`)
                 addSurplus(surplus)
-            } 
+            }
         }
 
         console.log(`\nAtualizando o saldo na tabela surplus_tb. Neste registro foi passado ${surplus > 0 ? surplus : 1} registro(s) de saldo.\n`)
         //caso tenha adicionado saldo, o valor será atualizado para o total que o usuário possui
         //caso não tenha, o total será igual ao total que o usuário já possuía
-        
+
         const surplusInTable = Object.values(await connection('surplus_tb')
-                   .where({
-                       userName: name,
-                       used: 'false'
-                   })).length;
-        
+            .where({
+                userName: name,
+                used: 'false'
+            })).length;
+
         console.log(surplusInTable, ' de saldo')
-        
+
         await UserController.update.saldo(name, surplusInTable);
-        
-        if(isAhead === 'false'){
+
+        if (isAhead === 'false') {
             console.log(`\nAtualizando posição do ${name} na tabela users.\n`)
             await UserController.update.position(name, isAhead);
         }
-        
+
         console.log(`\nAtualizando data da última aquisição do ${name} na tabela users.\n`)
         await UserController.update.lastCoffeeAcquisition(name, date)
 
@@ -296,7 +296,7 @@ app.post('/coffeeBought', async function (req, res) {
             message: "Compra registrada e tabela atualizada!"
         });
 
-        async function addSurplus(total){                   
+        async function addSurplus(total) {
             for (i = 0; i != total; i++) {
                 try {
                     await connection('surplus_tb')
@@ -310,7 +310,7 @@ app.post('/coffeeBought', async function (req, res) {
             }
 
         }
-    } catch(err){
+    } catch (err) {
         console.log("\nFALHA INTERNO NO SERVIDOR -> index.js - rota /coffeeBought -> ", err)
         return res.status(500).json({
             status: 500,
@@ -319,11 +319,11 @@ app.post('/coffeeBought', async function (req, res) {
     }
 })
 
-app.delete('/remove', async(req, res) => {
-    try{
+app.delete('/remove', async (req, res) => {
+    try {
         const emptyPropertie = checkReqBody(req.body)
-    
-        if(emptyPropertie){
+
+        if (emptyPropertie) {
             console.log(`\nCorpo da requisição inválido.`, emptyPropertie)
             return res.status(400).json({
                 status: 400,
@@ -332,8 +332,8 @@ app.delete('/remove', async(req, res) => {
         }
 
         const autenticado = await ckeckCredentials(req.body.admUser, req.body.admPassword)
-        
-        if(!autenticado){
+
+        if (!autenticado) {
             console.log("\nUsuário e/ou senha da contas administradoras são inválidas.")
             return res.status(401).json({
                 status: 401,
@@ -341,14 +341,15 @@ app.delete('/remove', async(req, res) => {
             });
         }
 
-        
         const name = req.body.name
-        const update = await UserController.update.position(name, false, "removingUser", res)
-        
-        if(update.statusCode === 500) return
-        
+
+        const response = await UserController.update.position(name, "removingUser", res)
+
+        if (response.statusCode === 500) return
+
         await UserController.delete(name, res);
-    } catch(err){
+
+    } catch (err) {
         console.log("\nFALHA INTERNO NO SERVIDOR  -> index.js - rota /remove ->", err)
         return res.status(500).json({
             status: 500,
