@@ -8,7 +8,6 @@ exports.up = function (knex) {
         table.integer('position');
         table.string('signUpDate');
         table.string('lastCoffeeAcquisition');
-        table.string('isAhead');
     })
 };
 
