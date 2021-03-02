@@ -72,8 +72,8 @@
                 <!-- usuário não está na primeira posição, já efetuou o adiantamento de um pagamento 
                 e está querendo fazer isso de novo antes dos outros usuários concluírem o ciclo atual 
                 com seus registros de pagamentos -->
-                <button 
-                    v-if="action === 'pagar' && data.item.position !== 1 && data.item.isAhead === 'true'"
+                <!-- <button 
+                    v-if="action === 'pagar' && data.item.position === 1 && data.item.surplus > 0"
                     @click="openAlert()"
                     v-bind:title="unablePayMsg"
                     class="btn-pay btn-pay-disabled"
@@ -81,10 +81,10 @@
                     style="color:black!important;"
                 >
                     PAGAR
-                </button>
+                </button> -->
 
                 <button 
-                    v-else-if="action === 'pagar'"
+                    v-if="action === 'pagar'"
                     @click="openModal(data.item)"
                     class="btn-pay"
                     :id="data.item.position"

@@ -100,7 +100,7 @@ export default {
     },
     created(){
         EventBus.$on("openModal", () => {
-            if(this.userInTable.surplus > 0){
+            if(this.userInTable.surplus > 0 && this.userInTable.position === 1){
                 this.showModalUserSurplus = true
             }else{
                 this.showModal = true;
