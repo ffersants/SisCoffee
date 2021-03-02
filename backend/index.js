@@ -186,13 +186,6 @@ app.post('/coffeeBought', async function (req, res) {
             })
         }
 
-        hasSurplus = Object.values(await connection('surplus_tb')
-                .where({
-                    userName: name, 
-                    used: 'false'
-                })
-        )
-
         const userPosition = Object.values(await connection('users')
             .where('name', name)
             .select('position')
@@ -214,7 +207,13 @@ app.post('/coffeeBought', async function (req, res) {
         }
                 
         let isAhead = userPosition !== 1 ? 'true' : 'false'
-                
+        
+        hasSurplus = Object.values(await connection('surplus_tb')
+            .where({
+                userName: name, 
+                used: 'false'
+            })
+        )
             //usuário não possui saldo mas está tentando registrar compra utilizando saldo
         if (hasSurplus.length === 0 && useSurplus === 'true') {
             console.log(`\nUsuário ${name} não possui saldo para ser utilizado!\n`)
