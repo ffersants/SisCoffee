@@ -175,12 +175,10 @@ module.exports = {
                 })
             }
         },
-        saldo: async function (name) {
+        saldo: async function (name, surplusInTable) {
             try {
-                
-                const surplusInTable = Object.values(await connection('surplus_tb')
-                    .where('userName', name)
-                    .where('used', 'false')).length;
+                console.log(`\n${name} chegou aqui para atualização do saldo.`)
+                console.log(`\n${name} tem ${surplusInTable} de saldo.`)
 
                 await connection('users')
                     .where('name', name)
