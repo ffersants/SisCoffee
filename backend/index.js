@@ -186,27 +186,6 @@ app.post('/coffeeBought', async function (req, res) {
             })
         }
 
-        const userPosition = Object.values(await connection('users')
-            .where('name', name)
-            .select('position')
-            .first())[0]
-
-        // const aheadAlready = Object.values(
-        //     await connection('users')
-        //     .where("name", name)
-        //     .select("isAhead")
-        //     .first()
-        // )[0]
-
-        // if(userPosition !== 1 && aheadAlready === "true"){
-        //     console.log(`\nFalha ao registrar adiantamento de pagamento de ${name}. Usuário já adiantado.`)
-        //     return res.status(403).json({
-        //         status: 403,
-        //         message: `Este usuário já adiantou um pagamento no ciclo atual. É permitido apenas um adiantamento por ciclo. Aguarde o fim do ciclo atual para adiantar o pagamento do usuário.` 
-        //     })
-        // }
-
-        let isAhead = userPosition !== 1 ? 'true' : 'false'
 
         hasSurplus = Object.values(await connection('surplus_tb')
             .where({
@@ -222,14 +201,25 @@ app.post('/coffeeBought', async function (req, res) {
                 status: 401,
                 message: 'Não há saldo disponível para uso!'
             })
-        } else if (isAhead === 'true') {
+        }
+        
+        const userPosition = Object.values(await connection('users')
+            .where('name', name)
+            .select('position')
+            .first())[0]
+
+        let isAhead = userPosition !== 1 ? 'true' : 'false';
+
+        console.log(isAhead)
+        
+        if (isAhead === 'true') {
             console.log(`\nO usuário ${name} está registrando uma compra adiantada estando na posição ${userPosition}.`)
             if (surplus > 0) {
                 console.log(`\nAdicionando ${surplus} de saldo passado ao registrar a compra.\n`)
-                addSurplus(surplus)
+                await addSurplus(surplus)
             } else {
                 console.log(`\nAdicionando 1 de saldo.\n`)
-                addSurplus(1)
+                await addSurplus(1)
             }
 
         } else if (hasSurplus.length > 0 && useSurplus === 'true') {
@@ -243,7 +233,7 @@ app.post('/coffeeBought', async function (req, res) {
             )[0]
 
             //recebe o ID do registro realizado na tabela coffee_register usando saldo
-            coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID, isAhead);
+            coffeeRegisterID = await CoffeeRegisterController.create(name, date, surplusID);
             console.log("\nRegistro realizado com sucesso na tabela coffee_registers.\n")
             //atualiza a surplus_tb para remover saldo e indicar o ID do registro em que o saldo foi utilizado
             await connection('surplus_tb')
@@ -251,11 +241,12 @@ app.post('/coffeeBought', async function (req, res) {
                 .update({
                     used: 'true',
                     usedInCoffeeRegister: coffeeRegisterID
-                })
+            })
+
             console.log(`Um registro de saldo do usuário ${name} foi colocado como já utilizado.`)
 
             if (surplus > 0) {
-                addSurplus(surplus)
+                await addSurplus(surplus)
             }
 
         } else {
@@ -264,7 +255,7 @@ app.post('/coffeeBought', async function (req, res) {
             console.log(`\n Compra sem utilizar saldo e sem adicionar saldo registrada na tabela coffee_registers.`)
             if (surplus > 0) {
                 console.log(`\nAdicionando ${surplus} de saldo passado ao registrar a compra.\n`)
-                addSurplus(surplus)
+                await addSurplus(surplus)
             }
         }
 
@@ -284,7 +275,7 @@ app.post('/coffeeBought', async function (req, res) {
 
         if (isAhead === 'false') {
             console.log(`\nAtualizando posição do ${name} na tabela users.\n`)
-            await UserController.update.position(name, isAhead);
+            await UserController.update.position(name);
         }
 
         console.log(`\nAtualizando data da última aquisição do ${name} na tabela users.\n`)
