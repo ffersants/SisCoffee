@@ -67,8 +67,8 @@ module.exports = {
             
             users.forEach(userInUsersTb => {
                 if(userInUsersTb.surplus > 0){
-                    surplusOfThisUser = usersAndSurplus.filter(userInSurplusTb => userInSurplusTb.userName === userInUsersTb.name)
-                    userInUsersTb['userSurplus'] = surplusOfThisUser
+                    surplusOfThisUser = usersAndSurplus.filter(userInSurplusTb => userInSurplusTb.userName === userInUsersTb.name && userInSurplusTb.used === 'false')
+                    userInUsersTb['userSurplusRegisters'] = surplusOfThisUser
                 }
             })
 
