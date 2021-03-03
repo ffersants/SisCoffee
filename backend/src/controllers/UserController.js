@@ -72,8 +72,6 @@ module.exports = {
                 }
             })
 
-            console.log(users)
-
             return res.json(users)
         } catch (err) {
             console.log("FALHA INTERNO NO SERVIDOR -> ", err)

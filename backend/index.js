@@ -209,8 +209,6 @@ app.post('/coffeeBought', async function (req, res) {
             .first())[0]
 
         let isAhead = userPosition !== 1 ? 'true' : 'false';
-
-        console.log(isAhead)
         
         if (isAhead === 'true') {
             console.log(`\nO usuário ${name} está registrando uma compra adiantada estando na posição ${userPosition}.`)
