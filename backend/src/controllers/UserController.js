@@ -63,6 +63,17 @@ module.exports = {
     list: async function (req, res) {
         try {
             const users = await connection('users').select('*').orderBy('position', 'asc')
+            const usersAndSurplus = await connection('surplus_tb').orderBy('userName', 'asc')
+            
+            users.forEach(userInUsersTb => {
+                if(userInUsersTb.surplus > 0){
+                    surplusOfThisUser = usersAndSurplus.filter(userInSurplusTb => userInSurplusTb.userName === userInUsersTb.name)
+                    userInUsersTb['userSurplus'] = surplusOfThisUser
+                }
+            })
+
+            console.log(users)
+
             return res.json(users)
         } catch (err) {
             console.log("FALHA INTERNO NO SERVIDOR -> ", err)
