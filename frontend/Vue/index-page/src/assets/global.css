@@ -80,6 +80,7 @@ hr{
 #alert-error > h1,
 #alert-success > h1,
 #use-surplus > h1,
+#table-with-surplus h1,
 #alert-success i{
   color: #F0A82E;
 }
@@ -91,7 +92,8 @@ hr{
 }
 
 #alert-error button,
-#alert-success button{
+#alert-success button,
+#table-with-surplus button{
     display: block;
     box-sizing: border-box;
     background-color:#414141;

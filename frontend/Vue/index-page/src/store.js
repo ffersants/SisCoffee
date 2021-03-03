@@ -7,6 +7,7 @@ export default new Vuex.Store({
     state: {
         userInAction: "", 
         userInActionTable: "",
+        userInSurplusTable: ""
     },
     mutations: {
         UPDATE_USER_IN_ACTION(state, userInfo){
@@ -15,6 +16,9 @@ export default new Vuex.Store({
         UPDATE_USER_IN_ACTION_TABLE(state, userInfo){
             state.userInActionTable = userInfo
         }, 
+        UPDATE_USER_IN_SURPLUS_TABLE(state, userInfo){
+            state.userInSurplusTable = userInfo
+        }
     },
     actions: {
         setUserInAction(context, userInfo){
@@ -22,6 +26,9 @@ export default new Vuex.Store({
         },
         setUserInActionTable(context, userInfo){
             context.commit('UPDATE_USER_IN_ACTION_TABLE', userInfo);
+        },
+        setUserInSurplusTable(context, userInfo){
+            context.commit('UPDATE_USER_IN_SURPLUS_TABLE', userInfo);
         }
     }
 })

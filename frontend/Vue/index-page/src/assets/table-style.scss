@@ -57,6 +57,10 @@ li.active button, li.active > button:focus{
     box-shadow: none;
 }
 
+#coffee-bean-icon:hover{
+    cursor: pointer;
+}
+
 #holds-fetch-alert{
     width: 50em;
     font-family: var(--card-font-family);

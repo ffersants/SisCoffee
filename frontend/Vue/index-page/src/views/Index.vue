@@ -142,6 +142,8 @@
                 >
                 </modal-use-surplus>
 
+                
+
                 <modal 
                   v-if="showModal" 
                   action="payment"
@@ -198,15 +200,12 @@ export default {
   },
   methods: {
     openUserConfig(){
-      document.querySelector('body').style.overflow = 'hidden!important'
       this.showUserConfig = true;
     },
     openModal(){
       if(this.theOne.surplus > 0){
-        document.querySelector('body').style.overflow = 'hidden!important'
         this.showModalUserSurplus = true
       } else{
-        document.querySelector('body').style.overflow = 'hidden!important'
         this.showModal = true;
       }
     }
@@ -267,6 +266,7 @@ export default {
       this.$router.go()
       this.showSuccessAlert = false
     })
+  
   },
   components: {
     HeaderDefault,

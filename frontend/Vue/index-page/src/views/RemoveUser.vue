@@ -1,6 +1,7 @@
 <template>
     <transition name="remove-user">
         <div id="list-users" >
+            
             <HeaderDefault title="REMOVER USUÁRIO">
                 <router-link to="/">
                     <i class="fas fa-arrow-left"></i>
@@ -16,7 +17,7 @@
                     <success-alert 
                         description="Usuário removido com sucesso!" 
                         v-if="showSuccessAlert" 
-                        action="payment"
+                        
                     >
                         <div class="text-center mb-2 mt-2" id="icon-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="55" height="40" viewBox="0 0 74.227 56.933">
@@ -25,6 +26,8 @@
                         </div>
                     </success-alert>
            
+                    <table-with-surplus v-if="showTableWithSurplus" key="table-with-surplus"></table-with-surplus>
+
                     <modal-base v-if="showAlert">
                         <div id="alert-error">
                             <h1>AÇÃO NEGADA</h1>
@@ -61,6 +64,7 @@ import Modal from '../components/Modal.vue'
 import ModalBase from '../components/ModalBase.vue'
 import SuccessAlert from '../components/SuccessAlert.vue'
 import TableWithUsers from '../components/TableWithUsers.vue'
+import TableWithSurplus from '../components/TableWithSurplus.vue'
 
 export default {
     name: 'RemoveUser',
@@ -69,6 +73,7 @@ export default {
             showModal: false,
             showAlert: false,
             showSuccessAlert: false,
+            showTableWithSurplus: false,
             action: 'remove',
         }
     },
@@ -102,13 +107,20 @@ export default {
             this.showSuccessAlert = false;
             this.$router.go()
         })
+        EventBus.$on("openTableWithSurplus", () => {
+            this.showTableWithSurplus = true
+        })
+        EventBus.$on("closeTableWithSurplus", () => {
+            this.showTableWithSurplus = false
+        })
     },
     components: {
         HeaderDefault,
         Modal,
         ModalBase, 
         SuccessAlert,
-        TableWithUsers
+        TableWithUsers,
+        TableWithSurplus
     }
 }
 </script>

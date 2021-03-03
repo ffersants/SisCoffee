@@ -28,6 +28,8 @@
                         </div>
                     </success-alert>
 
+                    <table-with-surplus v-if="showTableWithSurplus" key="table-with-surplus"></table-with-surplus>
+
                     <modal-base v-if="showAlert">
                         <div id="alert-error">
                             <h1>AÇÃO NEGADA</h1>
@@ -73,6 +75,7 @@ import ModalBase from '../components/ModalBase.vue'
 import ModalUseSurplus from '../components/ModalUseSurplus.vue'
 import SuccessAlert from '../components/SuccessAlert.vue'
 import TableWithUsers from '../components/TableWithUsers.vue'
+import TableWithSurplus from '../components/TableWithSurplus.vue'
 
 export default {
     name: 'ListUsers',
@@ -83,6 +86,7 @@ export default {
             showAlert: false,
             showModalUserSurplus: false,
             showSuccessAlert: false,
+            showTableWithSurplus: true,
             useSurplus: false
         }
     },
@@ -136,6 +140,12 @@ export default {
             this.showSuccessAlert = false
             this.$router.go()
         })  
+        EventBus.$on("openTableWithSurplus", () => {
+            this.showTableWithSurplus = true
+        })
+        EventBus.$on("closeTableWithSurplus", () => {
+            this.showTableWithSurplus = false
+        })
     }, 
     components: {
         HeaderDefault,
@@ -143,7 +153,8 @@ export default {
         ModalBase,
         ModalUseSurplus,
         SuccessAlert,
-        TableWithUsers
+        TableWithUsers,
+        TableWithSurplus
     }
 }
 </script>

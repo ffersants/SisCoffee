@@ -43,11 +43,15 @@
              -->
             <template v-slot:cell(name)="data">
                 
-                <div v-if="data.item.surplus > 0" id="show-saldo">  
+                <div 
+                    v-if="data.item.surplus > 0" 
+                    @click="openTableWithSurplus(data.item.userSurplusRegisters)" id="show-saldo"
+                    title="Ver histórico dos saldos"
+                >  
                     <span>
                         {{data.item.name}}
                     </span>
-                    <span>
+                    <span id="coffee-bean-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="52.947" height="29.507" viewBox="0 0 52.947 29.507">
                                                         <defs>
                                                             <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%"                                 viewBox="0 0 513 404">
@@ -189,13 +193,16 @@ export default {
         openAlert(){
             EventBus.$emit("openAlert")
         },
+        openTableWithSurplus(user){
+            this.$store.dispatch('setUserInSurplusTable', user)
+            EventBus.$emit("openTableWithSurplus")
+        },
         openModal(user){
             this.$store.dispatch('setUserInActionTable', user)
             EventBus.$emit("openModal")
         },
     },
     async beforeCreate(){
-
         fetch("http://localhost:3300/users/")
             .then(r => {
                 if(!r.ok){
