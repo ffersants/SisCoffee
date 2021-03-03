@@ -7,20 +7,25 @@ const CoffeeRegisterController = require('./src/controllers/CoffeeRegisterContro
 const connection = require('./src/database/connection');
 const app = express();
 
-app.use((req, res, next) => {
-    // clientIP = req.connection.remoteAddress)
 
-    /*
-    https://stackoverflow.com/questions/18310394/no-access-control-allow-origin-node-apache-port-issue#comment28704031_18311469
-    */
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8002');
+app.use((req, res, next) => {
+    console.log('veio aqui')
+    // clientIP = req.connection.remoteAddress)
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+
     // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
 
     // Request headers you wish to allow
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-    next()
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
 })
 
 app.use(express.json())
@@ -202,14 +207,14 @@ app.post('/coffeeBought', async function (req, res) {
                 message: 'Não há saldo disponível para uso!'
             })
         }
-        
+
         const userPosition = Object.values(await connection('users')
             .where('name', name)
             .select('position')
             .first())[0]
 
         let isAhead = userPosition !== 1 ? 'true' : 'false';
-        
+
         if (isAhead === 'true') {
             console.log(`\nO usuário ${name} está registrando uma compra adiantada estando na posição ${userPosition}.`)
             if (surplus > 0) {
@@ -239,7 +244,7 @@ app.post('/coffeeBought', async function (req, res) {
                 .update({
                     used: 'true',
                     usedInCoffeeRegister: coffeeRegisterID
-            })
+                })
 
             console.log(`Um registro de saldo do usuário ${name} foi colocado como já utilizado.`)
 
