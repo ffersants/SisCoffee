@@ -85,7 +85,11 @@
                 <p id="msg-erro-modal" class="invalid-message invalid-inactive"></p>
                 
                 <div v-if="action !== 'removeUser'" id="add-surplus">
-                    <p>Deseja adicionar saldo?</p>
+                    <p v-if="userIsAhead && action == 'payment' ">Um saldo já está sendo adicionado, pois o usuário está pagando adiantado
+                        <br>
+                        Deseja adicionar mais saldo?
+                    </p>
+                    <p v-else>Deseja adicionar saldo?</p>
                     <small>Clique no ícone abaixo</small>
                     
                     <span @click="addSurplus()" id="coffee-icon">
@@ -97,7 +101,7 @@
                             </defs>
                             <rect id="coffee-bean" width="53" height="42" fill="url(#pattern)"/>
                             <path id="saldo-background" d="M12.458,0c6.881,0,12.458,6.359,12.458,14.2s-5.578,14.2-12.458,14.2S0,22.046,0,14.2,5.578,0,12.458,0Z" transform="translate(44 7)" fill="#f0a82e"/>
-                            <text :transform="translateValue" fill="#414141" font-size="16" font-family="ArialMT, Arial"><tspan x="-4.449" y="0" id="saldo">{{surplus}}</tspan></text>
+                            <text :transform="translateValue" fill="#00000" font-size="16" font-family="ArialMT, Arial"><tspan x="-4.449" y="0" id="saldo" >{{surplus}}</tspan></text>
                         </svg>
                     </span>
 
@@ -154,7 +158,8 @@ export default{
           translateValue: "translate(56 27)",
           fetching: false,
           loading: false,
-          modalFeedback: ""
+          modalFeedback: "",
+          userIsAhead: false
       }
     },
     props:{
@@ -296,6 +301,10 @@ export default{
         },
     }, 
     mounted(){
+        if(this.action === 'payment' && this.reqBody.position != 1) {
+            this.surplus = 1
+            this.userIsAhead = true
+        }
         this.$nextTick(() => this.$refs.autoFocus.focus())
     },
     components: {

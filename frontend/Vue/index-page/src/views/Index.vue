@@ -191,7 +191,8 @@ export default {
       return {
         name: this.theOne.name,
         section: this.theOne.section,
-        useSurplus: String(this.useSurplus)
+        useSurplus: String(this.useSurplus),
+        position: this.theOne.position
       }
     }
   },

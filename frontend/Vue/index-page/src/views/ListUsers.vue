@@ -91,7 +91,8 @@ export default {
             return {
                 name: this.userInTable.name,
                 section: this.userInTable.section,
-                useSurplus: String(this.useSurplus)
+                useSurplus: String(this.useSurplus),
+                position: this.userInTable.position
             }
         },
         userInTable(){

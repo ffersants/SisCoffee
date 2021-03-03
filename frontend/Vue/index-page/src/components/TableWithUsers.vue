@@ -194,7 +194,8 @@ export default {
             EventBus.$emit("openModal")
         },
     },
-    beforeCreate(){
+    async beforeCreate(){
+
         fetch("http://localhost:3300/users/")
             .then(r => {
                 if(!r.ok){
