@@ -1,149 +1,149 @@
-
 @font-face {
-    font-family: "Andale";
-    src: local("fonts"),
-     url(../fonts/oracle.TTF) format("truetype");
+  font-family: "Andale";
+  src: local("fonts"), url(../fonts/oracle.TTF) format("truetype");
 }
 
 @font-face {
   font-family: "Apercu";
-  src: local("fonts"),
-   url(../fonts/Apercu-Mono.ttf) format("truetype");
+  src: local("fonts"), url(../fonts/Apercu-Mono.ttf) format("truetype");
 }
 
 @font-face {
   font-family: "Century";
-  src: local("fonts"),
-  url(../fonts/Century-Schoolbook.ttf) format("truetype");
+  src: local("fonts"), url(../fonts/Century-Schoolbook.ttf) format("truetype");
 }
 
 @font-face {
   font-family: "Candara";
-  src: local("fonts"),
-  url(../fonts/Candara.ttf) format("truetype");
+  src: local("fonts"), url(../fonts/Candara.ttf) format("truetype");
 }
 
-:root{
-  --main-font-family: 'Andale';
-  --modal-text-color: #FFFFFF;
-  --backgroup-app: #35373E;
-  --light-coffee-color: #F1E5D1;
+:root {
+  --main-font-family: "Andale";
+  --modal-text-color: #ffffff;
+  --backgroup-app: #35373e;
+  --light-coffee-color: #f1e5d1;
   --card-font-family: "Century";
-  --modal-text-color: #F2F2F2;
+  --modal-text-color: #f2f2f2;
 }
 
-h1{
-  color: #F2F2F2;
+h1 {
+  color: #f2f2f2;
   font-family: var(--main-font-family);
   text-align: center;
 }
 
-button{
-  transition: all .3s;
+button {
+  transition: all 0.3s;
 }
 
-button:focus{
-    box-shadow: none;
+button:focus {
+  box-shadow: none;
 }
 
-button:active{
-  transform: translateY(3px)!important;
+button:active {
+  transform: translateY(3px) !important;
 }
 
-button:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-hr{
+hr {
   background-color: #a89f8f;
   height: 3px;
 }
 
 #alert-error,
-#alert-success{
+#alert-success {
   padding: 1em;
 }
 
 #alert-error i,
-#alert-success i{
+#alert-success i {
   font-size: 400%;
   margin-top: 2%;
   margin-bottom: 2%;
 }
 
-#alert-error i{
+#alert-error i {
   color: red;
 }
-
 
 #alert-error > h1,
 #alert-success > h1,
 #use-surplus > h1,
 #table-with-surplus h1,
-#alert-success i{
-  color: #F0A82E;
+#alert-success i {
+  letter-spacing: -2px;
+  color: #f0a82e;
 }
 
 #alert-error p,
-#alert-success p{
-  color: #F2F2F2;
+#alert-success p {
+  color: #f2f2f2;
   font-size: 1.5em;
 }
 
 #alert-error button,
 #alert-success button,
-#table-with-surplus button{
-    display: block;
-    box-sizing: border-box;
-    background-color:#414141;
-    border: 1px solid #707070;
-    border-radius: 1.5em;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
-    padding: 0.8em 1.5em;
-    color: rgb(241, 229, 209);
-    font-size: 1.3em;
-    font-family: Candara;
-    margin-top: 1em;
-    transition: all .3s;
+#table-with-surplus button {
+  display: block;
+  box-sizing: border-box;
+  background-color: #414141;
+  border: 1px solid #707070;
+  border-radius: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  padding: 0.8em 1.5em;
+  color: rgb(241, 229, 209);
+  font-size: 1.3em;
+  font-family: Candara;
+  margin-top: 1em;
+  transition: all 0.3s;
 }
 
-.invalid-message{
+.invalid-message {
   color: red;
-  transition: all .6s!important;
+  transition: all 0.6s !important;
 }
 
-.invalid-inactive{
+.invalid-inactive {
   opacity: 0;
 }
 
-.invalid-active{
+.invalid-active {
   animation: invalid-msg;
   animation-duration: 1.2s;
   opacity: 1;
 }
 
-@keyframes invalid-msg{
-  10%, 90% {
+@keyframes invalid-msg {
+  10%,
+  90% {
     transform: translate3d(-1px, 0, 0);
   }
-  
-  20%, 80% {
+
+  20%,
+  80% {
     transform: translate3d(2px, 0, 0);
   }
 
-  30%, 50%, 70% {
+  30%,
+  50%,
+  70% {
     transform: translate3d(-4px, 0, 0);
   }
 
-  40%, 60% {
+  40%,
+  60% {
     transform: translate3d(4px, 0, 0);
   }
 }
 
-#fetch-failed-alert{
+#fetch-failed-alert {
   display: grid;
   grid-template-columns: 1fr 2fr;
   font-size: 1rem;
@@ -151,134 +151,133 @@ hr{
   padding: 0;
 }
 
-#fetch-failed-alert div{
+#fetch-failed-alert div {
   margin: 0;
   padding: 0;
 }
 
-#fetch-failed-icon > img{
+#fetch-failed-icon > img {
   width: 25em;
   position: relative;
   animation: move-cup-up;
   animation-duration: 5s;
-  animation-delay: .5s;
+  animation-delay: 0.5s;
 }
 
-#fetch-failed-msg{
+#fetch-failed-msg {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-#fetch-failed-msg > h1, 
-#fetch-failed-msg > p{
+#fetch-failed-msg > h1,
+#fetch-failed-msg > p {
   text-align: left;
   font-size: 1.8rem;
   font-weight: bold;
-  font-family: "Century"!important;
-  color: #F2F2F2;
+  font-family: "Century" !important;
+  color: #f2f2f2;
 }
 
-#fetch-failed-msg > small{
-  font-family: "Century"!important;
-  color: #F2F2F2;
+#fetch-failed-msg > small {
+  font-family: "Century" !important;
+  color: #f2f2f2;
   font-size: 1rem;
   text-align: left;
 }
 
-#fetch-failed-msg > h1{
+#fetch-failed-msg > h1 {
   font-size: 2.5em;
 }
 
-@keyframes move-cup-up{
-  10%, 50%{
-    transform: translateY(-15%) 
-  }
- 
-  20%, 30%, 40%{
-    transform: translateY(-15%) 
-      translateX(-3%)
-  }
-  25%, 35%, 45%{
-    transform:translateY(-15%) 
-    translateX(3%)
-  }
-  100%{
-    transform: translateY(0)
+@keyframes move-cup-up {
+  10%,
+  50% {
+    transform: translateY(-15%);
   }
 
-  
+  20%,
+  30%,
+  40% {
+    transform: translateY(-15%) translateX(-3%);
+  }
+  25%,
+  35%,
+  45% {
+    transform: translateY(-15%) translateX(3%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 575.98px) {
-  #fetch-failed-alert{
-    font-size: .7rem;
+  #fetch-failed-alert {
+    font-size: 0.7rem;
     grid-template-columns: 100%;
     text-align: center;
   }
-  
-  #fetch-failed-msg > p, 
+
+  #fetch-failed-msg > p,
   #fetch-failed-msg > h1,
-  #fetch-failed-msg > small{
+  #fetch-failed-msg > small {
     text-align: center;
   }
-  
-  #fetch-failed-icon > img{
+
+  #fetch-failed-icon > img {
     width: 20em;
   }
 }
 
-@media (max-width: 575px){
+@media (max-width: 575px) {
   #alert-error,
-  #alert-success{
-    font-size: .7rem;
+  #alert-success {
+    font-size: 0.7rem;
   }
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px) {
-  #fetch-failed-alert{
-    font-size: .7rem;
+  #fetch-failed-alert {
+    font-size: 0.7rem;
     display: flex;
   }
-  #fetch-failed-msg > p, 
-  #fetch-failed-msg > h1{
+  #fetch-failed-msg > p,
+  #fetch-failed-msg > h1 {
     text-align: left;
   }
 
-  #fetch-failed-icon > img{
+  #fetch-failed-icon > img {
     width: 20em;
   }
 
   #alert-error,
-  #alert-success{
-    font-size: .7rem;
+  #alert-success {
+    font-size: 0.7rem;
   }
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) {
-  #fetch-failed-alert{
-    font-size: .7rem;
+  #fetch-failed-alert {
+    font-size: 0.7rem;
     display: flex;
   }
-  
-  #fetch-failed-alert div{
+
+  #fetch-failed-alert div {
     width: 50%;
   }
 
-  #fetch-failed-alert small{
-    text-align:left;
+  #fetch-failed-alert small {
+    text-align: left;
   }
 
-  #fetch-failed-icon > img{
+  #fetch-failed-icon > img {
     width: 25em;
   }
 
-  #fetch-failed-icon{
+  #fetch-failed-icon {
     text-align: right;
     margin-right: 5%;
   }
-
 }
-
