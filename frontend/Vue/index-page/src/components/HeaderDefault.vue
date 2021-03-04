@@ -1,5 +1,5 @@
 <template>
-  <b-container id="header-default" class="mt-4">
+  <b-container id="header-default" class="mt-4 ml-auto mr-auto">
     
     <b-row>
       
