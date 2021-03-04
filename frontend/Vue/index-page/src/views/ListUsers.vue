@@ -192,13 +192,17 @@ export default {
   padding: 0;
 }
 
-#list-users,
-#modal-area {
+
+#modal-area,
+#list-users {
   width: 100%;
   text-align: center;
+  display:flex;
+  flex-direction: column;
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
 }
 
 .list-users-enter-active,

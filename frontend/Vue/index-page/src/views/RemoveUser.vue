@@ -1,6 +1,6 @@
 <template>
   <transition name="remove-user">
-    <div id="list-users">
+    <div id="remove-users">
       <HeaderDefault title="REMOVER USUÁRIO">
         <router-link to="/">
           <i class="fas fa-arrow-left"></i>
@@ -146,13 +146,17 @@ export default {
   margin: 0;
   padding: 0;
 }
-#list-users,
+
+#remove-users,
 #modal-area {
   width: 100%;
   text-align: center;
+  display:flex;
+  flex-direction: column;
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
 }
 
 #alert-error button:active {
@@ -161,11 +165,13 @@ export default {
 
 .remove-user-enter-active,
 .remove-user-leave-active {
+ 
   transition: opacity 0.4s;
 }
 
 .remove-user-enter,
 .remove-user-leave-to {
+  overflow: hidden;
   opacity: 0;
 }
 
