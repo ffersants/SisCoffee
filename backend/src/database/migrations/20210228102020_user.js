@@ -2,12 +2,12 @@
 exports.up = function (knex) {
     return knex.schema.createTable('users', function (table) {
         table.increments('userID');
-        table.string('name');
-        table.string('section');
+        table.string('name');     
+        table.string('section').notNullable();
         table.integer('surplus');
-        table.integer('position');
-        table.string('signUpDate');
-        table.string('lastCoffeeAcquisition');
+        table.integer('position').notNullable();
+        table.string('signUpDate').notNullable();
+        table.string('lastCoffeeAcquisition').notNullable();
     })
 };
 

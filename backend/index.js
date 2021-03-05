@@ -9,7 +9,6 @@ const app = express();
 
 
 app.use((req, res, next) => {
-    console.log('veio aqui')
     // clientIP = req.connection.remoteAddress)
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
@@ -215,8 +214,16 @@ app.post('/coffeeBought', async function (req, res) {
 
         let isAhead = userPosition !== 1 ? 'true' : 'false';
 
+        if(isAhead ==='true' && surplus <= '0'){
+            console.log('\n Usuário adiantado e com saldo igual a 0 na requisição')
+            return res.status(401).json({
+                status: 401,
+                message: 'Erro interno no servidor. Favor contatar o admnistrador do sistema.'
+            })
+        }
+
         if (isAhead === 'true') {
-            console.log(`\nO usuário ${name} está registrando uma compra adiantada estando na posição ${userPosition}.`)
+            console.log(`\n----START\nO usuário ${name} está registrando uma compra adiantada estando na posição ${userPosition}.`)
             if (surplus > 0) {
                 console.log(`\nAdicionando ${surplus} de saldo passado ao registrar a compra.\n`)
                 await addSurplus(surplus)

@@ -1,10 +1,25 @@
 // Update with your config settings.
 
 module.exports = {
+  // development: {
+  //   client: 'sqlite3',
+  //   connection: {
+  //     filename: './src/database/db.sqlite'
+  //   },
+  //   migrations: {
+  //     directory: './src/database/migrations'
+  //   },
+  //   seeds: {
+  //     directory: './src/database/seeds'
+  //   },
+  //   useNullAsDefault: true
+  // },
   development: {
-    client: 'sqlite3',
+    client: 'pg',
     connection: {
-      filename: './src/database/db.sqlite'
+      database: 'siscoffee_db',
+      user: 'postgres',
+      password: '@$PAjats252817'
     },
     migrations: {
       directory: './src/database/migrations'
@@ -33,4 +48,4 @@ module.exports = {
       directory: './src/database/seeds'
     }
   }
-};
+}
