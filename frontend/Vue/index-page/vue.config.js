@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/siscoffee.ditec'
+    publicPath: '.'
 }
