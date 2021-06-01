@@ -1,20 +1,17 @@
 <template>
-  <div id="app-vue">
-   <router-view class="app-vue"></router-view>
-  </div>
+	<div id="app-vue">
+		<router-view class="app-vue"></router-view>
+	</div>
 </template>
 
 <script>
-
-export default {
- 
-}
+export default {};
 </script>
 
 <style scoped>
-  #app-vue{
-    background-color: #35373E;
-    width: 100vw;
-    height: 100vh;
-  }
+#app-vue {
+	background-color: #35373e;
+	width: 100%;
+	height: 100vh;
+}
 </style>

@@ -1,92 +1,90 @@
 table {
-    text-align: center;
-    font-family: var(--main-font-family);
+	text-align: center;
+	font-family: var(--main-font-family);
 }
 
 tr {
-    border-bottom: 1px #707070 solid;
+	border-bottom: 1px #707070 solid;
 }
 
 thead > tr {
-    border-bottom: none;
-    font-size: 1.5em;
-    color: #f2f2f2;
+	border-bottom: none;
+	font-size: 1.5em;
+	color: #f2f2f2;
 }
 
 tr td {
-    color: #f0a82e;
-    font-size: 1.3em;
-    text-transform: uppercase;
+	color: #f0a82e;
+	font-size: 1.3em;
+	text-transform: uppercase;
 }
 
 tr td:nth-child(1) {
-    color: #f2f2f2;
+	color: #f2f2f2;
 }
 
 .btn-pay {
-    background-color: #fcab1f;
-    padding: 0.1em 1em;
-    border-radius: 1em;
+	background-color: #fcab1f;
+	padding: 0.1em 1em;
+	border-radius: 1em;
 }
 
 .btn-pay:active {
-    background-color: #ad7615;
+	background-color: #ad7615;
 }
-
-
 
 .btn-remove-disabled:hover,
 .btn-remove-disabled:active {
-    cursor: not-allowed;
-    transform: none !important;
+	cursor: not-allowed;
+	transform: none !important;
 }
 
 .holds-pagination {
-    display: flex;
-    justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 li.active {
-    background-color: rgb(43, 47, 49);
+	background-color: rgb(43, 47, 49);
 }
 
 li.active button,
 li.active > button:focus {
-    background-color: #fcab1f !important;
-    border-color: #fcab1f !important;
-    box-shadow: none;
+	background-color: #fcab1f !important;
+	border-color: #fcab1f !important;
+	box-shadow: none;
 }
 
 #coffee-bean-icon:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 #holds-fetch-alert {
-    width: 50em;
-    font-family: var(--card-font-family);
-    position: relative;
-    margin: auto;
-    bottom: 8%;
+	width: 50em;
+	font-family: var(--card-font-family);
+	position: relative;
+	margin: auto;
+	bottom: 8%;
 }
 
 @media (max-width: 575.98px) {
-    #holds-fetch-alert {
-        width: 90%;
-    }
+	#holds-fetch-alert {
+		width: 90%;
+	}
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px) {
-    #holds-fetch-alert {
-        width: 90%;
-    }
+	#holds-fetch-alert {
+		width: 90%;
+	}
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) {
-    #holds-fetch-alert {
-        width: 90%;
-    }
+	#holds-fetch-alert {
+		width: 90%;
+	}
 }
 
 /* Large devices (desktops, 992px and up) */
