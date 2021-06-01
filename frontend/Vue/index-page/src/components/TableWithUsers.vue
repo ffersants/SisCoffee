@@ -29,7 +29,6 @@
 			:fields="fields"
 			:items="items"
 			id="tabela"
-			style="maxWidth: 1500px;marginLeft: auto; marginRight: auto;"
 		>
 			<!-- cell(name) custom rendering for a item in the column name, based on its surplus number,
                 it'll have a coffee icon to show the surplus total if it's greater than 0 
