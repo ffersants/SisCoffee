@@ -25,7 +25,7 @@
 		<b-table
 			v-if="!fetchFailed && !fetching"
 			borderless
-			responsive="sm"
+			fixed
 			:fields="fields"
 			:items="items"
 			id="tabela"
