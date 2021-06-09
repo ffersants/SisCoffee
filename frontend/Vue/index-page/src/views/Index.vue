@@ -22,12 +22,10 @@
 				<div v-if="!fetchFailed && !fetching" id="container">
 					<div class="card card-the-next">
 						<div
-							class="bigName"
-							id="big-name-the-next"
 							v-bind:title="theNext.name"
 							v-if="theNext && theNext.name.length > 12"
 						>
-							<p>{{ theNext.name }}</p>
+							<marquee direction="left">{{ theNext.name }}</marquee>
 						</div>
 
 						<p v-else-if="theNext" v-bind:title="theNext.name">
@@ -255,7 +253,7 @@ export default {
 		},
 	},
 	beforeCreate() {
-		fetch("http://localhost:3300/")
+		fetch("http://ditec112805:3300/")
 			.then((r) => {
 				if (!r.ok) {
 					throw new Error("Falha ao fetchar");
