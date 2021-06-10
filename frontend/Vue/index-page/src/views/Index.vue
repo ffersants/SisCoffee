@@ -235,6 +235,7 @@ export default {
 			return {
 				name: this.theOne.name,
 				section: this.theOne.section,
+				email: this.theOne.email,
 				useSurplus: String(this.useSurplus),
 				position: this.theOne.position,
 			};
