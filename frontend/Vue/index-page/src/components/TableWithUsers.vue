@@ -217,7 +217,7 @@ export default {
 		},
 	},
 	async beforeCreate() {
-		fetch("http://ditec112805:3300/users/")
+		fetch(process.env.VUE_APP_AMBIENT + "/users")
 			.then((r) => {
 				if (!r.ok) {
 					throw new Error("Falha ao fetchar");

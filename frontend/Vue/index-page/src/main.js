@@ -3,6 +3,11 @@ import App from './App.vue'
 import router from './router.js'
 import store from './store.js'
 
+require('dotenv').config()
+
+// import dotenv from 'dotenv'
+// dotenv.config()
+
 //css
 import './assets/reset.css'
 import './assets/global.css'

@@ -13,25 +13,32 @@
 			<b-container class="pt-3">
 				<b-row id="first-row" class="text-center">
 					<b-col cols="5">
-						<p>Nome</p>
+						<p class="data-title">Nome</p>
 						<p>{{ reqBody.name }}</p>
 					</b-col>
 
 					<b-col cols="2">
-						<p>Seção</p>
+						<p class="data-title">Seção</p>
 						<p>{{ reqBody.section }}</p>
 					</b-col>
 
 					<b-col cols="5">
 						<div v-if="action == 'payment' || action == 'signUp'">
-							<p>Data do pagamento</p>
+							<p class="data-title">Data do pagamento</p>
 							<p>{{ currentDate }}</p>
 						</div>
 
 						<div v-else>
-							<p>Data do cadastro</p>
+							<p class="data-title">Data do cadastro</p>
 							<p>{{ reqBody.signUpDate }}</p>
 						</div>
+					</b-col>
+				</b-row>
+
+				<b-row class="text-center mt-2">
+					<b-col>
+						<p class="data-title">E-mail</p>
+						{{ reqBody.email }}
 					</b-col>
 				</b-row>
 			</b-container>
@@ -245,13 +252,13 @@ export default {
 			let method;
 
 			if (this.action === "signUp") {
-				urlToFetch = "http://ditec112805:3300/create/user";
+				urlToFetch = process.env.VUE_APP_AMBIENT + "/create/user";
 				method = "POST";
 			} else if (this.action === "payment") {
-				urlToFetch = "http://ditec112805:3300/coffeeBought";
+				urlToFetch = process.env.VUE_APP_AMBIENT + "/coffeeBought";
 				method = "POST";
 			} else if (this.action === "removeUser") {
-				urlToFetch = "http://ditec112805:3300/remove";
+				urlToFetch = process.env.VUE_APP_AMBIENT + "/remove";
 				method = "DELETE";
 			}
 
@@ -333,6 +340,12 @@ p {
 	text-align: center;
 }
 
+.data-title {
+	font-weight: 500;
+	letter-spacing: 0.9px;
+	color: #eed5aa;
+}
+
 #modal {
 	padding: 1em;
 }
@@ -397,6 +410,7 @@ p {
 #add-surplus {
 	margin-top: -1em;
 	margin-bottom: 5%;
+	user-select: none;
 }
 
 #add-surplus small {

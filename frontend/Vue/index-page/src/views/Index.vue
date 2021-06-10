@@ -253,7 +253,8 @@ export default {
 		},
 	},
 	beforeCreate() {
-		fetch("http://ditec112805:3300/")
+		console.log(process.env.AMBIENT);
+		fetch(process.env.VUE_APP_AMBIENT)
 			.then((r) => {
 				if (!r.ok) {
 					throw new Error("Falha ao fetchar");
