@@ -98,11 +98,11 @@ app.post('/create/user', async (req, res) => {
             });
         }
 
-        const { name, section, currentDate, surplus } = req.body;
+        const { name, section, email, currentDate, surplus } = req.body;
 
         console.log(`\n\n\n----START\n Cadastrando usuário ${name}.`)
 
-        const created = await UserController.create(name, section, currentDate, surplus, res)
+        const created = await UserController.create(name, section, email, currentDate, surplus, res)
 
         if (created.statusCode !== 201) return
 
@@ -359,6 +359,8 @@ app.delete('/remove', async (req, res) => {
     }
 })
 
-app.listen(3300, function () {
-    console.table('Servidor rodando na porta 3300')
+const port = 100
+
+app.listen(port, () => {
+    console.table(`Servidor rodando na porta ${port}`)
 })

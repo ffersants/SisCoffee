@@ -2,8 +2,9 @@
 exports.up = function (knex) {
     return knex.schema.createTable('users', function (table) {
         table.increments('userID');
-        table.string('name');     
+        table.string('name').notNullable();;     
         table.string('section').notNullable();
+        table.string('email').notNullable();
         table.integer('surplus');
         table.integer('position').notNullable();
         table.string('signUpDate').notNullable();

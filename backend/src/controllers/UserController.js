@@ -1,7 +1,7 @@
 const connection = require('../database/connection')
 
 module.exports = {
-    create: async function (name, section, currentDate, surplus, res) {
+    create: async function (name, section, email, currentDate, surplus, res) {
         try {
             //verifica se ação está autenticada corretamente
 
@@ -45,6 +45,7 @@ module.exports = {
             await connection('users').insert({
                 name,
                 section,
+                email,
                 surplus,
                 position,
                 signUpDate,
