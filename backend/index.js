@@ -74,10 +74,8 @@ async function sendEmailToCurrentPayer(currentPayerName, currentPayerEmailAddres
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link href="https://db.onlinewebfonts.com/c/3156116d1667eea051f96b697f069624?family=Andale+Mono" rel="stylesheet" type="text/css"/>
             <link href="http://fonts.cdnfonts.com/css/segoe-ui-4" rel="stylesheet">
             <style>
-            @import url(//db.onlinewebfonts.com/c/3156116d1667eea051f96b697f069624?family=Andale+Mono);
             @import url('http://fonts.cdnfonts.com/css/segoe-ui-4');
                 #logo{
                     text-decoration: none;
