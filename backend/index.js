@@ -108,7 +108,7 @@ async function sendEmailToCurrentPayer(currentPayerName, currentPayerEmailAddres
                         <br>
                         mas está acabando...
                     </p>
-                    <img src="https://i.ibb.co/5RtgC3t/sad-coffeebean-removebg-preview.png"/>
+                    <img src="https://i.ibb.co/KbwnTYP/Sem-t-tulo.png"/>
                     <p style="font-size: 2em;">
                         Colabore com 1kg de café em grãos
                         <br>
