@@ -84,7 +84,7 @@
 
 					<div v-if="action !== 'removeUser'" id="add-surplus">
 						<div v-if="userIsAhead && action == 'payment'">
-							<p style="color: #fda50e">
+							<p style="color:rgb(255, 251, 0)">
 								Um saldo já está sendo adicionado, pois o usuário está pagando
 								adiantado
 							</p>

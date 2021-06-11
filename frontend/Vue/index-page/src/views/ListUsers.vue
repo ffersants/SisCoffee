@@ -123,6 +123,7 @@ export default {
 			return {
 				name: this.userInTable.name,
 				section: this.userInTable.section,
+				email: this.userInTable.email,
 				useSurplus: String(this.useSurplus),
 				position: this.userInTable.position,
 			};

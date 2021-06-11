@@ -262,7 +262,7 @@ label:hover {
 input {
 	box-sizing: border-box;
 	width: 100%;
-	padding: 0.2em 0.7em;
+	padding: 0.4em 0.7em;
 	background-color: #414141;
 	border: 1px solid #707070;
 	font-size: 1.3em;
