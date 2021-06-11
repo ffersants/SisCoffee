@@ -65,14 +65,73 @@ function checkReqBody(reqBody) {
 
 async function sendEmailToCurrentPayer(currentPayerName, currentPayerEmailAddress){
     let info = await transporter.sendMail({
-        from: '"Siscoffee" <siscoffee-cobranca@pcdf.df.gov.br>', // sender address
+        from: '"☕ Siscoffee Avisa" <siscoffee-cobranca@pcdf.df.gov.br>', // sender address
         to: currentPayerEmailAddress,
         //bcc: "ditec-suportetecnico@pcdf.df.gov.br", // list of receivers
-        subject: `Siscoffee Avisa ☕ - ${currentPayerName}, chegou a sua vez!`, // Subject line
-        html: `Prezados,
-            Teste
-            </strong>
-            `
+        subject: `${currentPayerName}, chegou a sua vez!`, // Subject line
+        html: `
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://db.onlinewebfonts.com/c/3156116d1667eea051f96b697f069624?family=Andale+Mono" rel="stylesheet" type="text/css"/>
+            <link href="http://fonts.cdnfonts.com/css/segoe-ui-4" rel="stylesheet">
+            <style>
+            @import url(//db.onlinewebfonts.com/c/3156116d1667eea051f96b697f069624?family=Andale+Mono);
+            @import url('http://fonts.cdnfonts.com/css/segoe-ui-4');
+                #logo{
+                    text-decoration: none;
+                    font-size: 3em;
+                }
+                p{
+                    font-family: 'Segoe UI', sans-serif;
+                    font-size: 2.5em;
+                    color: #F1E5D1;
+                    padding: 0;
+                    margin: 0;
+                }
+                #userName{
+                    color:#f0a82e; 
+                }
+            </style>
+        </head>
+    <body>
+        <div style="background-color:#35373e;padding: 1em 4em;">
+            <div style="text-align:center">
+                <a id="logo" href="http://siscoffeeditec.pcdf.gov.br/#/"> 
+                    <span style="color: #F1E5D1">SIS</span><span style="color: #b87446">CØFFEE</span>
+                </a>
+
+                <div style="margin: 2em 0 2.5em 0;">
+                    <p style="font-size: 2em;">
+                        <span id="userName">${currentPayerName}</span>, ainda temos café,
+                        <br>
+                        mas está acabando...
+                    </p>
+                    <img src="https://i.ibb.co/5RtgC3t/sad-coffeebean-removebg-preview.png"/>
+                    <p style="font-size: 2em;">
+                        Colabore com 1kg de café em grãos
+                        <br>
+                        e não fique sem seu cafezinho diário.
+                    </p>
+                </div>
+
+                <footer>
+                    <p style="font-size: 1.3em">
+                        Atenciosamente,
+                        <br>
+                        Equipe do 
+                        <a style="text-decoration:none;" href="http://siscoffeeditec.pcdf.gov.br/#/">
+                            <span style="color: #F1E5D1">SIS</span><span style="font-family: 'Segoe UI', sans-serif; color: #b87446">CØFFEE</span>
+                        </a>
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </body>
+            
+        `,
+        priority: "high",
     });
     return info
 }
@@ -328,7 +387,7 @@ app.post('/coffeeBought', async function (req, res) {
             .first()
 
         try{
-            const emailSentResult = await sendEmailToCurrentPayer(currentPayer.email, currentPayer.name)
+            const emailSentResult = await sendEmailToCurrentPayer(currentPayer.name, currentPayer.email)
             console.log(emailSentResult)
         } catch(e){
             console.log("\n Falha ao enviar email -> ", e)
