@@ -4,7 +4,6 @@ exports.up = function (knex) {
         table.increments('userID');
         table.string('name').notNullable();;     
         table.string('section').notNullable();
-        table.string('email').notNullable();
         table.integer('surplus');
         table.integer('position').notNullable();
         table.string('signUpDate').notNullable();
@@ -15,3 +14,4 @@ exports.up = function (knex) {
 exports.down = function (knex) {
     return knex.schema.dropTable('users')
 };
+
