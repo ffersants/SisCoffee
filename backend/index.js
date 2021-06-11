@@ -2,6 +2,21 @@ const express = require('express');
 const cors = require('cors');
 const UserController = require('./src/controllers/UserController');
 const CoffeeRegisterController = require('./src/controllers/CoffeeRegisterController');
+const dotenv = require('dotenv')
+dotenv.config()
+
+const nodemailer = require('nodemailer')
+const SMTP_CONFIG = require('./src/mail/smtp')
+const transporter = nodemailer.createTransport({
+    host: SMTP_CONFIG.host,
+    port: SMTP_CONFIG.port, 
+    secure: SMTP_CONFIG.secure,
+    auth: {
+        user: SMTP_CONFIG.user,
+        pass: SMTP_CONFIG.pass
+    },
+    tls: {rejectUnauthorized: false}
+})
 
 
 const connection = require('./src/database/connection');
@@ -46,6 +61,20 @@ function checkReqBody(reqBody) {
     })
 
     if (whatsMissing.length > 0) return true
+}
+
+async function sendEmailToCurrentPayer(currentPayerName, currentPayerEmailAddress){
+    let info = await transporter.sendMail({
+        from: '"Siscoffee" <siscoffee-cobranca@pcdf.df.gov.br>', // sender address
+        to: currentPayerEmailAddress,
+        //bcc: "ditec-suportetecnico@pcdf.df.gov.br", // list of receivers
+        subject: `Siscoffee Avisa ☕ - ${currentPayerName}, chegou a sua vez!`, // Subject line
+        html: `Prezados,
+            Teste
+            </strong>
+            `
+    });
+    return info
 }
 
 app.get('/', async function (req, res) {
@@ -292,6 +321,21 @@ app.post('/coffeeBought', async function (req, res) {
         await UserController.update.lastCoffeeAcquisition(name, date)
 
         console.log("\nRegistro de compra de café concluído com sucesso!\n ----END \n\n\n")
+        
+        let currentPayer = await connection("users")
+            .where('position', 1)
+            .select("email", "name")
+            .first()
+
+        try{
+            const emailSentResult = await sendEmailToCurrentPayer(currentPayer.email, currentPayer.name)
+            console.log(emailSentResult)
+        } catch(e){
+            console.log("\n Falha ao enviar email -> ", e)
+        }
+
+        
+
         return res.status(201).json({
             status: 201,
             message: "Compra registrada e tabela atualizada!"
