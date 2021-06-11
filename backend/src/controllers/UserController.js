@@ -115,9 +115,7 @@ module.exports = {
             await connection('users')
                 .where('name', name)
                 .delete();
-
-            console.log(`\nUsuário ${name} removido com sucesso!`)
-
+                
             return res.status(201).json({
                 status: 201,
                 message: 'Usuário removido com sucesso!'

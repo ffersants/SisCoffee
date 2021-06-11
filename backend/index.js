@@ -63,75 +63,86 @@ function checkReqBody(reqBody) {
     if (whatsMissing.length > 0) return true
 }
 
-async function sendEmailToCurrentPayer(currentPayerName, currentPayerEmailAddress){
-    let info = await transporter.sendMail({
-        from: '"☕ Siscoffee Avisa" <siscoffee-cobranca@pcdf.df.gov.br>', // sender address
-        to: currentPayerEmailAddress,
-        //bcc: "ditec-suportetecnico@pcdf.df.gov.br", // list of receivers
-        subject: `${currentPayerName}, chegou a sua vez!`, // Subject line
-        html: `
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link href="http://fonts.cdnfonts.com/css/segoe-ui-4" rel="stylesheet">
-            <style>
-            @import url('http://fonts.cdnfonts.com/css/segoe-ui-4');
-                #logo{
-                    text-decoration: none;
-                    font-size: 3em;
-                }
-                p{
-                    font-family: 'Segoe UI', sans-serif;
-                    font-size: 2.5em;
-                    color: #F1E5D1;
-                    padding: 0;
-                    margin: 0;
-                }
-                #userName{
-                    color:#f0a82e; 
-                }
-            </style>
-        </head>
-    <body>
-        <div style="background-color:#35373e;padding: 1em 4em;">
-            <div style="text-align:center">
-                <a id="logo" href="http://siscoffeeditec.pcdf.gov.br/#/"> 
-                    <span style="color: #F1E5D1">SIS</span><span style="color: #b87446">CØFFEE</span>
-                </a>
-
-                <div style="margin: 2em 0 2.5em 0;">
-                    <p style="font-size: 2em;">
-                        <span id="userName">${currentPayerName}</span>, ainda temos café,
-                        <br>
-                        mas está acabando...
-                    </p>
-                    <img src="https://i.ibb.co/KbwnTYP/Sem-t-tulo.png"/>
-                    <p style="font-size: 2em;">
-                        Colabore com 1kg de café em grãos
-                        <br>
-                        e não fique sem seu cafezinho diário.
-                    </p>
+async function sendEmailToCurrentPayer(){
+    let currentPayer = await connection("users")
+            .where('position', 1)
+            .select("email", "name")
+            .first()
+    
+    try{
+        await transporter.sendMail({
+            from: '"☕ Siscoffee Avisa" <siscoffee-cobranca@pcdf.df.gov.br>', // sender address
+            to: currentPayer.email,
+            //bcc: "ditec-suportetecnico@pcdf.df.gov.br", // list of receivers
+            subject: `${currentPayer.name}, chegou a sua vez!`, // Subject line
+            html: `
+            <head>
+                <link href="http://fonts.cdnfonts.com/css/segoe-ui-4" rel="stylesheet">
+                <style>
+                @import url('http://fonts.cdnfonts.com/css/segoe-ui-4');
+                    #logo{
+                        text-decoration: none;
+                        font-size: 3em;
+                        user-select:none;
+                    }
+    
+                    #logo:active,
+                    #logo:focus{
+                        color:none;
+                    }
+                    p{
+                        font-family: 'Segoe UI', sans-serif;
+                        font-size: 2.5em;
+                        color: #F1E5D1;
+                        padding: 0;
+                        margin: 0;
+                    }
+                    #userName{
+                        color:#f0a82e; 
+                    }
+                </style>
+            </head>
+        <body style="background-color: #35373e;">
+            <div style="background-color:#35373e;padding: 1em 4em;">
+                <div style="text-align:center">
+                    <a id="logo" href="http://siscoffeeditec.pcdf.gov.br/#/"> 
+                        <span style="color: #F1E5D1; user-select:none">SIS</span><span style="color: #b87446;user-select:none">CØFFEE</span>
+                    </a>
+    
+                    <div style="margin: 2.5em 0 2.5em 0;">
+                        <p style="font-size: 2em;">
+                            <span id="userName">${currentPayer.name}</span>, ainda temos café,
+                            <br>
+                            mas está acabando...
+                        </p>
+                        <img src="http://ditec112805/sad-coffee-bean.png"/>
+                        <p style="font-size: 2em;">
+                            Colabore com 1kg de café em grãos
+                            <br>
+                            e não fique sem seu cafezinho diário
+                        </p>
+                    </div>
+    
+                    <footer>
+                        <p style="font-size: 1.3em">
+                            Atenciosamente,
+                            <br>
+                            Equipe do 
+                            <a style="text-decoration:none;" href="http://siscoffeeditec.pcdf.gov.br/#/">
+                                <span style="color: #F1E5D1;user-select:none">SIS</span><span style="user-select:none;font-family: 'Segoe UI', sans-serif; color: #b87446">CØFFEE</span>
+                            </a>
+                        </p>
+                    </footer>
                 </div>
-
-                <footer>
-                    <p style="font-size: 1.3em">
-                        Atenciosamente,
-                        <br>
-                        Equipe do 
-                        <a style="text-decoration:none;" href="http://siscoffeeditec.pcdf.gov.br/#/">
-                            <span style="color: #F1E5D1">SIS</span><span style="font-family: 'Segoe UI', sans-serif; color: #b87446">CØFFEE</span>
-                        </a>
-                    </p>
-                </footer>
             </div>
-        </div>
-    </body>
-            
-        `,
-        priority: "high",
-    });
-    return info
+        </body>
+                
+            `,
+            priority: "high",
+        });
+    } catch(e){
+        console.log("\n Falha ao enviar email -> ", e)
+    }
 }
 
 app.get('/', async function (req, res) {
@@ -377,21 +388,11 @@ app.post('/coffeeBought', async function (req, res) {
         console.log(`\nAtualizando data da última aquisição do ${name} na tabela users.\n`)
         await UserController.update.lastCoffeeAcquisition(name, date)
 
-        console.log("\nRegistro de compra de café concluído com sucesso!\n ----END \n\n\n")
-        
-        let currentPayer = await connection("users")
-            .where('position', 1)
-            .select("email", "name")
-            .first()
+        console.log("\nRegistro de compra de café concluído com sucesso!\n Enviando e-mail para novo pagador...")
+    
+        sendEmailToCurrentPayer()
 
-        try{
-            const emailSentResult = await sendEmailToCurrentPayer(currentPayer.name, currentPayer.email)
-            console.log(emailSentResult)
-        } catch(e){
-            console.log("\n Falha ao enviar email -> ", e)
-        }
-
-        
+        console.log("\n E-mail enviado! \n----END \n\n\n")
 
         return res.status(201).json({
             status: 201,
@@ -449,8 +450,7 @@ app.delete('/remove', async (req, res) => {
 
         if (response.statusCode === 500) return
 
-        await UserController.delete(name, res);
-
+        await UserController.delete(name, res);   
     } catch (err) {
         console.log("\nFALHA INTERNO NO SERVIDOR  -> index.js - rota /remove ->", err)
         return res.status(500).json({
