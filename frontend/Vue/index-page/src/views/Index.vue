@@ -384,15 +384,16 @@ export default {
 #pay-btn {
 	background-color: #a35d2f;
 	font-family: Candara;
-	font-size: 1em;
+	font-size: 0.8em;
 	color: #f1e5d1;
 	height: 30%;
-	width: 70%;
+	width: 60%;
 	border-radius: 1em;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 1em;
 	margin-bottom: 0.6rem;
+	padding: 0.3em 0.5em;
 	transition: background 0.4s;
 }
 
