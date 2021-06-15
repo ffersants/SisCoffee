@@ -8,39 +8,39 @@
 			<b-container>
 				<b-row id="first-row" class="text-center">
 					<b-col cols="5">
-						<p>Nome</p>
+						<p class="data-title">Nome</p>
 						<!-- <p>Fernando Santos</p> -->
 						<p>{{ userInAction.name }}</p>
 					</b-col>
 
 					<b-col cols="2">
-						<p>Seção</p>
+						<p class="data-title">Seção</p>
 						<!-- <p>SSTM</p> -->
 						<p>{{ userInAction.section }}</p>
 					</b-col>
 
 					<b-col cols="5">
 						<div v-if="action == 'payment'">
-							<p>Data do pagamento</p>
+							<p class="data-title">Data do pagamento</p>
 							<!-- <p>28/08/2000</p> -->
 							<p>{{ userInAction.currentDate }}</p>
 						</div>
 
 						<div v-else-if="action == 'signUp'">
-							<p>Data do cadastro</p>
+							<p class="data-title">Data do cadastro</p>
 							<!-- <p>28/08/2000</p> -->
 							<p>{{ userInAction.currentDate }}</p>
 						</div>
 
 						<div v-else>
-							<p>Data do cadastro</p>
+							<p class="data-title">Data do cadastro</p>
 							<!-- <p>28/08/2000</p> -->
 							<p>{{ userInAction.signUpDate }}</p>
 						</div>
 					</b-col>
 
 					<b-col class="text-center">
-						<p>E-mail</p>
+						<p class="data-title">E-mail</p>
 						<p>{{ userInAction.email }}</p>
 					</b-col>
 				</b-row>
@@ -87,7 +87,7 @@ export default {
 <style scoped>
 #alert-success {
 	padding: 1em;
-	width: 60vw !important;
+	width: 42vw !important;
 }
 
 #alert-success h1 {
@@ -110,12 +110,12 @@ i {
 }
 
 #main {
-	margin-top: 5%;
+	margin-top: 1em;
 }
 
 #main p {
 	font-size: 1.8em !important;
-	margin-bottom: 5% !important;
+	margin-bottom: 1em !important;
 }
 
 #main button:active {

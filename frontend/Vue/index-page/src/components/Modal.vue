@@ -340,12 +340,6 @@ p {
 	text-align: center;
 }
 
-.data-title {
-	font-weight: 500;
-	letter-spacing: 0.9px;
-	color: #eed5aa;
-}
-
 #modal {
 	padding: 1em;
 }
