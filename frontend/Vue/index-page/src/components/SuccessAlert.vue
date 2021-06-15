@@ -88,6 +88,7 @@ export default {
 #alert-success {
 	padding: 1em;
 	width: 42vw !important;
+	text-align: center;
 }
 
 #alert-success h1 {

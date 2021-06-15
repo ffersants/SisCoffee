@@ -223,7 +223,7 @@ export default {
 			showModal: false,
 			showUserConfig: false,
 			showModalUserSurplus: false,
-			showSuccessAlert: true,
+			showSuccessAlert: false,
 			useSurplus: false,
 			theNext: "",
 			theOne: "",
